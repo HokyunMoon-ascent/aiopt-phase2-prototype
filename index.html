@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 옵티마이저 — 프로토타입 인덱스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gray100:#f6f5f8; --gray200:#eae8ee; --gray300:#dad7e0; --gray500:#9691a2;
+    --gray600:#7f7a8d; --gray700:#5d596a; --gray800:#3d3a46; --gray900:#26232e;
+    --purple:#7c6df0; --purple-dark:#6a5ae0; --purple-bg:#f4f2ff; --purple-line:#d8d2fb;
+    --border:#e8e6ee;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:#f0eef4; color:var(--gray800); min-height:100vh;
+    font-family:"Noto Sans KR","Noto Sans",system-ui,-apple-system,sans-serif;
+    font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:820px; margin:0 auto; padding:56px 24px 80px;}
+  .head .title{font-size:32px; font-weight:900; color:var(--gray900); letter-spacing:-.5px; display:flex; align-items:baseline; gap:10px;}
+  .head .title .alpha{font-size:14px; font-weight:700; font-style:italic; color:#e5231b;}
+  .head .sub{margin-top:12px; font-size:15px; color:var(--gray700);}
+
+  .section-label{margin:38px 4px 14px; font-size:12px; font-weight:700; letter-spacing:.04em; color:var(--gray500); text-transform:uppercase;}
+
+  .flow{display:flex; flex-direction:column; gap:12px;}
+  .step{
+    display:flex; align-items:center; gap:16px; background:#fff; border:1px solid var(--border);
+    border-radius:14px; padding:18px 20px; text-decoration:none; color:inherit; transition:.14s;
+  }
+  .step:hover{border-color:var(--purple); box-shadow:0 8px 22px rgba(124,109,240,.15); transform:translateY(-2px);}
+  .step .no{flex:0 0 34px; width:34px; height:34px; border-radius:50%; background:var(--purple-bg);
+    color:var(--purple-dark); font-weight:800; display:flex; align-items:center; justify-content:center; font-size:15px;}
+  .step .body{flex:1;}
+  .step .name{font-size:16px; font-weight:700; color:var(--gray900);}
+  .step .file{font-size:12px; color:var(--gray500); font-family:"Noto Sans"; margin-top:3px;}
+  .step .arrow{color:var(--gray400); font-size:18px;}
+  .step.entry{border-color:var(--purple); background:var(--purple-bg);}
+  .badge-entry{display:inline-block; margin-left:8px; font-size:11px; font-weight:700; color:#fff;
+    background:var(--purple); border-radius:10px; padding:2px 9px; vertical-align:middle;}
+
+  .foot{margin-top:40px; font-size:12px; color:var(--gray500);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <div class="title">AI 옵티마이저 <span class="alpha">alpha</span></div>
+      <div class="sub">프로토타입 화면 모음 · 아래 순서대로 흐름을 확인하세요.</div>
+    </div>
+
+    <div class="section-label">실행 분기 → 로딩 → 프롬프트 선택 흐름</div>
+    <div class="flow">
+      <a class="step entry" href="analyze-entry-0703.html">
+        <span class="no">1</span>
+        <span class="body">
+          <span class="name">실행 분기 진입<span class="badge-entry">시작</span></span>
+          <span class="file">analyze-entry-0703.html</span>
+        </span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="step" href="loading-0703.html">
+        <span class="no">2</span>
+        <span class="body">
+          <span class="name">분석 진행(로딩)</span>
+          <span class="file">loading-0703.html</span>
+        </span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="step" href="select-prompt-0703.html">
+        <span class="no">3</span>
+        <span class="body">
+          <span class="name">타겟 프롬프트 선택</span>
+          <span class="file">select-prompt-0703.html</span>
+        </span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="step" href="prototype.html">
+        <span class="no">4</span>
+        <span class="body">
+          <span class="name">결과 대시보드 (자동 생성 경로)</span>
+          <span class="file">prototype.html</span>
+        </span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <div class="foot">
+      권장 시작점: <b>1. 실행 분기 진입</b> → 실행 → “타겟 프롬프트 선택”을 누르면 로딩을 거쳐 프롬프트 선택 화면으로 이동합니다.
+    </div>
+  </div>
+</body>
+</html>

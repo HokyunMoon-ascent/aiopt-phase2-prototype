@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 옵티마이저 — 분석 진행 중</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gray100:#fbfafb; --gray200:#eae8ee; --gray300:#dad7e0; --gray400:#c6c2ce;
+    --gray500:#9691a2; --gray600:#7f7a8d; --gray700:#5d596a; --gray800:#3d3a46;
+    --primary:#c81414; --brand:rgba(255,2,9,1); --advance:#bfa055;
+    --purple:#7c6df0;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:#fff; color:var(--gray800);
+    font-family:"Noto Sans KR","Noto Sans",system-ui,-apple-system,sans-serif;
+    font-size:14px; line-height:1.5;
+  }
+  .en{font-family:"Noto Sans","Noto Sans KR",sans-serif;}
+
+  /* ── top GNB (단순화) ── */
+  .gnb{
+    height:54px; border-bottom:1px solid var(--gray300); background:var(--gray100);
+    display:flex; align-items:center; justify-content:space-between; padding:0 20px;
+  }
+  .gnb .crumb{display:flex; align-items:center; gap:10px; font-weight:700; font-size:16px;}
+  .gnb .crumb .back{color:var(--gray500); font-weight:400;}
+  .gnb .meta{display:flex; align-items:center; gap:12px; font-size:12px; color:var(--gray700);}
+  .gnb .meta b{color:var(--gray800);}
+
+  /* ── 본문 영역 ── */
+  .stage{padding:40px; min-height:calc(100vh - 54px); background:#fff;}
+  .card{
+    position:relative; max-width:980px; margin:0 auto; min-height:560px;
+    background:var(--gray100); border:1px solid var(--gray300);
+    border-radius:var(--radius); overflow:hidden;
+  }
+
+  /* ── 진행 헤더 (sticky) ── */
+  .phead{
+    position:sticky; top:0; z-index:5; background:var(--gray100);
+    border-bottom:1px solid var(--gray300); padding:18px 24px 14px;
+  }
+  .phead .row1{display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  .phead .title{font-size:16px; font-weight:700; color:var(--gray800);}
+  .phead .stepcount{font-size:13px; color:var(--gray600);}
+  .phead .stepcount b{color:var(--primary); font-weight:700;}
+  .time{font-size:12px; color:var(--gray600);}
+  .time b{color:var(--gray800); font-weight:700;}
+  .bar{margin-top:12px; height:8px; background:var(--gray200); border-radius:99px; overflow:hidden;}
+  .bar .fill{
+    height:100%; width:0; border-radius:99px;
+    background:linear-gradient(90deg,var(--primary),#e0473f);
+    transition:width .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .persist{
+    margin-top:12px; display:flex; align-items:center; gap:7px;
+    font-size:12px; color:var(--gray600);
+  }
+  .persist svg{flex:none;}
+
+  /* ── work 그룹 리스트 ── */
+  .works{padding:18px 24px 28px; display:flex; flex-direction:column; gap:14px;}
+  .work{display:flex; flex-direction:column; gap:4px;}
+  .whead{display:flex; align-items:center; gap:6px; padding:4px 0;}
+  .whead .ico{width:16px; height:16px; flex:none; display:grid; place-items:center;}
+  .whead .name{font-family:"Noto Sans","Noto Sans KR"; font-size:12px; font-weight:500;}
+  .whead .chev{margin-left:2px; color:var(--gray400); display:flex;}
+  .phases{
+    border-left:1px solid var(--gray300); margin-left:7px; padding:2px 0 2px 12px;
+    display:flex; flex-direction:column; gap:5px;
+  }
+  .phase{display:flex; align-items:center; gap:6px; font-family:"Noto Sans","Noto Sans KR"; font-size:12px; font-weight:500; color:var(--gray500);}
+  .phase .ico{width:16px; height:16px; flex:none; display:grid; place-items:center; color:var(--gray500);}
+  .msg{font-size:14px; color:var(--gray700); padding-top:2px;}
+
+  .work.done .whead .name{color:var(--gray600);}
+  .work.active .whead .name{color:var(--gray800); font-weight:700;}
+  .work.active .whead{animation:pulse 1.6s ease-in-out infinite;}
+  .work.active .msg{color:var(--gray800);}
+  .work.wait .whead .name{color:var(--gray400);}
+  .work.wait .whead .chev{color:var(--gray300);}
+  .check{color:var(--primary);}
+  .work.done .check{color:#1aa251;}
+
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.55;}}
+
+  .spin{width:14px; height:14px; border:2px solid var(--gray300); border-top-color:var(--primary); border-radius:50%; animation:rot .7s linear infinite;}
+  @keyframes rot{to{transform:rotate(360deg);}}
+
+  /* ── 완료 모달 ── */
+  .overlay{
+    position:absolute; inset:0; background:rgba(61,57,70,.28); backdrop-filter:blur(1px);
+    display:none; align-items:center; justify-content:center; z-index:20;
+  }
+  .overlay.show{display:flex; animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0;} to{opacity:1;}}
+  .modal{
+    background:#fff; border-radius:14px; padding:32px 36px; width:380px; text-align:center;
+    box-shadow:0 18px 50px rgba(61,57,70,.22);
+    animation:pop .35s cubic-bezier(.2,.9,.3,1.2);
+  }
+  @keyframes pop{from{transform:scale(.92); opacity:0;} to{transform:scale(1); opacity:1;}}
+  .modal .badge{width:64px; height:64px; margin:0 auto 16px; border-radius:50%; background:#e8f7ee; display:grid; place-items:center;}
+  .modal h3{margin:0 0 6px; font-size:20px; font-weight:700; color:var(--gray800);}
+  .modal p{margin:0 0 22px; font-size:13px; color:var(--gray600);}
+  .modal .btn{
+    width:100%; height:46px; border:none; border-radius:10px; cursor:pointer;
+    background:var(--purple); color:#fff; font-family:inherit; font-size:15px; font-weight:700;
+  }
+  .modal .btn:hover{filter:brightness(.94);}
+  .modal .sub{margin-top:10px; font-size:12px; color:var(--gray500);}
+</style>
+</head>
+<body>
+  <!-- 단순화한 상단 GNB -->
+  <div class="gnb">
+    <div class="crumb"><span class="back">←</span> 버티컬 마우스</div>
+    <div class="meta"><span>프로젝트 기준 일자 : 2026-04-17</span><span id="featLabel">옵티마이저</span></div>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="card">
+      <!-- 진행 헤더 -->
+      <div class="phead">
+        <div class="row1">
+          <div class="title" id="headTitle">데이터를 수집하고 있어요</div>
+          <div class="stepcount">현재 <b id="curStep">1</b> / 전체 <span id="totStep">3</span> 단계</div>
+        </div>
+        <div class="bar"><div class="fill" id="fill"></div></div>
+        <div class="row1" style="margin-top:8px;">
+          <div class="time">보통 <b id="median">4분 47초</b> · 길어도 <b id="p90">13분 58초</b> · 경과 <b id="elapsed">0초</b></div>
+        </div>
+        <div class="persist">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7f7a8d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+          이 페이지를 벗어나도 진행되며 저장돼요
+        </div>
+      </div>
+
+      <!-- work 그룹 리스트 -->
+      <div class="works" id="works"></div>
+
+      <!-- 완료 모달 -->
+      <div class="overlay" id="overlay">
+        <div class="modal">
+          <div class="badge">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1aa251" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3>완료! <span id="doneTime">4분 12초</span> 만에 끝났어요</h3>
+          <p id="doneDesc">옵티마이저 분석이 모두 끝났습니다. 타겟 프롬프트를 선택해 주세요.</p>
+          <button class="btn" id="btnNext">타겟 프롬프트 선택 →</button>
+          <div class="sub">잠시 후 자동으로 이동합니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // 다음 화면 (옵티마이저 로딩 → 타겟 프롬프트 선택)
+  const NEXT_URL = "select-prompt-0703.html";
+
+  // 옵티마이저 데이터 (설계서 §6 청크 매핑 · 시간값 그대로)
+  const FEATURE = {
+    label:"옵티마이저", median:"4분 47초", p90:"13분 58초", done:"4분 12초",
+    groups:[
+      { name:"CEP 프로젝트 불러오기", phases:["프로젝트 내 CEP 확인"],
+        msg:"프로젝트 내 CEP를 확인했습니다.", doing:"CEP 프로젝트를 불러오고 있습니다." },
+      { name:"세부 맥락·핵심 구매요소 확인", phases:["CEP 세부 맥락 확인","핵심 구매요소 확인"],
+        msg:"세부 맥락·핵심 구매요소 확인이 완료 되었습니다.", doing:"CEP 내 세부 맥락, 핵심 구매요소를 확인하고 있습니다." },
+      { name:"질문 생성", phases:["확인된 요소 기반 질문 생성"],
+        msg:"질문 생성이 완료 되었습니다.", doing:"확인된 요소로 질문을 생성 중입니다." },
+      { name:"질문 토픽 분류", phases:["토픽별 질문 분류"],
+        msg:"질문 토픽 분류가 완료 되었습니다.", doing:"생성된 질문을 토픽별로 분류하고 있습니다." },
+    ],
+  };
+
+  const ICONS = {
+    checkDone:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4L15.5 9.5"/></svg>',
+    chev:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
+    grpDone:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1aa251" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4L15.5 9.5"/></svg>',
+    grpWait:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c6c2ce" stroke-width="1.8"><circle cx="12" cy="12" r="8"/></svg>',
+  };
+
+  function groupHTML(g, state){
+    // state: 'done' | 'active' | 'wait'
+    let headIco, phasesHTML = "", msgHTML = "";
+    if(state==='wait'){
+      headIco = ICONS.grpWait;
+      return `<div class="work wait"><div class="whead">
+        <span class="ico">${headIco}</span><span class="name">${g.name}</span>
+        <span class="chev">${ICONS.chev}</span></div></div>`;
+    }
+    if(state==='done'){
+      headIco = ICONS.grpDone;
+      phasesHTML = g.phases.map(p=>`<div class="phase"><span class="ico check">${ICONS.checkDone}</span>${p}</div>`).join("")
+        + `<div class="phase"><span class="ico check">${ICONS.checkDone}</span>완료</div>`;
+      msgHTML = `<div class="msg">${g.msg}</div>`;
+    } else { // active
+      headIco = `<span class="spin"></span>`;
+      const n = g.phases.length;
+      phasesHTML = g.phases.map((p,i)=>{
+        if(i < n-1) return `<div class="phase"><span class="ico check">${ICONS.checkDone}</span>${p}</div>`;
+        return `<div class="phase" style="color:var(--gray800)"><span class="ico"><span class="spin"></span></span>${p}</div>`;
+      }).join("");
+      msgHTML = `<div class="msg">${g.doing||"진행 중이에요."}</div>`;
+    }
+    return `<div class="work ${state}"><div class="whead">
+      <span class="ico">${headIco}</span><span class="name">${g.name}</span>
+      <span class="chev">${ICONS.chev}</span></div>
+      <div class="phases">${phasesHTML}</div>${msgHTML}</div>`;
+  }
+
+  const f = FEATURE;
+  const groups = f.groups;
+  const total = groups.length;
+  const works = document.getElementById('works');
+  const fill = document.getElementById('fill');
+  const overlay = document.getElementById('overlay');
+
+  document.getElementById('featLabel').textContent = f.label;
+  document.getElementById('totStep').textContent = total;
+  document.getElementById('median').textContent = f.median;
+  document.getElementById('p90').textContent = f.p90;
+  document.getElementById('doneTime').textContent = f.done;
+
+  // ── 진행 애니메이션 (프로토타입용 타이밍) ──
+  const STEP_MS = 1500;   // 그룹당 진행 시간
+  let elapsedSec = 0;
+  const elEl = document.getElementById('elapsed');
+  const elapsedTimer = setInterval(()=>{
+    elapsedSec += 1;
+    const m = Math.floor(elapsedSec/60), s = elapsedSec%60;
+    elEl.textContent = m>0 ? `${m}분 ${s}초` : `${s}초`;
+  }, 1000);
+
+  function renderProgress(activeIdx){
+    const states = groups.map((g,i)=> i<activeIdx ? 'done' : (i===activeIdx ? 'active' : 'wait'));
+    works.innerHTML = groups.map((g,i)=>groupHTML(g, states[i])).join("");
+    document.getElementById('curStep').textContent = activeIdx+1;
+    const pct = Math.round(((activeIdx + 0.5)/total)*100);
+    fill.style.width = pct + '%';
+  }
+
+  function renderDone(){
+    works.innerHTML = groups.map(g=>groupHTML(g, 'done')).join("");
+    document.getElementById('headTitle').textContent = "분석이 완료됐어요";
+    document.getElementById('curStep').textContent = total;
+    fill.style.width = '100%';
+    clearInterval(elapsedTimer);
+    setTimeout(()=> overlay.classList.add('show'), 350);
+    // 자동 이동
+    setTimeout(goNext, 2600);
+  }
+
+  let navigated = false;
+  function goNext(){
+    if(navigated) return;
+    navigated = true;
+    window.location.href = NEXT_URL;
+  }
+  document.getElementById('btnNext').addEventListener('click', goNext);
+
+  // 순차 진행 실행
+  let idx = 0;
+  renderProgress(idx);
+  const stepTimer = setInterval(()=>{
+    idx += 1;
+    if(idx >= total){
+      clearInterval(stepTimer);
+      renderDone();
+    } else {
+      renderProgress(idx);
+    }
+  }, STEP_MS);
+</script>
+</body>
+</html>

@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 옵티마이저 — 브랜드 대시보드 프로토타입</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gray50:#fbfafc; --gray100:#f6f5f8; --gray200:#eae8ee; --gray300:#dad7e0;
+    --gray400:#c6c2ce; --gray500:#9691a2; --gray600:#7f7a8d; --gray700:#5d596a;
+    --gray800:#3d3a46; --gray900:#26232e;
+    --brand:#e5231b; --brand-dark:#c81414;
+    --blue:#3b6fd4; --blue-bg:#e8f0fd; --blue-line:#bcd3f7;
+    --green:#1f9d68; --green-bg:#e6f6ee; --green-line:#b7e5cf;
+    --red:#e5484d; --red-bg:#fdeaea;
+    --amber:#b8860b;
+    --purple:#7c6df0;
+    --radius:10px; --radius-sm:7px;
+    --border:#e8e6ee;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#f0eef4; color:var(--gray800);
+    font-family:"Noto Sans KR","Noto Sans",system-ui,-apple-system,sans-serif;
+    font-size:13px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .num,.en{font-family:"Noto Sans","Noto Sans KR",sans-serif;}
+  button{font-family:inherit; cursor:pointer;}
+  .hidden{display:none !important;}
+
+  /* ─── App frame ─── */
+  .app{max-width:1440px; margin:0 auto; background:#fff; min-height:100vh;
+       box-shadow:0 0 0 1px var(--gray200);}
+
+  /* ─── Header ─── */
+  .hdr{height:56px; display:flex; align-items:center; justify-content:space-between;
+       padding:0 22px; border-bottom:1px solid var(--gray200); background:#fff;}
+  .hdr-l{display:flex; align-items:center; gap:34px;}
+  .logo{display:flex; align-items:center; gap:8px; font-weight:900; font-size:16px; color:var(--gray900);}
+  .logo .mark{width:22px; height:22px; border-radius:6px;
+    background:conic-gradient(from 210deg,#ff5b5b,#e5231b,#b81111,#ff7a5b);
+    -webkit-mask:radial-gradient(circle at 50% 50%, transparent 3px, #000 4px);
+            mask:radial-gradient(circle at 50% 50%, transparent 3px, #000 4px);}
+  .hdr-nav{display:flex; gap:26px; font-size:13px; color:var(--gray700); font-weight:500;}
+  .hdr-nav a{color:inherit; text-decoration:none;}
+  .hdr-nav a:hover{color:var(--gray900);}
+  .hdr-r{display:flex; align-items:center; gap:14px;}
+  .globe{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--gray400);position:relative;}
+  .globe::before,.globe::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--gray400);}
+  .globe::before{transform:scaleX(.5);} .globe::after{transform:scaleY(.5);border-left:none;border-right:none;}
+  .btn-ghost{border:1px solid var(--gray300); background:#fff; border-radius:16px;
+    padding:5px 13px; font-size:12px; color:var(--gray700); display:flex; align-items:center; gap:5px;}
+  .acct{display:flex; align-items:center; gap:8px; padding-left:6px;}
+  .acct .who{text-align:right; line-height:1.25;}
+  .acct .who b{font-size:12px; color:var(--gray800); display:block; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .acct .who span{font-size:11px; color:var(--brand); font-weight:700;}
+  .acct .chev{color:var(--gray500);}
+
+  /* ─── Body split: nav + content ─── */
+  .body{display:flex;}
+  .nav{width:52px; flex:0 0 52px; border-right:1px solid var(--gray200);
+       background:#fff; padding:14px 0; display:flex; flex-direction:column; align-items:center; gap:4px;}
+  .nav .ico{width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+       color:var(--gray500); position:relative;}
+  .nav .ico svg{width:19px; height:19px;}
+  .nav .ico.active{background:#fdecec; color:var(--brand);}
+  .nav .ico:hover{background:var(--gray100); color:var(--gray800);}
+  .nav .sp{height:8px;}
+
+  .content{flex:1; min-width:0;}
+
+  /* ─── Project GNB ─── */
+  .pgnb{height:54px; display:flex; align-items:center; justify-content:space-between;
+        padding:0 24px; border-bottom:1px solid var(--gray200);}
+  .pgnb .crumb{display:flex; align-items:center; gap:9px; font-size:16px; font-weight:700; color:var(--gray900);}
+  .pgnb .crumb .back{color:var(--gray500); cursor:pointer; font-size:17px; line-height:1;}
+  .pgnb .crumb .back:hover{color:var(--gray800);}
+  .pgnb .crumb .sub{color:var(--gray400); font-weight:400;}
+  .pgnb .crumb .cepno{color:var(--gray900); font-weight:700;}
+  .pgnb .meta{display:flex; align-items:center; gap:16px; font-size:12px; color:var(--gray600);}
+  .pgnb .meta b{color:var(--gray800); font-weight:600;}
+  .pgnb .meta .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px;}
+
+  .stage{padding:24px; background:#f0eef4;}
+
+  /* ─── Card ─── */
+  .card{background:#fff; border:1px solid var(--border); border-radius:var(--radius); }
+  .card-h{padding:18px 20px 6px;}
+  .card-h .t{font-size:16px; font-weight:700; color:var(--gray900);}
+  .card-h .d{font-size:12px; color:var(--gray500); margin-top:3px;}
+  .help{color:var(--gray400); font-size:12px; display:inline-flex; align-items:center; gap:4px;}
+  .qmark{width:14px;height:14px;border-radius:50%;border:1px solid var(--gray400);
+    color:var(--gray500);font-size:9px;display:inline-flex;align-items:center;justify-content:center;}
+
+  /* ─── Dashboard grid (열별 독립 스크롤) ─── */
+  .dash{display:grid; grid-template-columns:480px 1fr; gap:20px; align-items:stretch;
+        height:calc(100vh - 56px - 54px - 48px); min-height:520px;}
+  .col-l{display:flex; flex-direction:column; gap:16px; overflow-y:auto; height:100%; padding-right:6px;}
+  .dash > .card{height:100%; display:flex; flex-direction:column; overflow:hidden;}
+  .dash > .card > .card-h{flex:0 0 auto;}
+  .tbl-scroll{flex:1 1 auto; overflow-y:auto;}
+  .tbl thead th{position:sticky; top:0; z-index:2;}
+  /* 얇은 스크롤바 */
+  .col-l::-webkit-scrollbar, .tbl-scroll::-webkit-scrollbar{width:8px;}
+  .col-l::-webkit-scrollbar-thumb, .tbl-scroll::-webkit-scrollbar-thumb{background:var(--gray300); border-radius:8px;}
+  .col-l::-webkit-scrollbar-track, .tbl-scroll::-webkit-scrollbar-track{background:transparent;}
+
+  /* Bubble chart */
+  .chart-wrap{padding:8px 16px 14px;}
+  .chart-box{position:relative; border:1px solid var(--gray200); border-radius:8px; background:var(--gray50); overflow:hidden;}
+  .bubble{position:absolute; transform:translate(-50%,50%); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700;
+    font-size:12px; font-family:"Noto Sans"; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,.12);
+    transition:transform .12s;}
+  .bubble:hover{transform:translate(-50%,50%) scale(1.12); z-index:5;}
+  .quad-label{position:absolute; font-size:11px; color:var(--gray500); font-weight:500; display:flex; align-items:center; gap:4px;}
+  .axis-y{writing-mode:vertical-rl; transform:rotate(180deg); text-align:center; font-size:11px; color:var(--gray600); font-weight:600;}
+  .axis-x{text-align:center; font-size:11px; color:var(--gray600); font-weight:600; margin-top:6px;}
+  .legend{border:1px solid var(--gray200); border-radius:8px; padding:12px 14px; margin-top:12px; font-size:11px; color:var(--gray600);}
+  .legend .row{display:flex; align-items:center; gap:6px; margin:3px 0;}
+  .legend .tag{background:var(--gray100); border:1px solid var(--gray300); border-radius:5px; padding:1px 6px; font-size:10px; font-weight:600; color:var(--gray700);}
+  .legend b{color:var(--gray800);}
+
+  /* detail card (구간 헤더 + 콜아웃 + Top5 2종을 한 블록으로) */
+  .detail-card{padding:0;}
+  .detail-head{padding:16px 18px 0;}
+  .detail-head .cap{display:flex; align-items:center; gap:7px; font-size:14px; font-weight:700; color:var(--gray900); margin-bottom:5px;}
+  .detail-head .cap .ico{font-size:14px;}
+  .detail-head .cap .rank{font-size:11px; color:var(--gray500); font-weight:600;}
+  .detail-head .desc{font-size:12px; color:var(--gray600); line-height:1.55; margin-bottom:2px;}
+  .detail-sect{padding:16px 18px;}
+  .detail-sect + .detail-sect{border-top:1px solid var(--gray100);}
+  .callout{margin:12px 18px 4px; border:1px solid #ece4c2; background:#fcfaef; border-radius:8px; padding:13px 15px;
+    transition:background .18s, border-color .18s;}
+  .callout .pill{display:inline-flex; align-items:center; padding:2px 9px; border:1px solid #d9c56a; color:#8a6d16; border-radius:12px; font-size:11px; font-weight:700; background:#fbf4d6; white-space:nowrap;}
+  .callout p{margin:0; font-size:12.5px; color:var(--gray700); line-height:1.6;}
+  /* quadrant color themes for callout */
+  .callout.q-core{border-color:#f0d9c0; background:#fdf6ef;} .callout.q-core .pill{border-color:#e0a06a; color:#a85f1e; background:#fbeede;}
+  .callout.q-niche{border-color:#cfe6d6; background:#f1faf4;} .callout.q-niche .pill{border-color:#7fc79b; color:#1f7a4d; background:#e4f5ea;}
+  .callout.q-untapped{border-color:#d9d6e0; background:#f7f6fa;} .callout.q-untapped .pill{border-color:#b3aec2; color:#5d596a; background:#eeecf3;}
+
+  /* hover highlight */
+  .bubble.focus{box-shadow:0 0 0 3px #fff, 0 0 0 5px currentColor; z-index:6;}
+  .tbl tbody tr.focus{background:#f4f2ff !important;}
+  .tbl tbody tr.focus td:first-child{box-shadow:inset 3px 0 0 var(--purple);}
+
+  /* top5 */
+  .mini-h{font-size:14px; font-weight:700; color:var(--gray900); display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+  .mini-h .sub{font-size:11px; color:var(--gray500); font-weight:500;}
+  .bar-row{display:flex; align-items:center; gap:10px; margin:9px 0; font-size:12.5px;}
+  .bar-row .rk{width:12px; color:var(--gray500); font-weight:700; font-family:"Noto Sans";}
+  .bar-row .nm{width:78px; display:flex; align-items:center; gap:5px; color:var(--gray800); font-weight:500;}
+  .bar-row .nm .jasa{font-size:9px; background:#eef0ff; color:#5a5fd0; border-radius:4px; padding:1px 4px; font-weight:700;}
+  .bar-row .track{flex:1; height:9px; background:var(--gray100); border-radius:6px; overflow:hidden; display:flex;}
+  .bar-row .track .f1{height:100%; background:var(--purple);}
+  .bar-row .track .f2{height:100%; background:#c9c1f6;}
+  .bar-row .cnt{font-family:"Noto Sans"; font-size:11px; color:var(--gray600); width:66px; text-align:right; display:flex; gap:8px; justify-content:flex-end;}
+  .bar-row .cnt i{font-style:normal; color:var(--gray500);}
+
+  .list-row{display:flex; align-items:center; justify-content:space-between; padding:7px 0; border-top:1px solid var(--gray100); font-size:12.5px;}
+  .list-row:first-of-type{border-top:none;}
+  .list-row .l{display:flex; align-items:center; gap:9px; color:var(--gray800);}
+  .list-row .rk{width:12px; color:var(--gray500); font-weight:700; font-family:"Noto Sans";}
+  .list-row .cnt{font-family:"Noto Sans"; color:var(--gray700); font-weight:600;}
+
+  .tags{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 14px;}
+  .tag-chip{background:var(--gray100); border:1px solid var(--gray200); border-radius:6px; padding:4px 10px; font-size:12px; color:var(--gray700); font-weight:500;}
+  .url-box{background:var(--gray50); border:1px solid var(--gray200); border-radius:7px; padding:9px 12px; font-size:12px; color:var(--gray700); font-family:"Noto Sans"; margin-bottom:7px;}
+  .sect-label{font-size:12px; color:var(--gray600); font-weight:600; margin:2px 0 8px;}
+
+  /* ─── Prompt list table ─── */
+  .tbl{width:100%; border-collapse:collapse; font-size:12.5px;}
+  .tbl thead th{background:var(--gray100); color:var(--gray600); font-weight:600; font-size:12px;
+    text-align:left; padding:11px 12px; border-bottom:1px solid var(--gray200); white-space:nowrap;}
+  .tbl thead th.c{text-align:center;}
+  .tbl tbody td{padding:12px; border-bottom:1px solid var(--gray100); vertical-align:middle; color:var(--gray700);}
+  .tbl tbody tr:hover{background:var(--gray50);}
+  .tbl td.c{text-align:center;}
+  .tbl .seg{font-size:15px; text-align:center; width:34px;}
+  .tbl .prompt{max-width:340px; color:var(--gray800); line-height:1.5;}
+  .tbl .aiscore{font-family:"Noto Sans"; font-weight:600; color:var(--gray800);}
+  .tbl .cep-int{font-family:"Noto Sans"; font-weight:600; color:var(--gray800);}
+
+  .badge{display:inline-flex; align-items:center; gap:4px; border-radius:14px; padding:3px 10px; font-size:11px; font-weight:700; white-space:nowrap;}
+  .b-rec{background:var(--blue-bg); color:var(--blue);}
+  .b-cmp{background:var(--green-bg); color:var(--green);}
+  .b-dom{background:#fff; border:1px solid var(--green-line); color:var(--green);}
+  .b-nodom{background:#fff; border:1px solid #f3c9c9; color:var(--red);}
+  .badge .mk{font-family:"Noto Sans"; font-weight:800;}
+
+  .cep-pill{display:inline-flex; align-items:center; justify-content:center; min-width:52px; padding:4px 10px;
+    border-radius:14px; font-size:11px; font-weight:700; font-family:"Noto Sans"; cursor:pointer;
+    border:1px solid var(--gray300); color:var(--gray600); background:#fff; transition:.12s;}
+  .cep-pill:hover{border-color:var(--purple); color:var(--purple); background:#f6f4ff;}
+
+  /* ─── CEP report ─── */
+  .cep-banner{display:flex; align-items:center; gap:12px; background:#fcfaef; border:1px solid #ece4c2;
+    border-radius:9px; padding:13px 16px; margin-bottom:18px;}
+  .cep-banner .pill{flex:0 0 auto;}
+  .cep-banner p{margin:0; font-size:13px; font-weight:700; color:#7a6a1e;}
+
+  .cep-top{display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:8px; background:#fff;}
+  .cep-top > div{padding:20px 22px;}
+  .cep-top .divider{border-left:1px solid var(--gray200);}
+  .ctitle{font-size:14px; font-weight:700; color:var(--gray900); display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+
+  .gauge-flex{display:flex; align-items:center; gap:20px;}
+  .gauge-txt{font-size:11.5px; color:var(--gray500); line-height:1.6; flex:1;}
+  .diag-row{display:flex; gap:0; margin-top:16px; border-top:1px solid var(--gray100); padding-top:14px;}
+  .diag-row > div{flex:1; text-align:center;}
+  .diag-row > div + div{border-left:1px solid var(--gray100);}
+  .diag-row .lbl{font-size:11.5px; color:var(--gray600); margin-bottom:7px; font-weight:600;}
+  .diag-row .val{font-size:11px; color:var(--gray500); font-family:"Noto Sans"; margin-top:6px;}
+
+  .ki-foot{display:flex; margin-top:12px; border-top:1px solid var(--gray100); padding-top:12px;}
+  .ki-foot > div{flex:1; text-align:center;}
+  .ki-foot > div + div{border-left:1px solid var(--gray100);}
+  .ki-foot .lbl{font-size:11.5px; color:var(--gray600);}
+  .ki-foot .v{font-size:15px; font-weight:700; color:var(--gray900); font-family:"Noto Sans"; margin-top:4px;}
+
+  .note{font-size:11px; color:var(--gray400); margin:8px 2px 20px; display:flex; align-items:center; gap:5px;}
+
+  /* tabs */
+  .tabs{display:flex; border-bottom:1px solid var(--gray200); margin-bottom:22px;}
+  .tab{flex:1; text-align:center; padding:13px 0; font-size:13.5px; font-weight:600; color:var(--gray500);
+    border-bottom:2px solid transparent; cursor:pointer; transition:.12s;}
+  .tab:hover{color:var(--gray700);}
+  .tab.active{color:var(--gray900); border-bottom-color:var(--gray900); font-weight:700;}
+
+  .panel-h{font-size:15px; font-weight:700; color:var(--gray900); display:flex; align-items:center; gap:7px; margin-bottom:8px;}
+  .panel-desc{font-size:12.5px; color:var(--gray600); line-height:1.6; margin-bottom:16px;}
+
+  /* matrix */
+  .mtx{width:100%; border-collapse:collapse; font-size:12.5px; border:1px solid var(--gray200); border-radius:8px; overflow:hidden;}
+  .mtx th,.mtx td{padding:0; text-align:center;}
+  .mtx thead .grp th{background:var(--gray50); color:var(--gray700); font-weight:700; padding:10px 8px; border-bottom:1px solid var(--gray200); font-size:12px;}
+  .mtx thead .grp th.g-chat{background:#f4f1fe;}
+  .mtx thead .grp th.g-goog{background:#f6f5f8;}
+  .mtx thead .sub th{background:#fff; color:var(--gray500); font-weight:500; padding:8px; font-size:11.5px; border-bottom:1px solid var(--gray200);}
+  .mtx tbody td.name{text-align:left; padding:11px 14px; color:var(--gray800); font-weight:500; border-bottom:1px solid var(--gray100); white-space:nowrap;}
+  .mtx tbody td.name .jasa{font-size:9px; background:#eef0ff; color:#5a5fd0; border-radius:4px; padding:1px 5px; font-weight:700; margin-left:6px;}
+  .mtx tbody td.cell{font-family:"Noto Sans"; color:var(--gray700); border-bottom:1px solid #fff; border-left:1px solid #fff; width:70px; height:44px; font-weight:600;}
+  .mtx tbody td.sep{border-left:1px solid var(--gray200);}
+
+  /* summary table */
+  .sum{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:22px; border:1px solid var(--gray200); border-radius:8px; overflow:hidden;}
+  .sum th{background:var(--gray50); color:var(--gray600); font-weight:600; padding:11px 14px; text-align:left; border-bottom:1px solid var(--gray200); font-size:12px;}
+  .sum th.c,.sum td.c{text-align:center; font-family:"Noto Sans";}
+  .sum td{padding:11px 14px; border-bottom:1px solid var(--gray100); color:var(--gray700);}
+  .sum tr:last-child td{border-bottom:none;}
+  .sum td .jasa{font-size:9px; background:#eef0ff; color:#5a5fd0; border-radius:4px; padding:1px 5px; font-weight:700; margin-left:6px;}
+
+  .placeholder{padding:70px 20px; text-align:center; color:var(--gray400); font-size:13px;
+    border:1px dashed var(--gray300); border-radius:10px; background:var(--gray50);}
+
+  /* footer */
+  .ftr{border-top:1px solid var(--gray200); padding:16px 24px; display:flex; justify-content:space-between;
+       font-size:11.5px; color:var(--gray500); flex-wrap:wrap; gap:10px;}
+  .ftr .links{display:flex; gap:16px; flex-wrap:wrap;}
+  .ftr a{color:inherit; text-decoration:none;}
+
+  .toast{position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--gray900); color:#fff; padding:10px 18px; border-radius:20px; font-size:12.5px;
+    opacity:0; pointer-events:none; transition:.25s; z-index:100;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <header class="hdr">
+    <div class="hdr-l">
+      <div class="logo"><span class="mark"></span>ListeningMind</div>
+      <nav class="hdr-nav">
+        <a href="#">플랜정보</a><a href="#">블로그</a><a href="#">사용 가이드</a>
+      </nav>
+    </div>
+    <div class="hdr-r">
+      <span class="globe"></span>
+      <button class="btn-ghost">💬 문의</button>
+      <div class="acct">
+        <div class="who"><b>yuosawacartahdcom 뉴…</b><span>Professional</span></div>
+        <span class="chev">▾</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="body">
+    <!-- Left nav -->
+    <nav class="nav" id="leftnav"></nav>
+
+    <div class="content">
+      <!-- Project GNB -->
+      <div class="pgnb">
+        <div class="crumb">
+          <span class="back" id="backBtn" title="대시보드로">←</span>
+          <span id="crumbTitle">버티컬 마우스</span>
+          <span class="sub" id="crumbCep"></span>
+        </div>
+        <div class="meta">
+          <span>프로젝트 기준 일자 : <b>2026-04-17</b></span>
+          <span><i class="dot"></i>프로젝트 생성 <b>20 out of 20</b></span>
+        </div>
+      </div>
+
+      <div class="stage">
+        <!-- ============ DASHBOARD VIEW ============ -->
+        <div id="view-dashboard">
+          <div class="dash">
+            <!-- Left column -->
+            <div class="col-l">
+              <div class="card">
+                <div class="card-h" style="display:flex;justify-content:space-between;align-items:flex-start;">
+                  <div>
+                    <div class="t">프롬프트 매트릭스</div>
+                    <div class="d">프롬프트를 클릭하여 상세 정보를 확인하세요</div>
+                  </div>
+                  <span class="help"><span class="qmark">?</span> 점수 판정 기준</span>
+                </div>
+                <div class="chart-wrap">
+                  <div style="display:flex; gap:8px;">
+                    <div class="axis-y">AI 호출도 →</div>
+                    <div id="bubbleBox" class="chart-box" style="flex:1; height:340px;"></div>
+                  </div>
+                  <div class="axis-x">CEP 관심도 →</div>
+                  <div class="legend">
+                    <div class="row"><span class="tag">X축</span> <b>CEP 관심도</b> · 연관 키워드 검색량 점수 (0–100)</div>
+                    <div class="row"><span class="tag">Y축</span> <b>AI 호출도</b> · AI 응답 기반 브랜드 노출 점수 (0–100)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card detail-card">
+                <div class="detail-head" id="detailHead"></div>
+                <div class="callout" id="detailCallout"></div>
+                <div class="detail-sect">
+                  <div class="mini-h">브랜드/제품 언급 Top 5 <span class="sub">언급 횟수</span></div>
+                  <div id="top5brand"></div>
+                </div>
+                <div class="detail-sect">
+                  <div class="mini-h">인용된 도메인 Top 5 <span class="sub">누적 인용 횟수</span></div>
+                  <div id="top5dom"></div>
+                </div>
+              </div>
+
+              <div class="card" style="padding:16px 18px;">
+                <div class="sect-label">내 브랜드 · 제품 정보</div>
+                <div class="tags" id="brandTags"></div>
+                <div class="sect-label">내 콘텐츠 URL</div>
+                <div id="myUrls"></div>
+              </div>
+            </div>
+
+            <!-- Right column: prompt list -->
+            <div class="card">
+              <div class="card-h">
+                <div class="t">프롬프트 리스트</div>
+                <div class="d">프롬프트를 클릭하여 상세 정보를 확인하세요</div>
+              </div>
+              <div class="tbl-scroll" style="padding:0 8px 8px;">
+                <table class="tbl">
+                  <thead><tr>
+                    <th class="c">구간 ▾</th><th>프롬프트</th>
+                    <th class="c">내 브랜드 언급</th><th class="c">내 콘텐츠 인용</th>
+                    <th class="c">AI 인지도</th><th class="c">CEP 관심도</th><th class="c">CEP</th>
+                  </tr></thead>
+                  <tbody id="promptRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ CEP REPORT VIEW ============ -->
+        <div id="view-cep" class="hidden">
+          <div class="cep-banner">
+            <span class="pill callout" style="border:none;background:none;padding:0;"><span class="pill" style="display:inline-flex;align-items:center;padding:3px 11px;border:1px solid #d9c56a;color:#8a6d16;border-radius:13px;font-size:11px;font-weight:700;background:#fbf4d6;" id="bannerPill">CEP 11</span></span>
+            <p id="bannerText">여행용으로 휴대하기 편한 '케이블 없는' 무선 기기 추천해줄 수 있어? USB 케이블 필요 없는 제품들로!</p>
+          </div>
+
+          <div class="cep-top">
+            <div>
+              <div class="ctitle">AI 인지도 진단 <span class="help"><span class="qmark">?</span> 점수 판정 기준</span></div>
+              <div class="gauge-flex">
+                <div id="gaugeBox"></div>
+                <div class="gauge-txt">자사가 1순위로 추천되나, 답변 출처의 자사 데이터가 잡히지 않음.<br>추천을 뒷받침할 페이지 내 근거 출처 확보로 근거 방어 상승 가능.</div>
+              </div>
+              <div class="diag-row">
+                <div>
+                  <div class="lbl">내 브랜드 언급</div>
+                  <span class="badge b-rec"><span class="mk">S</span> 우선 추천</span>
+                  <div class="val">(50 / 50)</div>
+                </div>
+                <div>
+                  <div class="lbl">내 콘텐츠 인용</div>
+                  <span class="badge b-nodom"><span class="mk">✕</span> 인용되지 않음</span>
+                  <div class="val">(0 / 50)</div>
+                </div>
+              </div>
+            </div>
+            <div class="divider">
+              <div class="ctitle">CEP 관심도</div>
+              <div id="areaBox"></div>
+              <div class="ki-foot">
+                <div><div class="lbl">연관 키워드</div><div class="v">8개</div></div>
+                <div><div class="lbl">월 평균 검색량 합계</div><div class="v">1,893</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="note">ⓘ chatGPT를 통해 수집된 3개의 답변을 종합한 결과입니다.</div>
+
+          <div class="tabs" id="cepTabs">
+            <div class="tab active" data-tab="mention">언급 분석</div>
+            <div class="tab" data-tab="citation">인용 분석</div>
+            <div class="tab" data-tab="answer">AI 응답</div>
+            <div class="tab" data-tab="keyword">연관 키워드</div>
+          </div>
+
+          <!-- mention panel -->
+          <div id="panel-mention">
+            <div class="panel-h">📊 언급 분석</div>
+            <div class="panel-desc">응답분석 대상인 <b>vertical</b> 이/가 자사 브랜드 중 누적 8회로 단일 브랜드 최다 언급. 자사 점유율 25.0% (자사 15 / 전체 60회), 차순위 브랜드(7회) 대비 약 2.1배.</div>
+            <div style="overflow-x:auto;"><div id="mtxMention"></div></div>
+            <table class="sum" id="sumMention"></table>
+          </div>
+
+          <!-- citation panel -->
+          <div id="panel-citation" class="hidden">
+            <div class="panel-h">🔖 인용 분석</div>
+            <div class="panel-desc">chatGPT 응답에서 <b>shop.geekria.com</b> 이/가 가장 많이 인용됨. 자사 도메인 <b>logitech.com</b> 은 아직 어떤 응답에서도 인용되지 않음 — 콘텐츠 근거 확보가 시급.</div>
+            <div style="overflow-x:auto;"><div id="mtxCitation"></div></div>
+            <table class="sum" id="sumCitation"></table>
+          </div>
+
+          <!-- answer / keyword placeholders -->
+          <div id="panel-answer" class="hidden"><div class="placeholder">AI 응답 원문 뷰 · 준비 중</div></div>
+          <div id="panel-keyword" class="hidden"><div class="placeholder">연관 키워드 분석 · 준비 중</div></div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="ftr">
+        <div class="links">
+          <a href="#">공지사항</a><a href="#">개인정보처리방침</a><a href="#">이용약관</a>
+          <a href="#">고객문의</a><a href="#">ASCENT</a><a href="#">커뮤니티</a>
+          <a href="#">온라인클래스</a><a href="#">리셀러 파트너</a><a href="#">Daas API</a>
+        </div>
+        <div>Copyright © ASCENT Corp. All rights reserved.</div>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════ DATA ═══════════════ */
+const BUBBLES = [
+  {n:9, x:13,y:82,c:'#37d1c4'},{n:10,x:20,y:82,c:'#3fa3f0'},
+  {n:17,x:13,y:71,c:'#c9822f'},{n:18,x:20,y:71,c:'#c7a636'},
+  {n:19,x:13,y:60,c:'#a6c832'},{n:20,x:20,y:60,c:'#8bb4e6'},
+  {n:4, x:39,y:76,c:'#a78bfa'},{n:13,x:46,y:76,c:'#55cf8c'},
+  {n:15,x:39,y:65,c:'#3f66d0'},{n:16,x:46,y:65,c:'#f06a63'},
+  {n:3, x:60,y:80,c:'#f06fc8'},{n:5, x:57,y:69,c:'#4f8f80'},
+  {n:12,x:65,y:69,c:'#bcdca0'},{n:1, x:87,y:69,c:'#f0c24f'},
+  {n:6, x:58,y:55,c:'#f0917f'},{n:7, x:64,y:55,c:'#4f7ce0'},
+  {n:2, x:71,y:57,c:'#a4835f'},
+  {n:14,x:35,y:34,c:'#3fa3f0'},{n:8, x:45,y:21,c:'#22a98c'},
+  {n:11,x:88,y:40,c:'#a6c832'},
+];
+
+// icon: 'star' 최우선기회 | 'flame' 핵심경쟁 | 'flower' 니치/미개척
+const PROMPTS = [
+  {seg:'star',  txt:"여행용으로 휴대하기 편한 '케이블 없는' 무선 기기 추천해줄 수 있어? USB 케이블 필요 없는 제품들로!", brand:'rec', dom:false, ai:50, int:'100%', cep:11},
+  {seg:'flame', txt:"이 제품 저소음 클릭 스위치가 실제로 어느 정도 수준으로 조용한 편이야? (대략적인 dB나 후기 기준으로 알려줘)", brand:'rec', dom:true, ai:75, int:'54.7%', cep:1},
+  {seg:'flame', txt:"평일 퇴근길 지하철 손잡이 잡을 때 손목에 찌릿/뻐근 통증이 올라오는데, 세로형 인체공학 그립 구조가 이런 통증 줄이는데 도움이 될까?", brand:'cmp', dom:true, ai:65, int:'27.2%', cep:2},
+  {seg:'flame', txt:"어르고노믹 키보드 틴팅(각도) 세팅 맞출 때, 손목 각도도 같이 자연스럽게 맞추는 기준이 뭐야?", brand:'rec', dom:true, ai:75, int:'22.6%', cep:3},
+  {seg:'flame', txt:"집에서 타이핑할 때 손목이 쉽게 피곤해지는데, 손목 부담 줄이는 인체공학 그립(높이/경사/손가락 받침) 있는 키보드나 마우스 추천해줘?", brand:'rec', dom:true, ai:75, int:'17.2%', cep:5},
+  {seg:'flame', txt:"알리 할인 구간에서 부담 없이 '찍먹'용으로 살 만한 그립감 좋은 무선 마우스 추천해줘? (서브가 메인으로 바뀔 정도로)", brand:'cmp', dom:true, ai:65, int:'14.1%', cep:6},
+  {seg:'flame', txt:"손가락 4~5번 쪽이 자꾸 꼬이거나 눌리는 느낌이면, 버튼 위치를 어떻게 골라야 덜 간섭돼?", brand:'rec', dom:true, ai:65, int:'14.9%', cep:7},
+  {seg:'flame', txt:"그래픽 작업에서 커서가 미세하게 튀어지는 걸 줄이려면 최대 DPI 4000(또는 400~4000) 지원되는 마우스가 꼭 필요요? 어느 정도면 충분해?", brand:'rec', dom:true, ai:75, int:'17.3%', cep:12},
+  {seg:'flower',txt:"집 노트북과 회사 노트북을 번갈아 쓸 건데, 블루투스랑 USB 동글(수신기)을 동시에 지원하는 마우스 추천해줄 수 있어?", brand:'rec', dom:true, ai:75, int:'10.9%', cep:4},
+  {seg:'flower',txt:"우선 마우스 배터리 잔량이 눈에 잘 보이게 알려주는 모델 추천해줄 수 있어?", brand:'rec', dom:true, ai:75, int:'3.2%', cep:9},
+  {seg:'flower',txt:"버티컬 마우스로 손목은 편한데 게임 조작이 어렵더라—사무용으로 바꿔도 체감 커서 정확도는 괜찮을까?", brand:'rec', dom:true, ai:75, int:'3.6%', cep:10},
+  {seg:'flower',txt:"집에서 아이 온라인 수업 할 때 다른 가족이 장비를 만져도 설정이 쉽게 안 바뀌게 하려면, 바로 동작 가능한 간편 초기 설정이 있는 제품이 뭐가 좋아?", brand:'rec', dom:true, ai:75, int:'10.8%', cep:13},
+  {seg:'flower',txt:"회사에서 쓰는 회의실 PC랑 동시에 연결해야 하는데, 여러 OS/환경에서도 바로 되는 범용 블루투스/동글 제품 추천해줄 수 있어?", brand:'rec', dom:true, ai:75, int:'8.0%', cep:15},
+  {seg:'flower',txt:"공유오피스 책상 위에 올려도 튀지 않는 '중립적인' 디자인의 장비 추천해줄 수 있어? (색상/형태 위주로)", brand:'rec', dom:true, ai:75, int:'6.8%', cep:16},
+  {seg:'flower',txt:"확장 허브 듀얼 모니터 책상인데 USB 포트가 부족해요—마우스/키보드용 초소형 USB 동글(수신기) 중에 점유 제일 적은 거 추천해줘?", brand:'rec', dom:true, ai:75, int:'5.0%', cep:17},
+  {seg:'flower',txt:"새로 받은 제품이 아직 손에 잘 안 맞아서 그립 피트(손가락/엄지 간격) 맞추는 팁이 있을까?", brand:'rec', dom:true, ai:75, int:'4.1%', cep:18},
+];
+
+const TOP5_BRAND = [
+  {nm:'vertical', jasa:true,  c:8, g:3},
+  {nm:'LIFT',     jasa:false, c:4, g:3},
+  {nm:'Anker',    jasa:false, c:3, g:3},
+  {nm:'Geekria',  jasa:false, c:4, g:1},
+  {nm:'로지텍',    jasa:true,  c:5, g:0},
+];
+const TOP5_DOM = [
+  {nm:'shop.geekria.com', c:3},{nm:'support.logi.com', c:2},
+  {nm:'anker.com', c:1},{nm:'bhphotovideo.com', c:1},{nm:'gh-3c.com', c:1},
+];
+const BRAND_TAGS = ['로지텍','logitech','mx master','vertical','ergo'];
+const MY_URLS = ['logitech.com/ko-kr','brand.naver.com/logitech'];
+const DEFAULT_CEP = 11;   // 최우선 기회 구간 1순위 = 프롬프트 리스트 최상단 (기본 표시)
+
+/* ── 사분면(구간) 정의 + 프롬프트 분류 ── */
+const QUAD = {
+  opportunity:{name:'최우선 기회 구간', ico:'★', star:true, cls:'', desc:'수요 대비 AI 노출이 낮아 투자 효과가 가장 큽니다.'},
+  core:{name:'핵심 경쟁 구간', ico:'🔥', cls:'q-core', desc:'수요와 AI 노출이 모두 높아 경쟁이 치열한 핵심 구간입니다.'},
+  niche:{name:'니치 강점 구간', ico:'❄', cls:'q-niche', desc:'AI 노출은 확보했으나 수요가 낮은 니치 강점 구간입니다.'},
+  untapped:{name:'미개척 구간', ico:'▨', cls:'q-untapped', desc:'수요와 AI 노출이 모두 낮은 미개척 구간입니다.'},
+};
+const SEG2QUAD = {star:'opportunity', flame:'core', flower:'niche'};
+(function classify(){
+  const g={};
+  PROMPTS.forEach(p=>{ p.quad=SEG2QUAD[p.seg]; (g[p.quad]=g[p.quad]||[]).push(p); });
+  Object.values(g).forEach(arr=>{
+    arr.sort((a,b)=>parseFloat(b.int)-parseFloat(a.int));
+    arr.forEach((p,i)=>p.rank=i+1);
+  });
+})();
+
+/* ── CEP별 Top5 데이터: CEP 11 은 Figma 실측, 그 외는 결정론적 대표 데이터(프로토타입용) ── */
+const BRAND_POOL=[
+  {nm:'vertical',jasa:true},{nm:'로지텍',jasa:true},{nm:'ergo',jasa:true},
+  {nm:'Logitech',jasa:false},{nm:'LIFT',jasa:false},{nm:'Anker',jasa:false},
+  {nm:'Geekria',jasa:false},{nm:'Logitech Lift',jasa:false},{nm:'Razer Pro Click V2 Vertical',jasa:false},
+  {nm:'LEKVEY',jasa:false},{nm:'Logi Bolt',jasa:false},{nm:'Anker Vertical',jasa:false},
+];
+const DOM_POOL=['shop.geekria.com','support.logi.com','anker.com','bhphotovideo.com','gh-3c.com',
+  'guidecom.co.kr','kream.co.kr','newegg.com','otto.de','razer.com','walmart.com'];
+function seeded(seed){ let s=(seed*2654435761)>>>0; return ()=>{ s=(s*1664525+1013904223)>>>0; return s/4294967296; }; }
+function pick(pool,n,rnd){ const a=[...pool]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.slice(0,n); }
+function top5Brand(cep){
+  if(cep===11) return TOP5_BRAND;
+  const rnd=seeded(cep+7);
+  return pick(BRAND_POOL,5,rnd)
+    .map(b=>({nm:b.nm,jasa:b.jasa,c:Math.floor(rnd()*6)+1,g:Math.floor(rnd()*4)}))
+    .sort((a,b)=>(b.c+b.g)-(a.c+a.g));
+}
+function top5Dom(cep){
+  if(cep===11) return TOP5_DOM;
+  const rnd=seeded(cep+19);
+  return pick(DOM_POOL,5,rnd)
+    .map(d=>({nm:d,c:Math.floor(rnd()*3)+1}))
+    .sort((a,b)=>b.c-a.c);
+}
+
+const MTX_MENTION = [
+  {nm:'vertical', jasa:true,  v:[4,3,1,0,0,0]},
+  {nm:'로지텍', jasa:true,  v:[0,5,0,0,0,0]},
+  {nm:'ergo', jasa:true,  v:[0,1,1,1,0,0]},
+  {nm:'Logitech', jasa:false, v:[0,0,0,1,1,3]},
+  {nm:'LIFT', jasa:false, v:[0,4,0,2,0,1]},
+  {nm:'Anker', jasa:false, v:[0,0,3,1,1,1]},
+  {nm:'Geekria', jasa:false, v:[3,1,0,0,0,1]},
+  {nm:'Logitech Lift', jasa:false, v:[4,0,0,0,0,0]},
+  {nm:'Razer Pro Click V2 Vertical', jasa:false, v:[4,0,0,1,1,1]},
+  {nm:'LEKVEY', jasa:false, v:[0,0,3,1,1,0]},
+  {nm:'Logi Bolt', jasa:false, v:[0,1,2,0,0,0]},
+  {nm:'버티컬 전용 하드 케이스', jasa:false, v:[0,2,0,1,3,1]},
+  {nm:'Anker 2.4G 버티컬 무선 마우스', jasa:false, v:[0,0,1,1,1,1]},
+  {nm:'Anker Vertical', jasa:false, v:[0,1,0,1,1,1]},
+];
+const SUM_MENTION = {cols:['언급','응답'], rows:[
+  {nm:'로지텍', v:[5,1]},{nm:'logitech', v:[0,0]},{nm:'mx master', v:[0,0]},
+  {nm:'vertical', v:[8,3]},{nm:'ergo', v:[2,1]},
+]};
+
+const MTX_CITATION = [
+  {nm:'logitech.com', jasa:true,  v:[0,0,0,0,0,0]},
+  {nm:'shop.geekria.com', jasa:false, v:[2,1,0,1,0,0]},
+  {nm:'support.logi.com', jasa:false, v:[0,1,1,0,0,0]},
+  {nm:'anker.com', jasa:false, v:[0,0,1,0,1,0]},
+  {nm:'bhphotovideo.com', jasa:false, v:[1,0,0,0,0,0]},
+  {nm:'gh-3c.com', jasa:false, v:[0,0,1,0,0,0]},
+  {nm:'guidecom.co.kr', jasa:false, v:[0,1,0,1,0,0]},
+  {nm:'kream.co.kr', jasa:false, v:[0,0,1,0,0,0]},
+  {nm:'newegg.com', jasa:false, v:[0,0,1,0,0,0]},
+  {nm:'otto.de', jasa:false, v:[0,1,0,0,0,1]},
+  {nm:'razer.com', jasa:false, v:[1,0,0,0,1,0]},
+  {nm:'walmart.com', jasa:false, v:[1,0,0,0,0,0]},
+];
+const SUM_CITATION = {cols:['콘텐츠 인용','도메인 인용'], firstHead:'자사 콘텐츠(URL) 인용 여부', rows:[
+  {nm:'logitech.com/ko-kr', v:[0,0]},{nm:'brand.naver.com/logitech', v:[0,0]},
+]};
+
+/* ═══════════════ HELPERS ═══════════════ */
+const $ = s => document.querySelector(s);
+const el = (t,cls,html) => { const e=document.createElement(t); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; };
+const SEG_ICON = {star:'⭐', flame:'🔥', flower:'❄️'};
+function heat(v){ // 0..5 -> purple scale
+  const s=['#ffffff','#efeafe','#ddd4fb','#c5b6f7','#a78bf3','#8b6ff0'];
+  return s[Math.min(v,5)];
+}
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1600); }
+
+/* ═══════════════ LEFT NAV ═══════════════ */
+const NAV_ICONS = [
+  '<path d="M3 10 12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  '<rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="18" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/>',
+  '<circle cx="7" cy="7" r="3"/><circle cx="17" cy="7" r="3"/><circle cx="12" cy="16" r="3"/>',
+  '<path d="M4 20V8m5 12V4m5 16v-6m5 6V10"/>',
+  '<path d="M12 3v18M5 8l7-5 7 5"/>',
+  '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/>',
+  '<path d="M3 12h4l3 8 4-16 3 8h4"/>',
+  '<path d="M12 2s7 3 7 10a7 7 0 0 1-14 0c0-2 1-4 2-5 0 2 1 3 2 3 0-3 1-6 3-8z"/>',
+  '<path d="M4 5h16v4H4zM4 11h16v4H4zM4 17h10v2H4z"/>',
+  '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  '<circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M5 19l2-2m10-10 2-2"/>',
+];
+(function(){
+  const nav=$('#leftnav');
+  NAV_ICONS.forEach((p,i)=>{
+    const d=el('div','ico'+(i===4?' active':''));
+    d.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+    if(i===3||i===7) nav.appendChild(el('div','sp'));
+    nav.appendChild(d);
+  });
+})();
+
+/* ═══════════════ BUBBLE CHART ═══════════════ */
+(function(){
+  const box=$('#bubbleBox');
+  // quadrant guide lines
+  box.appendChild(el('div',null,'')).style.cssText='position:absolute;left:50%;top:0;bottom:0;border-left:1px solid #e6e3ec;';
+  box.appendChild(el('div',null,'')).style.cssText='position:absolute;top:50%;left:0;right:0;border-top:1px solid #e6e3ec;';
+  const labels=[
+    {t:'❄ 니치 강점 구간', s:'left:12px;top:10px;'},
+    {t:'🔥 핵심 경쟁 구간', s:'right:12px;top:10px;'},
+    {t:'▨ 미개척 구간', s:'left:12px;bottom:10px;'},
+    {t:'★ 최우선 기회 구간', s:'right:12px;bottom:10px;'},
+  ];
+  labels.forEach(l=>{ const q=el('div','quad-label',l.t); q.style.cssText+=l.s; box.appendChild(q); });
+  const validCeps=new Set(PROMPTS.map(p=>p.cep));
+  const pad=30;
+  BUBBLES.forEach(b=>{
+    const r=17;
+    const cep = validCeps.has(b.n) ? b.n : DEFAULT_CEP;   // 테이블에 대응 CEP 없는 버블은 기본값
+    const d=el('div','bubble', b.n);
+    d.dataset.cep=cep;
+    d.style.width=d.style.height=(r*2)+'px';
+    d.style.left = `calc(${pad}px + ${b.x/100} * (100% - ${pad*2}px))`;
+    d.style.bottom = `calc(${pad-r}px + ${b.y/100} * (100% - ${pad*2}px))`;
+    d.style.background=b.c;
+    d.style.color=b.c;   // for focus ring (currentColor)
+    d.title = `프롬프트 #${b.n} · CEP 관심도 ${b.x} · AI 호출도 ${b.y}`;
+    d.addEventListener('mouseenter',()=>focusPrompt(cep));
+    d.onclick=()=>openCep(cep);
+    box.appendChild(d);
+  });
+  box.addEventListener('mouseleave',()=>focusPrompt(DEFAULT_CEP));
+})();
+
+/* ═══════════════ 내 브랜드/제품 정보 (프로젝트 레벨, 정적) ═══════════════ */
+(function(){
+  const tg=$('#brandTags');
+  BRAND_TAGS.forEach(t=> tg.appendChild(el('span','tag-chip',t)));
+  const uw=$('#myUrls');
+  MY_URLS.forEach(u=> uw.appendChild(el('div','url-box',u)));
+})();
+
+/* ═══════════════ 좌측 상세 패널 (호버 바인딩) ═══════════════ */
+function renderDetail(cep){
+  const p = PROMPTS.find(x=>x.cep===cep) || PROMPTS[0];
+  const q = QUAD[p.quad];
+  // 구간 헤더
+  $('#detailHead').innerHTML =
+    `<div class="cap"><span class="ico"${q.star?' style="color:#e2b93b"':''}>${q.ico}</span>${q.name} <span class="rank">(${p.rank}순위)</span></div>`+
+    `<div class="desc">${q.desc}</div>`;
+  // CEP 콜아웃
+  const co=$('#detailCallout'); co.className='callout '+q.cls;
+  co.innerHTML=`<p><span class="pill">CEP ${p.cep}</span> &nbsp;${p.txt}</p>`;
+  // 브랜드/제품 언급 Top 5
+  const bs=top5Brand(cep), bmax=Math.max(...bs.map(b=>b.c+b.g),1);
+  $('#top5brand').innerHTML=bs.map((b,i)=>
+    `<div class="bar-row"><span class="rk">${i+1}</span>`+
+    `<span class="nm">${b.nm}${b.jasa?'<span class="jasa">자사</span>':''}</span>`+
+    `<span class="track"><span class="f1" style="width:${b.c/bmax*100}%"></span><span class="f2" style="width:${b.g/bmax*100}%"></span></span>`+
+    `<span class="cnt"><i>◎</i>${b.c} <i>G</i>${b.g}</span></div>`).join('');
+  // 인용된 도메인 Top 5
+  $('#top5dom').innerHTML=top5Dom(cep).map((d,i)=>
+    `<div class="list-row"><span class="l"><span class="rk">${i+1}</span>${d.nm}</span><span class="cnt">${d.c}</span></div>`).join('');
+}
+function highlight(cep){
+  document.querySelectorAll('.bubble.focus, #promptRows tr.focus').forEach(e=>e.classList.remove('focus'));
+  document.querySelectorAll(`.bubble[data-cep="${cep}"]`).forEach(b=>b.classList.add('focus'));
+  const row=document.querySelector(`#promptRows tr[data-cep="${cep}"]`);
+  if(row) row.classList.add('focus');
+}
+function focusPrompt(cep){ renderDetail(cep); highlight(cep); }
+renderDetail(DEFAULT_CEP);   // 기본 상태
+
+/* ═══════════════ PROMPT LIST ═══════════════ */
+(function(){
+  const tb=$('#promptRows');
+  PROMPTS.forEach(p=>{
+    const tr=el('tr');
+    tr.dataset.cep=p.cep;
+    tr.addEventListener('mouseenter',()=>focusPrompt(p.cep));
+    const brandBadge = p.brand==='rec'
+      ? '<span class="badge b-rec"><span class="mk">S</span> 우선 추천</span>'
+      : '<span class="badge b-cmp"><span class="mk">A</span> 비교 대상</span>';
+    const domBadge = p.dom
+      ? '<span class="badge b-dom"><span class="mk">△</span> 도메인 인용</span>'
+      : '<span class="badge b-nodom"><span class="mk">✕</span> 인용되지 않음</span>';
+    tr.innerHTML=`
+      <td class="seg">${SEG_ICON[p.seg]}</td>
+      <td class="prompt">${p.txt}</td>
+      <td class="c">${brandBadge}</td>
+      <td class="c">${domBadge}</td>
+      <td class="c aiscore">${p.ai}</td>
+      <td class="c cep-int">${p.int}</td>
+      <td class="c"><span class="cep-pill" data-cep="${p.cep}">CEP ${p.cep}</span></td>`;
+    tb.appendChild(tr);
+  });
+  tb.addEventListener('click',e=>{
+    const pill=e.target.closest('.cep-pill');
+    if(pill) openCep(+pill.dataset.cep);
+  });
+  tb.addEventListener('mouseleave',()=>focusPrompt(DEFAULT_CEP));
+})();
+
+/* ═══════════════ GAUGE (semicircle) ═══════════════ */
+function renderGauge(box, value){
+  const W=150,H=95,cx=75,cy=85,r=62, sw=13;
+  const a0=Math.PI, a1=0;                        // 180° → 0°
+  const va=a0 + (value/100)*(a1-a0);             // value angle
+  const pt=(ang)=>[cx+r*Math.cos(ang), cy+r*Math.sin(ang)];
+  const [sx,sy]=pt(a0), [ex,ey]=pt(a1), [vx,vy]=pt(va);
+  const bg=`M ${sx} ${sy} A ${r} ${r} 0 0 1 ${ex} ${ey}`;
+  const fg=`M ${sx} ${sy} A ${r} ${r} 0 0 1 ${vx} ${vy}`;
+  box.innerHTML=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+    <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f0a94f"/><stop offset="1" stop-color="#e2b93b"/>
+    </linearGradient></defs>
+    <path d="${bg}" fill="none" stroke="#eceaf1" stroke-width="${sw}" stroke-linecap="round"/>
+    <path d="${fg}" fill="none" stroke="url(#gg)" stroke-width="${sw}" stroke-linecap="round"/>
+    <text x="${cx}" y="${cy-26}" text-anchor="middle" font-size="14" font-weight="700" fill="#c99a1e" font-family="Noto Sans KR">양호</text>
+    <text x="${cx}" y="${cy-6}" text-anchor="middle" font-size="19" font-weight="800" fill="#26232e" font-family="Noto Sans">${value}<tspan font-size="12" fill="#9691a2"> /100</tspan></text>
+  </svg>`;
+}
+
+/* ═══════════════ AREA CHART (CEP interest) ═══════════════ */
+function renderArea(box){
+  const W=330,H=120,pad=8;
+  const pts=[42,38,30,26,20,24,17,15,22,30,44,60];  // trend sample
+  const max=Math.max(...pts), min=0;
+  const n=pts.length;
+  const X=i=> pad + i*(W-pad*2)/(n-1);
+  const Y=v=> H-18 - (v-min)/(max-min)*(H-34);
+  let line='', area=`M ${X(0)} ${Y(pts[0])}`;
+  pts.forEach((v,i)=>{ line += (i?' L ':'M ')+X(i)+' '+Y(v); if(i) area+=' L '+X(i)+' '+Y(v); });
+  area += ` L ${X(n-1)} ${H-18} L ${X(0)} ${H-18} Z`;
+  box.innerHTML=`<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity=".02"/>
+    </linearGradient></defs>
+    <path d="${area}" fill="url(#ag)"/>
+    <path d="${line}" fill="none" stroke="#8b6ff0" stroke-width="2" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+/* ═══════════════ MATRIX ═══════════════ */
+function renderMatrix(box, rows, firstHead){
+  const t=el('table','mtx');
+  t.innerHTML=`
+    <thead>
+      <tr class="grp">
+        <th rowspan="2" style="text-align:left;padding-left:14px;">${firstHead}</th>
+        <th class="g-chat" colspan="3">◎ chatGPT</th>
+        <th class="g-goog" colspan="3">G 구글 AI 개요</th>
+      </tr>
+      <tr class="sub">
+        <th>응답 1</th><th>응답 2</th><th>응답 3</th>
+        <th>응답 1</th><th>응답 2</th><th>응답 3</th>
+      </tr>
+    </thead>`;
+  const tb=el('tbody');
+  rows.forEach(r=>{
+    const tr=el('tr');
+    let cells=`<td class="name">${r.nm}${r.jasa?'<span class="jasa">자사</span>':''}</td>`;
+    r.v.forEach((v,i)=>{
+      const sep = i===3?' sep':'';
+      cells+=`<td class="cell${sep}" style="background:${heat(v)};${v>=3?'color:#4b3f8f;':''}">${v}</td>`;
+    });
+    tr.innerHTML=cells; tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  box.innerHTML=''; box.appendChild(t);
+}
+
+/* ═══════════════ SUMMARY TABLE ═══════════════ */
+function renderSummary(table, data){
+  table.innerHTML='';
+  const head=data.firstHead || '자사 언급';
+  const thead=el('thead');
+  thead.innerHTML=`<tr><th>${head}</th>${data.cols.map(c=>`<th class="c">${c}</th>`).join('')}</tr>`;
+  table.appendChild(thead);
+  const tb=el('tbody');
+  data.rows.forEach(r=>{
+    tb.appendChild(el('tr',null,`<td>${r.nm}</td>${r.v.map(v=>`<td class="c">${v}</td>`).join('')}`));
+  });
+  table.appendChild(tb);
+}
+
+/* ═══════════════ RENDER CEP PANELS ═══════════════ */
+renderGauge($('#gaugeBox'), 50);
+renderArea($('#areaBox'));
+renderMatrix($('#mtxMention'), MTX_MENTION, '브랜드/제품 언급 비교');
+renderMatrix($('#mtxCitation'), MTX_CITATION, '인용된 도메인');
+renderSummary($('#sumMention'), SUM_MENTION);
+renderSummary($('#sumCitation'), SUM_CITATION);
+
+/* ═══════════════ NAVIGATION ═══════════════ */
+function openCep(cepNo){
+  const p = PROMPTS.find(x=>x.cep===cepNo) || PROMPTS[0];
+  $('#crumbTitle').textContent='버티컬 마우스';
+  $('#crumbCep').innerHTML=`| <span class="cepno">CEP${cepNo}</span>`;
+  $('#bannerPill').textContent='CEP '+cepNo;
+  $('#bannerText').textContent=p.txt;
+  $('#view-dashboard').classList.add('hidden');
+  $('#view-cep').classList.remove('hidden');
+  switchTab('mention');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function backToDash(){
+  $('#view-cep').classList.add('hidden');
+  $('#view-dashboard').classList.remove('hidden');
+  $('#crumbCep').innerHTML='';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('#backBtn').onclick=backToDash;
+
+function switchTab(name){
+  document.querySelectorAll('#cepTabs .tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+  ['mention','citation','answer','keyword'].forEach(n=>{
+    $('#panel-'+n).classList.toggle('hidden', n!==name);
+  });
+}
+$('#cepTabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab'); if(t) switchTab(t.dataset.tab);
+});
+</script>
+</body>
+</html>

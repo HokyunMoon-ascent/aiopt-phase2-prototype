@@ -1,0 +1,5 @@
+.DS_Store
+.omc/
+.vscode/
+node_modules/
+.vercel
