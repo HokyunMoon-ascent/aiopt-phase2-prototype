@@ -24,8 +24,8 @@
   button{font-family:inherit; cursor:pointer;}
   .hidden{display:none !important;}
 
-  .frame{max-width:1360px; margin:24px auto; background:var(--bg); border:1px solid var(--line);
-    padding:26px 30px 34px;}
+  .frame{max-width:1360px; height:calc(100vh - 48px); margin:24px auto; background:var(--bg); border:1px solid var(--line);
+    padding:26px 30px 34px; display:flex; flex-direction:column;}
 
   /* ── Top bar ── */
   .topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;}
@@ -73,7 +73,7 @@
   /* checkbox */
   input[type=checkbox]{width:17px; height:17px; accent-color:var(--ink); cursor:pointer; margin:0; vertical-align:middle;}
 
-  .scroll-area{max-height:560px; overflow-y:auto; border:1px solid var(--line);}
+  .scroll-area{flex:1; min-height:0; overflow-y:auto; border:1px solid var(--line);}
   .scroll-area .wtbl{border:none;}
   .scroll-area .wtbl thead th{position:sticky; top:0; z-index:2; box-shadow:inset 0 -1px 0 var(--line);}
   ::-webkit-scrollbar{width:10px; height:10px;}
@@ -81,8 +81,9 @@
   ::-webkit-scrollbar-track{background:transparent;}
 
   /* ── 2-column shell: view content + shared basket ── */
-  .main{display:grid; grid-template-columns:1fr 370px; gap:20px; align-items:start;}
-  .main-left{min-width:0;}
+  .main{display:grid; grid-template-columns:1fr 370px; grid-template-rows:minmax(0,1fr); gap:20px; align-items:stretch; flex:1; min-height:0;}
+  .main-left{min-width:0; min-height:0; display:flex; flex-direction:column;}
+  .main-left > .view:not(.hidden){display:flex; flex-direction:column; flex:1; min-height:0;}
 
   /* ── View 4: topic cards ── */
   .cards-scroll{max-height:620px; overflow-y:auto; padding-right:4px;}
@@ -101,7 +102,7 @@
   .tcard-body td.cc{width:52px; text-align:center;}
   .tcard-body td.kc{width:40px; text-align:center;}
 
-  .basket{border:1px solid var(--line); background:#fff; position:sticky; top:20px; display:flex; flex-direction:column; max-height:620px;}
+  .basket{border:1px solid var(--line); background:#fff; display:flex; flex-direction:column; min-height:0;}
   .basket-h{padding:12px 14px; border-bottom:1px solid var(--line); font-weight:700; display:flex; justify-content:space-between; align-items:center;}
   .basket-h .bc{font-family:"Noto Sans"; color:var(--muted); font-weight:700;}
   .btn-clear{border:1px solid var(--line-soft); background:#fff; border-radius:12px; padding:4px 11px;
@@ -151,8 +152,8 @@
     </div>
   </div>
 
-  <!-- View switcher -->
-  <div class="vtabs" id="vtabs">
+  <!-- View switcher (②전체 단일 채택 — 탭 숨김) -->
+  <div class="vtabs hidden" id="vtabs">
     <div class="vtab active" data-v="cep"><span class="no">①</span>CEP별</div>
     <div class="vtab" data-v="all"><span class="no">②</span>전체</div>
     <div class="vtab" data-v="topic"><span class="no">③</span>토픽별</div>
@@ -730,7 +731,7 @@ $("#modalOverlay").addEventListener("click",e=>{ if(e.target===$("#modalOverlay"
 renderCEP(); renderAll(); renderTopic(); renderCards();
 $("#btnStart2").addEventListener("click",onStart);   // rendered inside view-card
 updateCounter();
-switchView("cep");
+switchView("all");
 </script>
 </body>
 </html>
