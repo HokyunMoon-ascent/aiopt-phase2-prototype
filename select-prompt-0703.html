@@ -69,6 +69,14 @@
   .cep-badge{display:inline-flex; align-items:center; justify-content:center; min-width:44px; padding:2px 8px;
     border:1px solid var(--line-soft); border-radius:11px; font-size:11px; font-family:"Noto Sans"; font-weight:700; color:var(--muted);}
   .oos{font-size:11px; color:var(--muted2); border:1px dashed var(--line-soft); border-radius:4px; padding:1px 6px; margin-left:8px;}
+  /* 출처(source) 컬럼 · 뱃지 */
+  .wtbl th.src,.wtbl td.src{width:190px; text-align:center;}
+  .src-badge{display:inline-flex; align-items:center; justify-content:center; padding:2px 9px;
+    border:1px solid var(--line-soft); border-radius:11px; font-size:11px; font-family:"Noto Sans","Noto Sans KR"; font-weight:700;
+    white-space:nowrap; color:var(--muted);}
+  /* 관련질문(PAA): 추출 키워드 뱃지들 — 복수 키워드면 줄바꿈 */
+  .src-kwlist{display:inline-flex; flex-wrap:wrap; gap:4px; justify-content:center;}
+  .src-badge.src-kw{color:var(--ink); background:var(--grp); border-color:var(--line-soft);}
 
   /* checkbox */
   input[type=checkbox]{width:17px; height:17px; accent-color:var(--ink); cursor:pointer; margin:0; vertical-align:middle;}
@@ -117,15 +125,37 @@
   .basket thead th.c.cp-h{width:52px;}
   .basket tbody td{padding:9px 12px; border-bottom:1px solid var(--line-hair); vertical-align:middle;}
   .basket tbody td.cp{text-align:center; white-space:nowrap; width:52px; font-family:"Noto Sans"; font-size:11.5px; color:var(--muted);}
-  .basket tbody td.tp{color:var(--muted); white-space:nowrap; width:120px; font-size:11.5px;}
   .basket tbody td.dn{text-align:center; width:44px;}
   .basket .trash{border:none; background:none; font-size:15px; color:var(--muted); padding:2px 6px;}
   .basket .trash:hover{color:var(--ink);}
+  .basket .edit{border:none; background:none; font-size:14px; color:var(--muted); padding:2px 6px;}
+  .basket .edit:hover{color:var(--ink);}
+  .basket tbody td.pcell{color:var(--ink); line-height:1.5;}
+  .basket .edit-ta{width:100%; min-height:56px; font-family:inherit; font-size:12px; line-height:1.5;
+    border:1px solid var(--line); padding:6px; resize:vertical; box-sizing:border-box;}
   .basket-empty{padding:40px 16px; text-align:center; color:var(--muted2); font-size:12.5px;}
-  .basket-foot{padding:14px; border-top:1px solid var(--line);}
-  .basket-foot .btn-start{width:100%; text-align:center; border-radius:10px;}
 
   .prompt-cell{max-width:640px; line-height:1.55;}
+
+  /* ── 직접 추가하기 (② 전체 목록 하단 고정) ── */
+  .add-foot{flex:none; border:1px solid var(--line); border-top:none; background:#fff;}
+  .btn-add{display:block; width:100%; text-align:left; border:none; background:#fff;
+    padding:13px 16px; font-size:13px; font-weight:500; color:var(--muted);}
+  .btn-add:hover{background:var(--hover); color:var(--ink);}
+  .add-box{padding:14px 16px; background:var(--hover);}
+  .add-box textarea{width:100%; min-height:66px; font-family:inherit; font-size:13px; line-height:1.55;
+    border:1px solid var(--line); padding:9px; resize:vertical; box-sizing:border-box; background:#fff;}
+  .add-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:9px;}
+  .add-actions button{border:1px solid var(--line-soft); background:#fff; border-radius:10px;
+    padding:6px 18px; font-size:12.5px; font-weight:500; color:var(--muted);}
+  .add-actions .btn-add-save{border-color:var(--line); color:var(--ink); font-weight:700;}
+  .add-actions .btn-add-save:hover{background:var(--ink); color:#fff;}
+  .add-actions .btn-add-cancel:hover{border-color:var(--line); color:var(--ink);}
+  .mine{display:inline-block; font-size:10.5px; font-weight:700; color:var(--muted);
+    border:1px solid var(--line-soft); border-radius:9px; padding:1px 7px; margin-right:7px; vertical-align:middle;}
+  .cust-del{border:none; background:none; color:var(--muted2); font-size:16px; line-height:1;
+    padding:0 4px; margin-left:8px; vertical-align:middle;}
+  .cust-del:hover{color:var(--ink);}
 
   /* ── 알럿 모달 (showAlert) ── */
   .modal-overlay{position:fixed; inset:0; background:rgba(26,26,26,.32); display:none;
@@ -175,9 +205,20 @@
       <div id="view-all" class="view hidden">
         <div class="scroll-area">
           <table class="wtbl">
-            <thead><tr><th>Suggest Prompt</th><th class="c">CEP</th><th class="c">Accept</th></tr></thead>
+            <thead><tr><th>Suggest Prompt</th><th class="c src">출처</th><th class="c">Accept</th></tr></thead>
             <tbody id="allBody"></tbody>
           </table>
+        </div>
+        <!-- 하단 고정: 직접 추가하기 -->
+        <div class="add-foot" id="addFoot">
+          <button class="btn-add" id="btnAddToggle">＋ 직접 추가하기</button>
+          <div class="add-box hidden" id="addBox">
+            <textarea id="addTa" placeholder="분석하고 싶은 질문(프롬프트)을 직접 입력하세요."></textarea>
+            <div class="add-actions">
+              <button class="btn-add-cancel" id="btnAddCancel">취소</button>
+              <button class="btn-add-save" id="btnAddSave">추가</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -199,7 +240,6 @@
     <aside class="basket">
       <div class="basket-h"><span>Selected Prompt <span class="bc" id="basketCnt">0</span></span><button class="btn-clear" id="btnClear" disabled>전체 해제</button></div>
       <div class="basket-scroll" id="basketScroll"></div>
-      <div class="basket-foot"><button class="btn-start" id="btnStart2">Start Analyze</button></div>
     </aside>
   </div>
 
@@ -438,6 +478,127 @@ const CEPS = [
   ]},
 ];
 
+/* ═══════════════ 진입 화면 선택 IMPORT (analyze-entry 공유 바구니) ═══════════════ */
+/* analyze-entry 의 공유 바구니 [{source,label,prompts[]}] 를 받아, 각 아이템을      */
+/* pseudo-CEP 그룹으로 변환해 기존 렌더/바구니 로직을 그대로 재사용한다.                */
+/* 우선순위: aio_selection(신규 통일 스키마) → aio_geo_import(레거시 GEO 전용) fallback. */
+const GEO_LABEL = {};        // pseudo-CEP no → 그룹 라벨 (바구니 Topic 열 표시용)
+let GEO_MODE = false;
+
+/* 키워드 → 1hop 내 PAA(SERP 관련 질문) 보유 키워드들의 관련 질문 flatten.
+   원천: prompt-detail/src/PAA(관련 질문 모음).md. 실서비스에선 이 자리에서 실시간 fetch. */
+const KEYWORD_PAA = {
+  "버티컬 마우스": [
+    // 버티컬
+    "버티컬의 뜻?",
+    "버티컬 마우스란?",
+    "버티컬 매체란?",
+    "손목에 좋은 마우스는 무엇인가요?",
+    // 버티컬 뜻
+    "버티컬 사업 뜻?",
+    "버티컬 호라이즌 뜻?",
+    "버티컬 미디어 뜻?",
+    "버티컬 시음 뜻?",
+    // 그립감 좋은 마우스
+    "가장 좋은 마우스는 무엇인가요?",
+    "추천하는 마우스 그립 테이프는 무엇인가요?",
+    "손목에 좋은 마우스는 무엇인가요?",
+    "가성비가 좋은 마우스는 무엇인가요?",
+  ],
+  "로지텍 리프트": [
+    "로지텍 무선키보드 안될때?",
+    "로지텍 버티컬 마우스는 어떻게 연결하나요?",
+    "로지텍 키보드 수리 방법은 무엇인가요?",
+    "로지텍 무선 키보드를 어떻게 연결하나요?",
+  ],
+  "로지텍": [
+    "로지텍 키보드 매크로 사용법?",
+    "Logitech G512에서 게임 모드는 어떻게 켜나요?",
+    "로지텍 키보드 G512 가격은 얼마인가요?",
+    "로지텍 마우스 매크로를 반복 설정하려면 어떻게 해야 하나요?",
+    "G703의 단점은 무엇인가요?",
+    "G703과 G703 Hero의 차이점은 무엇인가요?",
+    "로지텍 가장 좋은 마우스?",
+    "G102 정품 가격은 얼마인가요?",
+  ],
+  "mx master": [
+    // mx master 3s
+    "MX Master 3와 3S의 차이점은 무엇인가요?",
+    "MX Master 3S는 유선으로 사용할 수 있나요?",
+    "MX Master 3S의 배터리 수명은 얼마나 되나요?",
+    "로지텍 MX Master 3S의 단점은 무엇인가요?",
+    // 로지텍 mx master 3s
+    "MX MASTER 4의 가격은 얼마인가요?",
+    "MX Master 3 3S 차이?",
+    "MX Master 4의 출시일은 언제인가요?",
+    "MX 마스터의 가격은 얼마인가요?",
+    // mx master 3
+    "MX Master 3와 3S의 차이점은 무엇인가요?",
+    "MX 마스터 3의 가격은 얼마인가요?",
+    "MX Master 3S의 기본 DPI는 얼마인가요?",
+    "MX Master 4의 가격은 얼마인가요?",
+    // mx master 5
+    "MX MASTER 4의 가격은 얼마인가요?",
+    "로지텍 MX MASTER 3S의 단점은 무엇인가요?",
+    "사무용 마우스의 끝판왕은 무엇인가요?",
+    "M720의 후속작은 무엇이 있나요?",
+  ],
+};
+
+(function importSelection(){
+  let raw=null;
+  try{ raw = sessionStorage.getItem("aio_selection") || sessionStorage.getItem("aio_geo_import"); }catch(e){ return; }
+  if(!raw) return;
+  let items; try{ items=JSON.parse(raw); }catch(e){ return; }
+  if(!Array.isArray(items) || items.length===0) return;
+
+  // 키워드 등 프롬프트가 비어 있는 아이템 seed용: 원본 데모 프롬프트 스냅샷(CEPS 비우기 전 확보).
+  // (프로토타입 단순화 — 실서비스에선 이 자리에서 키워드의 SERP 관련질문을 fetch 한다.)
+  const demoPool = CEPS.flatMap(c=>c.prompts);
+
+  GEO_MODE=true;
+  CEPS.length=0;             // 데모 CEP 데이터를 비우고 가져온 프롬프트로 교체
+  let seq=1000;
+  // 관련질문(keyword) 소스는 프롬프트 텍스트 기준으로 하나의 그룹에 병합한다.
+  // 같은 관련질문이 여러 키워드에서 나오면 출처에 그 키워드들이 모두 기록된다(중복 제거).
+  const kwOrigin = new Map();   // 프롬프트 텍스트 → 추출 키워드 Set(삽입 순서 유지)
+  items.forEach((it,ci)=>{
+    const source = it.source || "geo";
+    // 라벨: 레거시 GEO "버티컬 마우스 · 클러스터 H · 26/07/07" → "클러스터 H". 그 외는 라벨 그대로.
+    let label = it.label || "가져온 프롬프트";
+    if(source==="geo"){ const parts=String(label).split(" · "); if(parts.length>=2) label=parts[parts.length-2]; }
+    let prompts = Array.isArray(it.prompts) ? it.prompts.slice() : [];
+    if(prompts.length===0){                       // 프롬프트 없는 소스(키워드 등) seed
+      if(source==="keyword" && KEYWORD_PAA[label]){
+        // 키워드 → 1hop PAA(관련 질문) fetch (프로토타입: 하드코딩 매핑)
+        prompts = KEYWORD_PAA[label].slice();
+      } else {                                     // 매핑 없는 임의 키워드/기타 소스는 데모 세트로 fallback
+        const n = source==="keyword" ? 5 : 3;
+        const start = demoPool.length ? (ci*n) % demoPool.length : 0;
+        prompts = demoPool.slice(start, start+n);
+        if(prompts.length===0) prompts = demoPool.slice(0, n);
+        if(prompts.length===0) prompts = [`${label} 관련 프롬프트를 여기서 편집하세요.`];
+      }
+    }
+    if(source==="keyword"){
+      // 출처 키워드 = 이 아이템의 label. 프롬프트 텍스트로 병합하며 키워드를 누적.
+      prompts.forEach(p=>{ if(!kwOrigin.has(p)) kwOrigin.set(p,new Set()); kwOrigin.get(p).add(label); });
+      return;
+    }
+    const no=seq++;
+    GEO_LABEL[no] = label;
+    CEPS.push({ no, volume:0, prompts, source });
+  });
+  // 병합된 관련질문(PAA) 그룹 — keywords[idx]에 해당 프롬프트의 추출 키워드 목록을 부착
+  if(kwOrigin.size){
+    const no=seq++;
+    const prompts=[...kwOrigin.keys()];
+    const keywords=prompts.map(p=>[...kwOrigin.get(p)]);
+    GEO_LABEL[no]="관련질문(PAA)";
+    CEPS.push({ no, volume:0, prompts, source:"keyword", keywords });
+  }
+})();
+
 /* topic.md §1 롤업 테마 (단일 축 = KBF/제품 속성) */
 const TOPICS = [
   {name:"1. 휴대성·이동성",   ceps:[11,20], oos:false},
@@ -453,13 +614,27 @@ const TOPICS = [
 ];
 
 /* ═══════════════ STATE ═══════════════ */
+CEPS.forEach(c=>{ if(!c.source) c.source = "cep"; });   // 데모 CEP은 출처 미지정 → 기본 "cep"
 const CEP_BY_NO = {}; CEPS.forEach(c=>CEP_BY_NO[c.no]=c);
 const TOTAL = CEPS.reduce((s,c)=>s+c.prompts.length,0);
-const MIN = 10;                        // 선택해야 하는 최소 프롬프트 수
+// GEO import 시엔 가져온 개수가 10개보다 적을 수 있으므로 최소 기준을 개수에 맞춘다.
+const MIN = GEO_MODE ? Math.max(1, Math.min(10, TOTAL)) : 10;   // 선택해야 하는 최소 프롬프트 수
 const MAX = 20;                        // 선택 가능한 최대 프롬프트 수
 const selected = new Set();            // key = "cep-idx"
 const key = (cep,idx)=>cep+"-"+idx;
 const fmt = n => n.toLocaleString("en-US");
+/* 사용자가 직접 추가한 프롬프트 — pseudo-CEP(CUSTOM_NO)로 기존 렌더/바구니 로직 재사용 */
+const CUSTOM_NO = 9999;
+const customPrompts = [];              // [{id, text}] — id는 재사용하지 않는 고유값
+let customSeq = 0;
+/* 프롬프트 수정 오버라이드 — Selected Prompt 영역에서 편집한 텍스트 저장 (key → text) */
+const promptOverrides = {};
+function promptText(no,idx){
+  const k=key(no,idx);
+  if(k in promptOverrides) return promptOverrides[k];
+  if(no===CUSTOM_NO){ const c=customPrompts.find(x=>x.id===idx); return c?c.text:""; }
+  return CEP_BY_NO[no].prompts[idx];
+}
 
 /* topic lookup: for each cep → topic name (첫 매칭) */
 const CEP_TOPIC = {};
@@ -468,6 +643,29 @@ TOPICS.forEach(t=>t.ceps.forEach(n=>{ if(!(n in CEP_TOPIC)) CEP_TOPIC[n]=t.name;
 /* ═══════════════ HELPERS ═══════════════ */
 const $ = s => document.querySelector(s);
 const el = (t,cls,html)=>{const e=document.createElement(t); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e;};
+
+/* 프롬프트 출처(source) 메타 — CEP·관련질문(PAA)·GEO·직접추가 */
+const SRC_META = {
+  cep:     { label:"CEP",         cls:"src-cep" },
+  keyword: { label:"관련질문(PAA)", cls:"src-kw" },
+  geo:     { label:"GEO",         cls:"src-geo" },
+  custom:  { label:"직접추가",      cls:"src-custom" },
+};
+function sourceKey(no){ return no===CUSTOM_NO ? "custom" : ((CEP_BY_NO[no]&&CEP_BY_NO[no].source)||"cep"); }
+function promptKeywords(no,idx){ const c=CEP_BY_NO[no]; return (c&&c.keywords&&c.keywords[idx])||[]; }
+function escHtml(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function sourceBadge(no,idx){
+  const sk=sourceKey(no);
+  if(sk==="keyword"){
+    // 관련질문(PAA): 추출 키워드를 뱃지로. 여러 키워드에서 나온 공통 프롬프트면 복수 표기.
+    const kws=promptKeywords(no,idx);
+    if(kws.length) return `<span class="src-kwlist">`+
+      kws.map(k=>`<span class="src-badge src-kw" title="관련질문 추출 키워드: ${escHtml(k)}">${escHtml(k)}</span>`).join("")+`</span>`;
+    return `<span class="src-badge src-kw">${SRC_META.keyword.label}</span>`;   // 키워드 미상 fallback
+  }
+  const m = SRC_META[sk] || SRC_META.cep;
+  return `<span class="src-badge ${m.cls}">${m.label}</span>`;
+}
 
 /* 알럿 모달 (프로젝트의 showAlert 대응) — 경고/검증 미달 안내 전용 */
 function showAlert(msg){ $("#modalMsg").textContent=msg; $("#modalOverlay").classList.add("show"); }
@@ -480,7 +678,7 @@ function addCapped(keys){
   }
 }
 
-function allKeys(){ const a=[]; CEPS.forEach(c=>c.prompts.forEach((_,i)=>a.push(key(c.no,i)))); return a; }
+function allKeys(){ const a=[]; CEPS.forEach(c=>c.prompts.forEach((_,i)=>a.push(key(c.no,i)))); customPrompts.forEach(c=>a.push(key(CUSTOM_NO,c.id))); return a; }
 function cepKeys(no){ return CEP_BY_NO[no].prompts.map((_,i)=>key(no,i)); }
 function topicKeys(t){ const a=[]; t.ceps.forEach(no=>{ if(CEP_BY_NO[no]) a.push(...cepKeys(no)); }); return a; }
 function countSel(keys){ return keys.reduce((s,k)=>s+(selected.has(k)?1:0),0); }
@@ -545,18 +743,30 @@ function renderAll(){
   const tb=$("#allBody"); tb.innerHTML="";
   // header select-all row
   const hr=el("tr","grp-row");
-  hr.innerHTML=`<td><span class="gname">전체 프롬프트</span><span class="gsub">${TOTAL}개</span></td>`+
-    `<td class="c"></td>`+
+  hr.innerHTML=`<td colspan="2"><span class="gname">전체 프롬프트</span><span class="gsub">${allKeys().length}개</span></td>`+
     `<td class="c"><input type="checkbox" id="allBox"></td>`;
   tb.appendChild(hr);
   CEPS.forEach(c=>c.prompts.forEach((p,idx)=>{
     const k=key(c.no,idx);
     const tr=el("tr");
-    tr.innerHTML=`<td class="prompt-cell">${p}</td>`+
-      `<td class="c"><span class="cep-badge">CEP ${c.no}</span></td>`+
+    tr.innerHTML=`<td class="prompt-cell">${promptText(c.no,idx)}</td>`+
+      `<td class="c src">${sourceBadge(c.no,idx)}</td>`+
       `<td class="c"><input type="checkbox" class="leaf" data-key="${k}" ${selected.has(k)?"checked":""}></td>`;
     tb.appendChild(tr);
   }));
+  // 사용자가 직접 추가한 프롬프트
+  customPrompts.forEach(c=>{
+    const k=key(CUSTOM_NO,c.id);
+    const tr=el("tr");
+    tr.innerHTML=`<td class="prompt-cell"><span class="mine">직접 추가</span>${promptText(CUSTOM_NO,c.id)}`+
+        `<button class="cust-del" data-id="${c.id}" title="삭제">×</button></td>`+
+      `<td class="c src">${sourceBadge(CUSTOM_NO,c.id)}</td>`+
+      `<td class="c"><input type="checkbox" class="leaf" data-key="${k}" ${selected.has(k)?"checked":""}></td>`;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll(".cust-del").forEach(btn=>{
+    btn.addEventListener("click",()=>deleteCustom(+btn.dataset.id));
+  });
   $("#allBox").addEventListener("change",e=>{
     if(e.target.checked) addCapped(allKeys()); else allKeys().forEach(k=>selected.delete(k));
     refreshAll();
@@ -564,6 +774,40 @@ function renderAll(){
   syncAll();
 }
 function syncAll(){ const b=$("#allBox"); if(b) setGroupBox(b, allKeys()); }
+
+/* ── 직접 추가하기 (하단 고정 푸터, 정적 요소 → init에서 1회 배선) ── */
+function openAddBox(){ $("#addBox").classList.remove("hidden"); $("#btnAddToggle").classList.add("hidden"); $("#addTa").focus(); }
+function closeAddBox(){ $("#addBox").classList.add("hidden"); $("#btnAddToggle").classList.remove("hidden"); $("#addTa").value=""; }
+function wireAddRow(){
+  const toggle=$("#btnAddToggle"), ta=$("#addTa");
+  if(!toggle) return;
+  toggle.addEventListener("click",openAddBox);
+  $("#btnAddCancel").addEventListener("click",closeAddBox);
+  $("#btnAddSave").addEventListener("click",()=>saveCustom(ta.value));
+  ta.addEventListener("keydown",ev=>{
+    if(ev.key==="Enter"&&(ev.ctrlKey||ev.metaKey)){ ev.preventDefault(); saveCustom(ta.value); }
+    if(ev.key==="Escape"){ ev.preventDefault(); closeAddBox(); }
+  });
+}
+function saveCustom(text){
+  const v=(text||"").trim();
+  if(!v){ $("#addTa").focus(); return; }
+  const id=customSeq++;
+  customPrompts.push({id, text:v});
+  if(selected.size<MAX) selected.add(key(CUSTOM_NO,id));   // 여유 있으면 자동 선택
+  closeAddBox();
+  renderAll(); refreshAll();
+  // 새로 추가된 항목이 보이도록 목록 맨 아래로 스크롤
+  const sa=document.querySelector("#view-all .scroll-area"); if(sa) sa.scrollTop=sa.scrollHeight;
+}
+function deleteCustom(id){
+  const i=customPrompts.findIndex(c=>c.id===id);
+  if(i<0) return;
+  customPrompts.splice(i,1);
+  const k=key(CUSTOM_NO,id);
+  selected.delete(k); delete promptOverrides[k];
+  renderAll(); refreshAll();
+}
 
 /* ═══════════════ ③ TOPIC ACCORDION ═══════════════ */
 function renderTopic(){
@@ -654,16 +898,31 @@ function renderBasket(){
   let rows="";
   arr.forEach(k=>{
     const[no,idx]=k.split("-").map(Number);
-    const p=CEP_BY_NO[no].prompts[idx];
+    const p=promptText(no,idx);
     const short = p.length>46 ? p.slice(0,46)+"…" : p;
-    rows+=`<tr><td title="${p.replace(/"/g,'&quot;')}">${short}</td>`+
-      `<td class="cp">CEP${no}</td>`+
-      `<td class="tp">${(CEP_TOPIC[no]||"-").replace(/^\d+\.\s*/,"")}</td>`+
+    rows+=`<tr data-key="${k}"><td class="pcell" title="${p.replace(/"/g,'&quot;')}">${short}</td>`+
+      `<td class="dn"><button class="edit" data-key="${k}" title="수정">✎</button></td>`+
       `<td class="dn"><button class="trash" data-key="${k}" title="제외">🗑</button></td></tr>`;
   });
-  wrap.innerHTML=`<table><thead><tr><th>Selected Prompt</th><th class="c cp-h">CEP</th><th>Topic</th><th class="c">Deny</th></tr></thead><tbody>${rows}</tbody></table>`;
+  wrap.innerHTML=`<table><thead><tr><th>Selected Prompt</th><th class="c">Edit</th><th class="c">Deny</th></tr></thead><tbody>${rows}</tbody></table>`;
   wrap.querySelectorAll(".trash").forEach(btn=>{
     btn.addEventListener("click",()=>{ selected.delete(btn.dataset.key); refreshAllViews(); });
+  });
+  // 인라인 프롬프트 수정
+  wrap.querySelectorAll(".edit").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const k=btn.dataset.key, tr=btn.closest("tr"), cell=tr.querySelector(".pcell");
+      if(cell.querySelector("textarea")) return;
+      const[no,idx]=k.split("-").map(Number);
+      cell.innerHTML=`<textarea class="edit-ta"></textarea>`;
+      const ta=cell.querySelector("textarea"); ta.value=promptText(no,idx); ta.focus();
+      const save=()=>{ const v=ta.value.trim(); if(v) promptOverrides[k]=v; renderAll(); renderBasket(); };
+      ta.addEventListener("blur",save);
+      ta.addEventListener("keydown",ev=>{
+        if(ev.key==="Enter"&&(ev.ctrlKey||ev.metaKey)){ ev.preventDefault(); ta.blur(); }
+        if(ev.key==="Escape"){ ev.preventDefault(); renderBasket(); }
+      });
+    });
   });
 }
 
@@ -704,7 +963,7 @@ document.addEventListener("change",e=>{
 /* ═══════════════ VIEW SWITCH ═══════════════ */
 const VIEW_HINT = {
   cep:"CEP(장면) 기준으로 묶어 확장합니다. CEP 행의 체크박스로 해당 CEP의 프롬프트 9개를 일괄 선택할 수 있습니다.",
-  all:"180개 프롬프트를 분류 없이 전부 나열합니다. 각 행에 소속 CEP를 표시합니다.",
+  all:"오른쪽 Selected Prompt에서 프롬프트를 수정·삭제할 수 있습니다.",
   topic:"topic.md의 9개 KBF 토픽으로 재분류합니다. 하나의 토픽이 여러 CEP를 가로지릅니다.",
   card:"토픽을 카드로 펼쳐 훑어보고, 선택한 프롬프트를 오른쪽 바구니에서 확인·제외합니다.",
 };
@@ -729,9 +988,17 @@ $("#modalOverlay").addEventListener("click",e=>{ if(e.target===$("#modalOverlay"
 
 /* ═══════════════ INIT ═══════════════ */
 renderCEP(); renderAll(); renderTopic(); renderCards();
-$("#btnStart2").addEventListener("click",onStart);   // rendered inside view-card
+wireAddRow();                                        // 하단 고정 직접 추가하기 (정적 요소, 1회 배선)
+if(GEO_MODE){
+  // 가져온 프롬프트를 기본으로 전체 선택 (사용자는 여기서 수정·삭제)
+  addCapped(allKeys());
+  const cnt=$(".counter"); if(cnt) cnt.innerHTML=`선택 ${MIN}~${MAX}개 · 현재 <b id="selCount">0</b>개`;
+}
 updateCounter();
 switchView("all");
+if(GEO_MODE){
+  refreshAll();   // 사전 선택 상태를 체크박스·바구니에 반영
+}
 </script>
 </body>
 </html>

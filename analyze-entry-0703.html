@@ -57,12 +57,13 @@
   .selectbox{justify-content:space-between; cursor:pointer;}
   .selectbox .chev{color:var(--gray500); font-size:13px;}
   .selectbox:hover, .inputbox:hover{border-color:var(--gray400);}
+  .selectbox.placeholder{color:var(--gray500);}
 
   .link-under{display:inline-block; margin-top:12px; font-size:14px; font-weight:700; color:var(--gray800);
     text-decoration:underline; text-underline-offset:3px; cursor:pointer;}
   .link-under:hover{color:var(--purple);}
 
-  /* 브랜드 태그 인풋 */
+  /* 태그 인풋 */
   .taginput{display:flex; align-items:center; gap:9px; flex-wrap:wrap; min-height:26px; flex:1;}
   .flag-sel{display:inline-flex; align-items:center; gap:5px; background:#fff; border:1px solid var(--gray200);
     border-radius:10px; padding:5px 10px; font-size:13px; font-weight:600; color:var(--gray700); cursor:pointer; white-space:nowrap;}
@@ -70,6 +71,8 @@
     border-radius:9px; padding:6px 11px; font-size:14px; color:var(--gray800); font-weight:500;}
   .chip .x{color:var(--gray500); cursor:pointer; font-size:13px; display:inline-flex;}
   .chip .x:hover{color:var(--gray800);}
+  .taginput .ti-input{border:none; outline:none; background:transparent; font-size:15px; color:var(--gray900);
+    font-family:inherit; flex:1; min-width:120px; padding:2px 0;}
   .count-r{font-size:13px; color:var(--gray500); font-family:"Noto Sans"; white-space:nowrap; margin-left:auto;}
 
   .url-row{display:flex; align-items:center; gap:10px;}
@@ -92,48 +95,6 @@
   .btn-run:hover{background:var(--purple-dark); box-shadow:0 5px 16px rgba(124,109,240,.36); transform:translateY(-1px);}
   .btn-run:active{transform:translateY(0);}
 
-  /* ═══════════ 분기 모달 ═══════════ */
-  .overlay{position:fixed; inset:0; background:rgba(38,35,46,.44); backdrop-filter:blur(2px);
-    display:none; align-items:center; justify-content:center; z-index:200; padding:24px;}
-  .overlay.show{display:flex;}
-  .fork{background:#fff; border-radius:18px; width:min(900px,100%); max-height:92vh; overflow:auto;
-    box-shadow:0 24px 60px rgba(0,0,0,.28); padding:30px 30px 34px; position:relative;
-    animation:pop .18s ease;}
-  @keyframes pop{from{opacity:0; transform:scale(.97) translateY(6px);} to{opacity:1; transform:none;}}
-  .fork-x{position:absolute; top:18px; right:18px; width:34px; height:34px; border:none; background:var(--gray100);
-    border-radius:50%; color:var(--gray600); font-size:17px; display:flex; align-items:center; justify-content:center;}
-  .fork-x:hover{background:var(--gray200); color:var(--gray900);}
-  .fork-h{text-align:center; margin-bottom:8px;}
-  .fork-h .t{font-size:20px; font-weight:900; color:var(--gray900);}
-  .fork-h .d{font-size:13.5px; color:var(--gray600); margin-top:8px; line-height:1.6;}
-
-  .fork-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:22px;}
-  .opt{border:1.5px solid var(--gray200); border-radius:14px; padding:22px 22px 20px; background:#fff;
-    display:flex; flex-direction:column; cursor:pointer; transition:.14s; position:relative;}
-  .opt:hover{border-color:var(--purple); box-shadow:0 8px 22px rgba(124,109,240,.16); transform:translateY(-2px);}
-  .opt.reco{border-color:var(--purple); background:var(--purple-bg);}
-  .opt .reco-badge{position:absolute; top:-11px; left:22px; background:var(--purple); color:#fff;
-    font-size:11.5px; font-weight:700; padding:4px 12px; border-radius:12px; box-shadow:0 2px 6px rgba(124,109,240,.3);}
-  .opt .otitle{font-size:16px; font-weight:800; color:var(--gray900); line-height:1.45; min-height:46px; margin-bottom:6px;}
-  .opt .otag{display:inline-flex; align-self:flex-start; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:11px; margin-bottom:14px;}
-  .opt.reco .otag{background:#fff; color:var(--purple); border:1px solid var(--purple-line);}
-  .opt .otag.auto{background:var(--gray100); color:var(--gray600); border:1px solid var(--gray200);}
-
-  .pc-block + .pc-block{margin-top:12px;}
-  .pc-h{font-size:12.5px; font-weight:700; color:var(--gray700); margin-bottom:6px;}
-  .pc-list{list-style:none; margin:0; padding:0;}
-  .pc-list li{display:flex; gap:8px; font-size:13px; line-height:1.55; color:var(--gray700); margin:5px 0;}
-  .pc-list li .mk{flex:0 0 auto; font-weight:800; margin-top:1px;}
-  .pc-list.pro li .mk{color:var(--green);}
-  .pc-list.con li .mk{color:var(--gray400);}
-  .pc-list b{color:var(--gray900); font-weight:700;}
-
-  .opt-cta{margin-top:18px; text-align:center; border-radius:11px; padding:12px 0; font-size:14px; font-weight:700;
-    border:1px solid var(--gray300); background:#fff; color:var(--gray700);}
-  .opt.reco .opt-cta{background:var(--purple); border-color:var(--purple); color:#fff;}
-  .opt:hover .opt-cta{border-color:var(--purple); color:var(--purple);}
-  .opt.reco:hover .opt-cta{color:#fff;}
-
   /* ═══════════ 진입 방식 탭 스위처 (figma 1608-40548) ═══════════ */
   .entry-tabs{display:inline-flex; gap:4px; background:var(--gray100); border:1px solid var(--border);
     border-radius:12px; padding:4px; margin-bottom:24px;}
@@ -142,22 +103,19 @@
   .entry-tab:hover{color:var(--gray900);}
   .entry-tab.active{background:#fff; color:var(--purple-dark); box-shadow:0 1px 4px rgba(38,35,46,.08);}
 
-  /* ═══════════ Feature 1 — 관련 검색어 가져오기 ═══════════ */
-  /* 태그 인풋 우측 트리거 아이콘 */
+  /* ═══════════ 관련 검색어 가져오기 (키워드 탐색 탭) ═══════════ */
   .rs-trigger{flex:0 0 auto; width:28px; height:28px; border:none; background:transparent; border-radius:8px;
     display:inline-flex; align-items:center; justify-content:center; color:var(--purple); font-size:19px;
     position:relative; transition:.14s;}
   .rs-trigger:hover{background:var(--purple-bg);}
   .rs-trigger .mdi-spin{animation:mdi-rot 1s linear infinite;}
   @keyframes mdi-rot{to{transform:rotate(360deg);}}
-  /* 툴팁 */
   .rs-trigger .rs-tip{position:absolute; bottom:calc(100% + 8px); right:0; background:var(--gray900); color:#fff;
     font-size:12px; font-weight:600; padding:6px 10px; border-radius:8px; white-space:nowrap; opacity:0;
     pointer-events:none; transform:translateY(3px); transition:.14s; box-shadow:0 4px 12px rgba(0,0,0,.22); z-index:5;}
   .rs-trigger .rs-tip::after{content:""; position:absolute; top:100%; right:11px; border:5px solid transparent;
     border-top-color:var(--gray900);}
   .rs-trigger.ready:hover .rs-tip{opacity:1; transform:translateY(0);}
-  /* 관련 검색어 결과 패널 */
   .rs-panel{margin-top:12px;}
   .rs-panel .rs-head{font-size:12.5px; font-weight:700; color:var(--gray700); margin-bottom:9px; display:flex; align-items:center; gap:6px;}
   .rs-panel .rs-head .mdi{color:var(--purple); font-size:15px;}
@@ -169,107 +127,99 @@
   .rs-chip.added{opacity:.5; cursor:default; background:var(--gray100); border-color:var(--gray200); color:var(--gray500);}
   .rs-chip.added .mdi{color:var(--green);}
 
-  /* ═══════════ Feature 2 — 브랜드/카테고리 → CEP 발굴 ═══════════ */
-  .btn-discover{display:inline-flex; align-items:center; gap:8px; background:var(--purple); color:#fff; border:none;
-    border-radius:12px; padding:13px 26px; font-size:15px; font-weight:700; box-shadow:0 3px 10px rgba(124,109,240,.28);
-    transition:.14s; margin-top:8px;}
-  .btn-discover:hover:not(:disabled){background:var(--purple-dark); transform:translateY(-1px);}
-  .btn-discover:disabled{background:var(--gray300); box-shadow:none; cursor:not-allowed;}
-  .btn-discover .mdi-spin{animation:mdi-rot 1s linear infinite;}
+  /* ═══════════ GEO 프롬프트 빌더 가져오기 드롭다운 ═══════════ */
+  .dd{position:relative;}
+  .dd-menu{position:absolute; top:calc(100% + 6px); left:0; right:0; background:#fff; border:1px solid var(--gray200);
+    border-radius:12px; box-shadow:0 12px 30px rgba(38,35,46,.16); z-index:30; overflow:hidden; max-height:320px; overflow-y:auto;}
+  .dd-item{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 16px; cursor:pointer;
+    border-bottom:1px solid var(--gray100);}
+  .dd-item:last-child{border-bottom:none;}
+  .dd-item:hover{background:var(--purple-bg);}
+  .dd-item .di-l{display:flex; flex-direction:column; gap:3px; min-width:0;}
+  .dd-item .di-t{font-size:14px; font-weight:700; color:var(--gray900);}
+  .dd-item .di-m{font-size:12px; color:var(--gray500); font-family:"Noto Sans";}
+  .dd-item .di-tag{flex:0 0 auto; font-size:11px; font-weight:700; color:var(--purple); background:var(--purple-bg);
+    border:1px solid var(--purple-line); border-radius:9px; padding:2px 8px; white-space:nowrap;}
+  /* 복수 선택 체크박스 */
+  .dd-item .di-check{flex:0 0 auto; width:19px; height:19px; border:1.5px solid var(--gray300); border-radius:6px;
+    display:inline-flex; align-items:center; justify-content:center; color:#fff; font-size:13px; transition:.12s;}
+  .dd-item.sel{background:var(--purple-bg);}
+  .dd-item.sel .di-check{background:var(--purple); border-color:var(--purple);}
+  .dd-item.sel .di-t{color:var(--purple-dark);}
+  .dd-foot{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 16px;
+    border-top:1px solid var(--gray100); background:var(--gray50); position:sticky; bottom:0;}
+  .dd-foot .dd-cnt{font-size:12px; color:var(--gray600);}
+  .dd-foot .dd-cnt b{color:var(--purple-dark); font-family:"Noto Sans";}
+  .dd-foot .dd-done{border:none; background:var(--purple); color:#fff; font-weight:700; font-size:12.5px;
+    border-radius:8px; padding:7px 16px; cursor:pointer;}
+  .dd-foot .dd-done:hover{background:var(--purple-dark);}
+  .geo-note{margin-top:12px; display:flex; align-items:flex-start; gap:7px; background:var(--purple-bg);
+    border:1px solid var(--purple-line); border-radius:10px; padding:11px 13px; font-size:12.5px; color:var(--gray700); line-height:1.55;}
+  .geo-note .mdi{color:var(--purple); font-size:15px; margin-top:1px;}
+  .geo-note b{color:var(--gray900);}
 
-  /* 발굴 결과 영역 */
-  .cep-result{margin-top:28px; border-top:1px solid var(--border); padding-top:26px;}
-  .cep-result .cr-head{font-size:15px; font-weight:800; color:var(--gray900); margin-bottom:4px; display:flex; align-items:center; gap:8px;}
-  .cep-result .cr-head .badge{font-size:12px; font-weight:700; color:var(--purple); background:var(--purple-bg);
-    border:1px solid var(--purple-line); border-radius:10px; padding:2px 10px;}
-  .cep-result .cr-sub{font-size:13px; color:var(--gray600); margin:6px 0 16px;}
-  .cep-list{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-  .cep-card{border:1.5px solid var(--gray200); border-radius:13px; padding:15px 16px; background:#fff; cursor:pointer;
-    transition:.14s; display:flex; flex-direction:column; gap:6px;}
-  .cep-card:hover{border-color:var(--purple); box-shadow:0 6px 18px rgba(124,109,240,.14);}
-  .cep-card.sel{border-color:var(--purple); background:var(--purple-bg);}
-  .cep-card .cc-name{font-size:14px; font-weight:800; color:var(--gray900); display:flex; align-items:flex-start; gap:8px;}
-  .cep-card .cc-name .rdo{flex:0 0 auto; width:16px; height:16px; border-radius:50%; border:2px solid var(--gray400);
-    margin-top:2px; display:inline-flex; align-items:center; justify-content:center;}
-  .cep-card.sel .cc-name .rdo{border-color:var(--purple); background:var(--purple);}
-  .cep-card.sel .cc-name .rdo::after{content:""; width:6px; height:6px; border-radius:50%; background:#fff;}
-  .cep-card .cc-sit{font-size:12.5px; color:var(--gray600); line-height:1.55; padding-left:24px;}
+  /* ═══════════ 공유 선택 아이템 스트립 (figma 1608-40534 · 1612-16234 · 1612-16251) ═══════════ */
+  /* CEP·키워드·GEO 3개 탭이 공유하는 지속형 선택 바구니. 선택 시에만 노출. */
+  .basket-strip{display:flex; align-items:center; gap:8px; margin-top:12px;}
+  .basket-nav{flex:0 0 auto; width:26px; height:26px; border:1px solid var(--gray300); background:#fff;
+    border-radius:50%; color:var(--gray600); font-size:15px; display:inline-flex; align-items:center; justify-content:center;
+    transition:.12s;}
+  .basket-nav:hover{border-color:var(--purple); color:var(--purple-dark);}
+  .basket-nav:disabled{opacity:.35; cursor:default; border-color:var(--gray200); color:var(--gray400);}
+  .basket-scroll{flex:1; min-width:0; display:flex; align-items:center; gap:8px; overflow-x:auto;
+    scroll-behavior:smooth; padding:2px 1px; scrollbar-width:none;}
+  .basket-scroll::-webkit-scrollbar{display:none;}
+  .b-chip{flex:0 0 auto; display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--gray300);
+    border-radius:10px; padding:6px 10px 6px 7px; font-size:13.5px; color:var(--gray800); font-weight:500; white-space:nowrap; max-width:280px;}
+  .b-chip .b-txt{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .b-chip .x{flex:0 0 auto; color:var(--gray400); cursor:pointer; font-size:14px; display:inline-flex; align-items:center;}
+  .b-chip .x:hover{color:var(--red);}
+  .src-badge{flex:0 0 auto; font-size:11px; font-weight:700; border-radius:7px; padding:2px 7px; line-height:1.4; letter-spacing:.2px;}
+  .src-badge.cep{color:var(--gray700); background:var(--gray100); border:1px solid var(--gray200);}
+  .src-badge.keyword{color:var(--green); background:var(--green-bg); border:1px solid var(--green-line);}
+  .src-badge.geo{color:var(--purple-dark); background:var(--purple-bg); border:1px solid var(--purple-line);}
 
-  /* 추천 프롬프트 패널 */
-  .prompt-panel{margin-top:22px; background:var(--purple-bg); border:1px solid var(--purple-line);
+  /* 가져온 프롬프트 편집 리스트 (GEO / CEP 공통) */
+  .prompt-panel{margin-top:16px; background:var(--purple-bg); border:1px solid var(--purple-line);
     border-radius:14px; padding:20px 22px;}
   .prompt-panel .pp-head{font-size:14px; font-weight:800; color:var(--gray900); display:flex; align-items:center; gap:8px; margin-bottom:4px;}
   .prompt-panel .pp-head .mdi{color:var(--purple);}
   .prompt-panel .pp-sub{font-size:12.5px; color:var(--gray600); margin-bottom:14px;}
   .prompt-panel .pp-sub b{color:var(--gray900);}
-  .pp-list{list-style:none; margin:0 0 18px; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .pp-list{list-style:none; margin:0 0 12px; padding:0; display:flex; flex-direction:column; gap:8px;}
   .pp-list li{display:flex; gap:9px; align-items:flex-start; background:#fff; border:1px solid var(--purple-line);
-    border-radius:10px; padding:11px 14px; font-size:13.5px; color:var(--gray800); line-height:1.5;}
-  .pp-list li .mdi{flex:0 0 auto; color:var(--purple); font-size:16px; margin-top:1px;}
-  .pp-foot{display:flex; align-items:center; justify-content:space-between; gap:12px;}
-  .pp-foot .cnt{font-size:12.5px; color:var(--gray600);}
+    border-radius:10px; padding:10px 12px; font-size:13.5px; color:var(--gray800); line-height:1.5;}
+  .pp-list li .mdi.q{flex:0 0 auto; color:var(--purple); font-size:16px; margin-top:1px;}
+  .pp-list li .pp-txt{flex:1; border:none; outline:none; background:transparent; font-family:inherit; font-size:13.5px;
+    color:var(--gray800); line-height:1.5; resize:none; overflow:hidden;}
+  .pp-list li .pp-del{flex:0 0 auto; color:var(--gray400); font-size:16px; cursor:pointer; margin-top:1px;}
+  .pp-list li .pp-del:hover{color:var(--red);}
+  .pp-add{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--purple-dark);
+    background:none; border:none; padding:4px 0; cursor:pointer;}
+  .pp-add:hover{text-decoration:underline;}
+  .pp-foot{display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-top:6px;}
+  .pp-foot .cnt{font-size:12.5px; color:var(--gray600); margin-right:auto;}
   .pp-foot .cnt b{color:var(--purple-dark); font-family:"Noto Sans"; font-weight:700;}
-
-  /* ═══════════ Feature 3 — URL 입력 → 프롬프트 도출 ═══════════ */
-  /* 로딩 단계 표시 */
-  .derive-steps{margin-top:18px; display:flex; flex-direction:column; gap:9px;}
-  .derive-steps .ds{display:flex; align-items:center; gap:9px; font-size:13px; color:var(--gray500);}
-  .derive-steps .ds .mdi{font-size:17px; color:var(--gray400);}
-  .derive-steps .ds.active{color:var(--gray900); font-weight:600;}
-  .derive-steps .ds.active .mdi{color:var(--purple);}
-  .derive-steps .ds.done{color:var(--gray700);}
-  .derive-steps .ds.done .mdi{color:var(--green);}
-  .derive-steps .ds .mdi-spin{animation:mdi-rot 1s linear infinite;}
-  /* 대표 키워드 칩 */
-  .kw-extract{margin-top:16px; font-size:13px; color:var(--gray700); display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
-  .kw-extract .kw-chip{display:inline-flex; align-items:center; gap:6px; background:var(--purple-bg); border:1px solid var(--purple-line);
-    border-radius:10px; padding:6px 12px; font-size:14px; font-weight:700; color:var(--purple-dark);}
-  .kw-extract .kw-chip .mdi{font-size:15px;}
-
-  /* 도출 프롬프트 카드 */
-  .derive-list{display:flex; flex-direction:column; gap:14px; margin-top:8px;}
-  .dcard{border:1px solid var(--border); border-radius:14px; padding:18px 20px; background:#fff; transition:.14s;}
-  .dcard:hover{border-color:var(--purple-line); box-shadow:0 5px 16px rgba(124,109,240,.10);}
-  .dcard .dc-top{display:flex; align-items:flex-start; gap:10px; margin-bottom:10px;}
-  .dcard .dc-prompt{flex:1; font-size:15px; font-weight:700; color:var(--gray900); line-height:1.5;}
-  .dcard .dc-q{flex:0 0 auto; color:var(--purple); font-size:19px; margin-top:1px;}
-  /* 의도 배지 3색 */
-  .intent-badge{flex:0 0 auto; font-size:11.5px; font-weight:700; padding:4px 11px; border-radius:11px; white-space:nowrap;}
-  .intent-badge.info{background:#eaf3ff; color:#2d6fe0; border:1px solid #cfe1fb;}
-  .intent-badge.compare{background:var(--purple-bg); color:var(--purple-dark); border:1px solid var(--purple-line);}
-  .intent-badge.buy{background:var(--green-bg); color:var(--green); border:1px solid var(--green-line);}
-  .dcard .dc-cep{font-size:12.5px; color:var(--gray600); line-height:1.55; margin-bottom:13px;
-    padding-left:11px; border-left:2px solid var(--gray200);}
-  .dcard .dc-meta{display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap;}
-  .dcard .dc-basis{flex:1; min-width:0;}
-  .dc-label{font-size:11px; font-weight:700; color:var(--gray500); text-transform:uppercase; letter-spacing:.03em; margin-bottom:6px;}
-  .basis-chips{display:flex; flex-wrap:wrap; gap:6px;}
-  .basis-chip{display:inline-flex; align-items:center; gap:5px; background:var(--gray100); border:1px solid var(--gray200);
-    border-radius:8px; padding:4px 9px; font-size:12px; color:var(--gray700);}
-  .basis-chip .mdi{font-size:13px; color:var(--gray400);}
-  .dc-demand{flex:0 0 auto; text-align:right;}
-  .dc-demand .dv{font-family:"Noto Sans"; font-size:17px; font-weight:700; color:var(--gray900);}
-  .dc-demand .du{font-size:11px; color:var(--gray500);}
 </style>
 </head>
 <body>
 
-  <!-- ═══════════ 셋업 화면 (Image #2 재현) ═══════════ -->
+  <!-- ═══════════ 셋업 화면 ═══════════ -->
   <div class="wrap">
     <div class="page-head">
       <div class="title">AI 옵티마이저 <span class="alpha">alpha</span></div>
-      <div class="sub">브랜드 혹은 제품별 CEP(카테고리 진입점) 기반 실제 고객과 AI 맞춤 전략을 만드세요</div>
+      <div class="sub">프롬프트를 다양한 진입점에서 가져와, 내 브랜드가 AI 답변에 어떻게 나오는지 진단하세요</div>
     </div>
 
     <div class="setup-card">
       <!-- 진입 방식 탭 스위처 (figma 1608-40548) -->
       <div class="entry-tabs" role="tablist">
-        <button class="entry-tab active" id="entryTabA" role="tab" aria-selected="true">CEP 파인더로 시작하기</button>
-        <button class="entry-tab" id="entryTabB" role="tab" aria-selected="false">브랜드/카테고리 입력으로 시작하기</button>
-        <button class="entry-tab" id="entryTabC" role="tab" aria-selected="false">URL 입력으로 시작하기</button>
+        <button class="entry-tab active" id="entryTabB" role="tab" aria-selected="true">키워드로 탐색하기</button>
+        <button class="entry-tab" id="entryTabA" role="tab" aria-selected="false">CEP 파인더로 시작하기</button>
+        <button class="entry-tab" id="entryTabC" role="tab" aria-selected="false">GEO 프롬프트 빌더에서 가져오기</button>
       </div>
 
-      <!-- ═══ 탭 A: 기존 CEP 프로젝트 기반 ═══ -->
+      <!-- ═══ 탭 A: CEP 파인더로 시작하기 ═══ -->
       <div id="tabA">
         <!-- CEP 프로젝트 선택 -->
         <div class="field">
@@ -277,30 +227,26 @@
             <span class="lbl">CEP 프로젝트 선택</span>
             <a href="#" class="link-r">샘플 프로젝트 확인</a>
           </div>
-          <div class="desc">CEP 파인더에서 생성된 프로젝트를 기반으로 분석합니다.</div>
-          <div class="selectbox"><span>버티컬 마우스</span><span class="chev">▾</span></div>
+          <div class="desc">CEP 파인더에서 생성된 프로젝트의 <b>프롬프트</b>를 가져옵니다. (CEP 오브젝트가 아니라 최종 프롬프트만 가져옵니다.)</div>
+          <div class="dd">
+            <div class="selectbox placeholder" id="cepSelect"><span id="cepSelectText">CEP 프로젝트 선택</span><span class="chev">▾</span></div>
+            <div class="dd-menu hidden" id="cepMenu"></div>
+          </div>
+          <div class="basket-strip hidden" data-basket></div>
           <span class="link-under">새 CEP 프로젝트 시작하기</span>
         </div>
 
-        <!-- 내 브랜드·제품 정보 입력 (Feature 1: 관련 검색어 가져오기) -->
+        <!-- 내 브랜드·제품 정보 입력 -->
         <div class="field">
           <div class="field-h"><span class="lbl">내 브랜드·제품 정보 입력</span></div>
           <div class="desc">입력한 브랜드·제품명을 기준으로 AI 답변에서 내 브랜드가 어떻게 언급되는지 분석합니다. 최대 10개까지 입력할 수 있습니다.</div>
           <div class="inputbox">
-            <div class="taginput" id="brandTags">
+            <div class="taginput">
               <span class="flag-sel">🇰🇷 KR <span style="color:var(--gray400);font-size:11px;">▾</span></span>
-              <span class="chip">버티컬 마우스 <span class="x">✕</span></span>
+              <span class="chip">로지텍 <span class="x">✕</span></span>
+              <span class="chip">로지텍 리프트 <span class="x">✕</span></span>
             </div>
-            <button class="rs-trigger ready" id="rsTrigger" title="관련 검색어 가져오기">
-              <i class="mdi mdi-star-four-points" id="rsIcon"></i>
-              <span class="rs-tip">관련 검색어 가져오기</span>
-            </button>
-            <span class="count-r" id="brandCount">1 / 10</span>
-          </div>
-          <!-- 관련 검색어 결과 패널 -->
-          <div class="rs-panel hidden" id="rsPanel">
-            <div class="rs-head"><i class="mdi mdi-google"></i>‘버티컬 마우스’ 구글 관련 검색어 · 클릭해 추가</div>
-            <div class="rs-chips" id="rsChips"></div>
+            <span class="count-r">2 / 10</span>
           </div>
         </div>
 
@@ -315,19 +261,29 @@
           <span class="link-under">+ URL 추가</span>
         </div>
 
-        <!-- 하단 실행 -->
         <div class="setup-foot">
-          <span class="meter"><span class="i">ⓘ</span>프로젝트 생성 | <b>15 out of 20</b></span>
-          <button class="btn-run" id="btnRun">🔍 실행</button>
+          <span class="meter"><span class="i">ⓘ</span>프로젝트 생성 | <b>20 out of 20</b></span>
+          <button class="btn-run btn-go" id="btnRunA">🔍 실행</button>
         </div>
       </div>
 
-      <!-- ═══ 탭 B: 브랜드/카테고리 입력 → CEP 발굴 (Feature 2) ═══ -->
+      <!-- ═══ 탭 B: 키워드로 탐색하기 ═══ -->
       <div id="tabB" class="hidden">
-        <!-- 브랜드 입력 -->
+        <!-- 키워드 입력 + 관련 검색어 가져오기 -->
         <div class="field">
-          <div class="field-h"><span class="lbl">브랜드 입력</span></div>
-          <div class="desc">진단할 내 브랜드명을 입력하세요. AI 답변에서 이 브랜드가 어떻게 언급되는지 분석합니다.</div>
+          <div class="field-h"><span class="lbl">키워드 입력</span></div>
+          <div class="desc">탐색할 키워드를 입력하세요. 각 키워드의 SERP <b>관련 질문</b>을 다음 단계(프롬프트 선택)에서 프롬프트로 가져옵니다. 키워드는 여러 개 입력할 수 있습니다.</div>
+          <div class="inputbox">
+            <input type="text" class="ti-input" id="kwInput" placeholder="키워드 입력 후 Enter">
+            <span class="count-r" id="kwCount">0 / 10</span>
+          </div>
+          <div class="basket-strip hidden" data-basket></div>
+        </div>
+
+        <!-- 내 브랜드·제품 정보 입력 -->
+        <div class="field">
+          <div class="field-h"><span class="lbl">내 브랜드·제품 정보 입력</span></div>
+          <div class="desc">입력한 브랜드·제품명을 기준으로 AI 답변에서 내 브랜드가 어떻게 언급되는지 분석합니다. 최대 10개까지 입력할 수 있습니다.</div>
           <div class="inputbox">
             <div class="taginput">
               <span class="flag-sel">🇰🇷 KR <span style="color:var(--gray400);font-size:11px;">▾</span></span>
@@ -337,108 +293,63 @@
           </div>
         </div>
 
-        <!-- 카테고리 입력 -->
+        <!-- 내 콘텐츠 URL 입력 -->
         <div class="field">
-          <div class="field-h"><span class="lbl">카테고리 입력</span></div>
-          <div class="desc">CEP 프로젝트 없이도, 카테고리 키워드만으로 소비자 진입점(CEP) 후보를 발굴합니다.</div>
-          <div class="inputbox">
-            <input type="text" id="catInput" value="마우스" placeholder="예: 마우스"
-              style="border:none; outline:none; width:100%; font-size:15px; color:var(--gray900); background:transparent;">
+          <div class="field-h"><span class="lbl">내 콘텐츠 URL 입력</span></div>
+          <div class="desc">입력한 URL을 기준으로 AI 답변에 내 콘텐츠가 인용되는지 분석합니다. 분석할 콘텐츠가 없다면 비워두셔도 됩니다.</div>
+          <div class="url-row">
+            <div class="inputbox"><span>logitech.com</span><span class="x">✕</span></div>
+            <button class="minus" title="삭제">−</button>
           </div>
-          <button class="btn-discover" id="btnDiscover"><i class="mdi mdi-creation" id="discIcon"></i><span id="discLabel">카테고리에서 CEP 발굴</span></button>
+          <span class="link-under">+ URL 추가</span>
         </div>
 
-        <!-- 발굴 결과: CEP 후보 -->
-        <div class="cep-result hidden" id="cepResult">
-          <div class="cr-head">발굴된 CEP 후보 <span class="badge" id="cepCountBadge">6개</span></div>
-          <div class="cr-sub">소비자가 이 카테고리에 진입하는 구체적 장면입니다. 진단할 CEP를 선택하세요.</div>
-          <div class="cep-list" id="cepList"></div>
-        </div>
-
-        <!-- 선택 CEP의 추천 프롬프트 -->
-        <div class="prompt-panel hidden" id="promptPanel">
-          <div class="pp-head"><i class="mdi mdi-comment-question-outline"></i>추천 프롬프트</div>
-          <div class="pp-sub"><b id="ppCepName"></b> — 소비자가 AI에게 실제로 물어볼 법한 질문입니다.</div>
-          <ul class="pp-list" id="ppList"></ul>
-          <div class="pp-foot">
-            <span class="cnt">프롬프트 <b id="ppCount">0</b>개 생성됨</span>
-            <button class="btn-run" id="btnAnalyze">🔍 이 프롬프트로 분석 시작</button>
-          </div>
+        <div class="setup-foot">
+          <span class="meter"><span class="i">ⓘ</span>프로젝트 생성 | <b>20 out of 20</b></span>
+          <button class="btn-run btn-go" id="btnRunB">🔍 실행</button>
         </div>
       </div>
 
-      <!-- ═══ 탭 C: 상품 URL 입력 → 소비자 프롬프트 도출 (Feature 3) ═══ -->
+      <!-- ═══ 탭 C: GEO 프롬프트 빌더에서 가져오기 ═══ -->
       <div id="tabC" class="hidden">
-        <!-- 상품 URL 입력 -->
+        <!-- GEO 프롬프트 빌더 응답 선택 -->
         <div class="field">
-          <div class="field-h"><span class="lbl">상품 URL 입력</span></div>
-          <div class="desc">상품 페이지 URL 하나만 입력하면, 페이지에서 대표 키워드를 뽑아 실제 검색 수요를 근거로 소비자 프롬프트를 도출합니다.</div>
+          <div class="field-h"><span class="lbl">GEO 프롬프트 빌더 응답 가져오기</span></div>
+          <div class="desc">서비스 내 <b>AI 사용 내역</b>의 클러스터파인더 GEO 프롬프트 빌더 결과를 선택하면, 생성된 프롬프트를 가져옵니다. <b>여러 결과를 선택</b>해 프롬프트를 합쳐 가져올 수 있습니다. 가져온 프롬프트 수정은 다음 단계(프롬프트 선택)에서 할 수 있습니다.</div>
+          <div class="dd">
+            <div class="selectbox placeholder" id="geoSelect"><span id="geoSelectText">GEO 프롬프트 빌더 응답 가져오기</span><span class="chev">▾</span></div>
+            <div class="dd-menu hidden" id="geoMenu"></div>
+          </div>
+          <div class="basket-strip hidden" data-basket></div>
+        </div>
+
+        <!-- 내 브랜드·제품 정보 입력 -->
+        <div class="field">
+          <div class="field-h"><span class="lbl">내 브랜드·제품 정보 입력</span></div>
+          <div class="desc">입력한 브랜드·제품명을 기준으로 AI 답변에서 내 브랜드가 어떻게 언급되는지 분석합니다. 최대 10개까지 입력할 수 있습니다.</div>
           <div class="inputbox">
-            <input type="text" id="urlInput"
-              value="https://www.logitech.com/ko-kr/products/mice/lift-vertical-ergonomic-mouse.html"
-              placeholder="예: https://브랜드.com/상품페이지"
-              style="border:none; outline:none; width:100%; font-size:14px; color:var(--gray900); background:transparent; font-family:'Noto Sans';">
-          </div>
-          <button class="btn-discover" id="btnDeriveUrl"><i class="mdi mdi-link-variant" id="deriveIcon"></i><span id="deriveLabel">URL에서 프롬프트 도출</span></button>
-
-          <!-- 진행 단계 (로딩 연출) -->
-          <div class="derive-steps hidden" id="deriveSteps">
-            <div class="ds" data-step="0"><i class="mdi mdi-web"></i>URL 페이지 크롤링</div>
-            <div class="ds" data-step="1"><i class="mdi mdi-tag-outline"></i>대표 키워드 추출</div>
-            <div class="ds" data-step="2"><i class="mdi mdi-magnify"></i>연관 검색어·검색량·의도 수집</div>
-            <div class="ds" data-step="3"><i class="mdi mdi-group"></i>의도별 군집화 → 프롬프트 도출</div>
-          </div>
-          <!-- 추출된 대표 키워드 -->
-          <div class="kw-extract hidden" id="kwExtract">대표 키워드 <span class="kw-chip"><i class="mdi mdi-tag"></i><span id="kwText">버티컬 마우스</span></span></div>
-        </div>
-
-        <!-- 도출 결과 -->
-        <div class="cep-result hidden" id="deriveResult">
-          <div class="cr-head">도출된 소비자 프롬프트 <span class="badge" id="deriveCountBadge">3개</span></div>
-          <div class="cr-sub">각 프롬프트는 실제 연관 검색어(근거)와 검색 수요를 기반으로 의도별로 도출됩니다. 근거 없는 질문은 생성하지 않습니다.</div>
-          <div class="derive-list" id="deriveList"></div>
-          <div class="pp-foot" style="margin-top:20px;">
-            <span class="cnt">근거 기반 프롬프트 <b id="deriveTotal">0</b>개</span>
-            <button class="btn-run" id="btnAnalyzeUrl">🔍 이 프롬프트로 분석 시작</button>
+            <div class="taginput">
+              <span class="flag-sel">🇰🇷 KR <span style="color:var(--gray400);font-size:11px;">▾</span></span>
+              <span class="chip">로지텍 <span class="x">✕</span></span>
+            </div>
+            <span class="count-r">1 / 10</span>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ═══════════ 분기 모달 (figma 1601-82366) ═══════════ -->
-  <div class="overlay" id="forkOverlay">
-    <div class="fork" role="dialog" aria-modal="true" aria-labelledby="forkTitle">
-      <button class="fork-x" id="forkX" title="닫기">✕</button>
-      <div class="fork-h">
-        <div class="t" id="forkTitle">어떤 방식으로 분석할까요?</div>
-        <div class="d">동일한 CEP 프로젝트를 <b>두 가지 방식</b>으로 진단할 수 있습니다. 원하는 방식을 선택하세요.</div>
-      </div>
-
-      <div class="fork-grid">
-        <!-- 왼쪽: 직접 선택 (권장) -->
-        <div class="opt reco" id="optSelect" role="button" tabindex="0">
-          <span class="reco-badge">추천</span>
-          <div class="otitle">타겟 프롬프트 선택</div>
-          <div class="pc-block">
-            <ul class="pc-list pro">
-              <li><span class="mk">•</span><span>내가 대응하고 싶은 프롬프트를 <b>직접 선택</b>합니다.</span></li>
-              <li><span class="mk">•</span><span>원하는 카테고리에 대한 <b>정확한 프롬프트 진단·분석</b>이 가능합니다.</span></li>
-            </ul>
+        <!-- 내 콘텐츠 URL 입력 -->
+        <div class="field">
+          <div class="field-h"><span class="lbl">내 콘텐츠 URL 입력</span></div>
+          <div class="desc">입력한 URL을 기준으로 AI 답변에 내 콘텐츠가 인용되는지 분석합니다. 분석할 콘텐츠가 없다면 비워두셔도 됩니다.</div>
+          <div class="url-row">
+            <div class="inputbox"><span>logitech.com</span><span class="x">✕</span></div>
+            <button class="minus" title="삭제">−</button>
           </div>
-          <div class="opt-cta">타겟 프롬프트 선택하기 →</div>
+          <span class="link-under">+ URL 추가</span>
         </div>
 
-        <!-- 오른쪽: CEP 기반 프롬프트 자동 생성 (현재 미운영 — 숨김) -->
-        <div class="opt hidden" id="optAuto" role="button" tabindex="0">
-          <div class="otitle">CEP 기반 프롬프트 자동 생성</div>
-          <div class="pc-block">
-            <ul class="pc-list con">
-              <li><span class="mk">•</span><span>CEP 기반으로 <b>AI가 프롬프트를 자동 생성</b>합니다.</span></li>
-              <li><span class="mk">•</span><span>빠르게 시작할 수 있으며, 특정 주제를 정밀하게 보려면 <b>'타겟 프롬프트 선택'</b>을 권장합니다.</span></li>
-            </ul>
-          </div>
-          <div class="opt-cta">빠르게 시작하기 →</div>
+        <div class="setup-foot">
+          <span class="meter"><span class="i">ⓘ</span>프로젝트 생성 | <b>20 out of 20</b></span>
+          <button class="btn-run btn-go" id="btnRunC">🔍 실행</button>
         </div>
       </div>
     </div>
@@ -446,30 +357,11 @@
 
 <script>
   const $ = s => document.querySelector(s);
-  const overlay = $("#forkOverlay");
+  const $$ = s => document.querySelectorAll(s);
+  const escapeHtml = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-  function openFork(){ overlay.classList.add("show"); }
-  function closeFork(){ overlay.classList.remove("show"); }
-
-  // 왼쪽(권장): 옵티마이저 로딩 → 직접 프롬프트 선택 화면으로
+  // 실행 → 옵티마이저 로딩 → 프롬프트 선택 화면으로
   const goSelect = () => { window.location.href = "loading-0703.html"; };
-  // 오른쪽(자동/장문): 결과 대시보드로 바로
-  const goAuto   = () => { window.location.href = "prototype.html"; };
-
-  // 실행 → (현재는 '타겟 프롬프트 선택'만 운영) 분기 모달 없이 바로 선택 흐름으로 진입
-  // ※ CEP 자동 생성 재도입 시: 아래를 openFork 로 되돌리고 #optAuto 의 hidden 제거
-  $("#btnRun").addEventListener("click", goSelect);
-
-  $("#optSelect").addEventListener("click", goSelect);
-  $("#optAuto").addEventListener("click", goAuto);
-  // 키보드 접근성
-  $("#optSelect").addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); goSelect(); }});
-  $("#optAuto").addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); goAuto(); }});
-
-  // 닫기(취소 = AS-IS 복귀 느낌): X · 오버레이 · ESC
-  $("#forkX").addEventListener("click", closeFork);
-  overlay.addEventListener("click", e=>{ if(e.target===overlay) closeFork(); });
-  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && overlay.classList.contains("show")) closeFork(); });
 
   /* ═══════════ 진입 방식 탭 전환 (3-way) ═══════════ */
   const ENTRY = {
@@ -488,257 +380,255 @@
   ENTRY.A.tab.addEventListener("click", ()=>switchEntry("A"));
   ENTRY.B.tab.addEventListener("click", ()=>switchEntry("B"));
   ENTRY.C.tab.addEventListener("click", ()=>switchEntry("C"));
+  // 해시로 탭 선택 (#cep · #keyword · #geo) — 딥링크/테스트용
+  // 해시가 없으면 기본 탭을 '키워드로 탐색하기'(B)로 둔다 (키워드→PAA 시연 진입점).
+  (function initTabFromHash(){
+    const map = { "#keyword":"B", "#kw":"B", "#geo":"C", "#cep":"A" };
+    switchEntry(map[location.hash] || "B");
+  })();
 
-  /* ═══════════ Feature 1 — 관련 검색어 가져오기 ═══════════ */
-  // 실제 소스: 수집된 구글 SERP 스냅샷의 related_searches 블록 (hubble-intent feature-related-searches.tsx).
-  // 프로토타입은 '버티컬 마우스'의 최신 수집 관련 검색어를 하드코딩해 재현.
-  const RELATED = {
-    "버티컬 마우스": [
-      "버티컬 마우스의 치명적인 단점",
-      "버티컬 마우스 추천",
-      "로지텍 버티컬 마우스",
-      "버티컬 마우스 추천 여자",
-      "버티컬 마우스 끝판 왕",
-      "버티컬 마우스 디시",
-    ],
-  };
-  const rsTrigger = $("#rsTrigger"), rsIcon = $("#rsIcon"), rsPanel = $("#rsPanel"), rsChips = $("#rsChips");
-  const brandTags = $("#brandTags"), brandCount = $("#brandCount");
-  let rsLoading = false;
+  // 브랜드·제품 태그 인풋 공통: ✕ 삭제 바인딩 (키워드는 공유 바구니로 이관됨)
+  function bindChipRemove(scope){
+    scope.querySelectorAll(".chip .x").forEach(x=>{
+      if(x.dataset.bound) return; x.dataset.bound = "1";
+      x.addEventListener("click", ()=>{ x.closest(".chip").remove(); });
+    });
+  }
+  document.querySelectorAll(".setup-card").forEach(bindChipRemove);
 
-  function brandChipCount(){ return brandTags.querySelectorAll(".chip").length; }
-  function updateBrandCount(){ brandCount.textContent = brandChipCount() + " / 10"; }
+  /* ═══════════════════════════════════════════════════════════════════
+     공유 선택 바구니 (persistent selection tray) — figma 1608-40534 등
+     CEP·키워드·GEO 3개 탭이 하나의 배열을 공유. 탭을 바꿔도 선택 유지.
+     아이템 스키마: { uid, source:'cep'|'keyword'|'geo', label, prompts:[], geoIndex? }
+     ═══════════════════════════════════════════════════════════════════ */
+  const basket = [];
+  let basketSeq = 0;
+  const SRC_LABEL = { cep:"CEP", keyword:"키워드", geo:"GEO" };
 
-  function addBrandChip(text){
-    if(brandChipCount() >= 10) return false;
-    const chip = document.createElement("span");
-    chip.className = "chip";
-    chip.innerHTML = text + ' <span class="x">✕</span>';
-    chip.querySelector(".x").addEventListener("click", ()=>{ chip.remove(); updateBrandCount(); });
-    brandTags.appendChild(chip);
-    updateBrandCount();
+  const basketHas = (source,label) => basket.some(b=>b.source===source && b.label===label);
+  function addToBasket(item){
+    if(basketHas(item.source, item.label)) return false;
+    basket.push(Object.assign({ uid:++basketSeq, prompts:[] }, item));
+    renderBasket();
     return true;
   }
-  // 기존 시드 칩(버티컬 마우스)의 ✕ 도 동작하도록 바인딩
-  brandTags.querySelectorAll(".chip .x").forEach(x=>{
-    x.addEventListener("click", ()=>{ x.closest(".chip").remove(); updateBrandCount(); });
-  });
+  function removeFromBasket(uid){
+    const i = basket.findIndex(b=>b.uid===uid);
+    if(i<0) return;
+    const it = basket[i];
+    basket.splice(i,1);
+    if(it.source==="geo" && it.geoIndex!=null){ geoSelected.delete(it.geoIndex); renderGeoMenu(); }
+    if(it.source==="cep") renderCepMenu();
+    renderBasket();
+  }
 
-  function renderRelatedChips(list){
-    rsChips.innerHTML = "";
-    list.forEach(q=>{
-      const chip = document.createElement("button");
-      chip.className = "rs-chip";
-      chip.innerHTML = '<i class="mdi mdi-plus"></i>' + q;
-      chip.addEventListener("click", ()=>{
-        if(chip.classList.contains("added")) return;
-        if(addBrandChip(q)){
-          chip.classList.add("added");
-          chip.querySelector(".mdi").className = "mdi mdi-check";
-        }
+  function renderBasket(){
+    $$("[data-basket]").forEach(strip=>{
+      if(basket.length===0){ strip.classList.add("hidden"); strip.innerHTML=""; return; }
+      strip.classList.remove("hidden");
+      strip.innerHTML =
+        `<button class="basket-nav" type="button" data-nav="-1" aria-label="이전">‹</button>`+
+        `<div class="basket-scroll"></div>`+
+        `<button class="basket-nav" type="button" data-nav="1" aria-label="다음">›</button>`;
+      const scroll = strip.querySelector(".basket-scroll");
+      basket.forEach(b=>{
+        const chip = document.createElement("span");
+        chip.className = "b-chip";
+        chip.innerHTML =
+          `<span class="src-badge ${b.source}">${SRC_LABEL[b.source]}</span>`+
+          `<span class="b-txt">${escapeHtml(b.label)}</span>`+
+          `<span class="x" title="제거">✕</span>`;
+        chip.querySelector(".x").addEventListener("click", ()=>removeFromBasket(b.uid));
+        scroll.appendChild(chip);
       });
-      rsChips.appendChild(chip);
+      strip.querySelectorAll(".basket-nav").forEach(btn=>{
+        btn.addEventListener("click", ()=> scroll.scrollBy({ left:(+btn.dataset.nav)*220, behavior:"smooth" }));
+      });
+      scroll.addEventListener("scroll", ()=>updateNav(strip, scroll));
+      requestAnimationFrame(()=>updateNav(strip, scroll));
     });
+    updateKwCount();
+  }
+  function updateNav(strip, scroll){
+    const navs = strip.querySelectorAll(".basket-nav");
+    const overflow = scroll.scrollWidth > scroll.clientWidth + 1;
+    navs.forEach(n=>n.style.display = overflow ? "" : "none");
+    if(!overflow) return;
+    const [prev, next] = navs;
+    prev.disabled = scroll.scrollLeft <= 0;
+    next.disabled = scroll.scrollLeft + scroll.clientWidth >= scroll.scrollWidth - 1;
   }
 
-  rsTrigger.addEventListener("click", ()=>{
-    if(rsLoading) return;
-    const list = RELATED["버티컬 마우스"];  // 프로토타입: 시드 키워드 기준
-    // 2) mdi-loading 회전
-    rsLoading = true;
-    rsTrigger.classList.remove("ready");
-    rsIcon.className = "mdi mdi-loading mdi-spin";
-    // 실제 SERP 관련 검색어 조회 대체 (프로토타입 타이밍)
-    setTimeout(()=>{
-      // 3) star-four-points 로 복귀 + 툴팁 재활성
-      rsIcon.className = "mdi mdi-star-four-points";
-      rsTrigger.classList.add("ready");
-      rsLoading = false;
-      // 4) 관련 검색어 자동 노출
-      renderRelatedChips(list);
-      rsPanel.classList.remove("hidden");
-    }, 1400);
+  /* ═══════════ 탭 A — CEP 프로젝트 선택 (복수 선택 → 바구니) ═══════════ */
+  // 실제 소스: CEP 파인더 프로젝트. 프로토타입은 샘플 프로젝트를 하드코딩.
+  const CEP_PROJECTS = [
+    { name:"버티컬 마우스", meta:"CEP 파인더 · 26/07/06", prompts:[
+      "버티컬 마우스가 손목 통증 완화에 실제로 효과가 있는지, 어떤 사람에게 특히 추천되는지 근거와 함께 알려줘.",
+      "버티컬 마우스를 처음 쓸 때 적응 기간과 초기 단점은 어떤 것들이 있는지 사용자 경험 기반으로 정리해줘.",
+      "사무용으로 무선 버티컬 마우스를 고를 때 연결 안정성·배터리·정밀도 측면에서 봐야 할 기준을 알려줘.",
+    ] },
+    { name:"게이밍 헤드셋", meta:"CEP 파인더 · 26/07/02", prompts:[
+      "게이밍 헤드셋에서 공간 음향(서라운드)이 실제 게임 승률이나 몰입감에 얼마나 영향을 주는지 알려줘.",
+      "장시간 착용해도 귀가 아프지 않은 게이밍 헤드셋을 고르는 무게·패드·클램핑 기준을 정리해줘.",
+    ] },
+    { name:"기계식 키보드", meta:"CEP 파인더 · 26/06/28", prompts:[
+      "기계식 키보드 스위치(적축·청축·갈축) 차이와 사무실에서 쓰기 좋은 소음 수준을 알려줘.",
+      "타건감과 내구성을 기준으로 입문용 기계식 키보드를 고르는 방법을 알려줘.",
+    ] },
+  ];
+  const cepSelect = $("#cepSelect"), cepSelectText = $("#cepSelectText"), cepMenu = $("#cepMenu");
+  function cepSelectedCount(){ return basket.filter(b=>b.source==="cep").length; }
+  function renderCepMenu(){
+    cepMenu.innerHTML = "";
+    CEP_PROJECTS.forEach(p=>{
+      const on = basketHas("cep", p.name);
+      const item = document.createElement("div");
+      item.className = "dd-item" + (on ? " sel" : "");
+      item.innerHTML =
+        `<span class="di-check">${on ? '<i class="mdi mdi-check"></i>' : ''}</span>`+
+        `<div class="di-l"><span class="di-t">${p.name}</span><span class="di-m">${p.meta} · 프롬프트 ${p.prompts.length}개</span></div>`+
+        `<span class="di-tag">CEP</span>`;
+      item.addEventListener("click", ()=>{
+        if(basketHas("cep", p.name)){
+          const it = basket.find(b=>b.source==="cep" && b.label===p.name);
+          if(it) removeFromBasket(it.uid);
+        } else {
+          addToBasket({ source:"cep", label:p.name, prompts:p.prompts.slice() });
+        }
+        renderCepMenu();
+        updateCepText();
+      });
+      cepMenu.appendChild(item);
+    });
+  }
+  function updateCepText(){
+    const n = cepSelectedCount();
+    cepSelectText.textContent = n===0 ? "CEP 프로젝트 선택" : `CEP 프로젝트 ${n}개 선택`;
+    cepSelect.classList.toggle("placeholder", n===0);
+  }
+  cepSelect.addEventListener("click", e=>{ e.stopPropagation(); cepMenu.classList.toggle("hidden"); });
+  cepMenu.addEventListener("click", e=>e.stopPropagation());
+  renderCepMenu();
+
+  /* ═══════════ 탭 B — 키워드 입력 (Enter → 바구니) ═══════════ */
+  // 입력한 키워드의 SERP 관련 질문은 다음 단계(select-prompt)에서 프롬프트로 가져온다.
+  const kwInput = $("#kwInput"), kwCount = $("#kwCount");
+  function updateKwCount(){ if(kwCount) kwCount.textContent = basket.filter(b=>b.source==="keyword").length + " / 10"; }
+  kwInput.addEventListener("keydown", e=>{
+    if(e.key !== "Enter") return;
+    if(e.isComposing || e.keyCode === 229) return; // 한글 IME 조합 중 Enter 무시 (끝 음절 중복 방지)
+    e.preventDefault();
+    const v = kwInput.value.trim();
+    if(!v) return;
+    if(basket.filter(b=>b.source==="keyword").length >= 10) return;
+    if(addToBasket({ source:"keyword", label:v, prompts:[] })) kwInput.value = "";
   });
 
-  /* ═══════════ Feature 2 — 브랜드/카테고리 → CEP 발굴 → 추천 프롬프트 ═══════════ */
-  // 실제 파이프라인: CEP Finder createCepProject({product_name}) → cep_cards[] (CepCard.cep / user_prompts).
-  // 프로토타입은 '로지텍 / 마우스'의 실제 엔티티루프 결과(6 CEP)와 선택 CEP의 user_prompts 를 하드코딩.
-  const CEP_CANDIDATES = [
-    { name:"로지텍 소프트웨어 호환성 문제", situation:"새로운 로지텍 마우스를 구매했지만, 기존 소프트웨어와 호환되지 않아 설정에 어려움을 겪고 있다." },
-    { name:"무선 마우스 배터리 수명", situation:"무선 마우스를 사용 중인데, 배터리가 빨리 닳아 자주 교체해야 하는 불편함이 있다." },
-    { name:"로지텍 g hub 사용법", situation:"로지텍 g hub를 설치했지만, 복잡한 인터페이스 때문에 원하는 설정을 찾기 어렵다." },
-    { name:"유선 마우스의 케이블 걸림 문제", situation:"유선 마우스를 사용 중인데, 케이블이 걸려 작업에 방해가 된다.",
+  /* ═══════════ GEO 프롬프트 빌더에서 가져오기 ═══════════ */
+  // 실제 소스: AI 사용 내역(이전 기록)의 [클러스터파인더] GEO 프롬프트 빌더 결과.
+  // 프로토타입은 GEO_promptBuilder.md 의 버티컬 마우스 클러스터 3건을 하드코딩.
+  const GEO_HISTORY = [
+    { id:"H", tag:"CF", title:"[클러스터파인더] GEO 프롬프트 빌더", meta:"버티컬 마우스 · 클러스터 H · 26/07/07",
       prompts:[
-        "케이블에 걸리지 않는 마우스 사용 방법을 알려줘.",
-        "케이블 없이 사용할 수 있는 마우스 추천해줘.",
-        "케이블 걸림 문제를 해결할 수 있는 마우스 액세서리를 찾아",
-        "케이블이 없는 마우스를 사용하면 어떤 점이 좋은지 설명해줘",
-        "로지텍에서 케이블에 걸리지 않는 마우스를 추천해줘.",
-        "로지텍 마우스 중에서 케이블 관리가 편한 제품이 있나요?",
-        "로지텍에서 케이블 없는 마우스를 사용하면 어떤 점이 좋은가",
+        "장시간 마우스 사용으로 손목 통증이 심한데, 버티컬 마우스가 실제 수근관 증후군 예방이나 완화에 얼마나 효과가 있는지 전문가 의견과 함께 선택 기준을 알려줘.",
+        "마우스 손목 통증을 줄이기 위해 손목보호대와 버티컬 마우스 중 어떤 것을 먼저 고려해야 할까? 각각의 장단점과 함께 올바른 마우스 사용 습관을 정리해줘.",
+        "마우스 클릭을 많이 하는 직업인데 팔꿈치부터 손목까지 저릿한 통증이 있어. 마우스 엘보나 수근관 증후군 같은 질환인지 확인하는 방법과 통증을 줄이는 마우스 잡는 법을 알려줘.",
+        "손목 터널 증후군 진단을 받았는데, 컴퓨터 작업 시 통증을 최소화할 수 있는 마우스 환경 설정과 추천하는 스트레칭 루틴을 전문가 관점에서 추천해줘.",
+        "마우스 손목 보호대 선택 시 재질과 형태가 통증 완화에 미치는 영향을 알려줘. 마우스 손목 통증을 겪는 사람들이 주로 사용하는 제품 유형과 선택 기준이 궁금해.",
       ] },
-    { name:"로지텍 마우스 드라이버 문제", situation:"로지텍 마우스를 사용 중인데, 드라이버 문제로 마우스가 제대로 작동하지 않는다." },
-    { name:"게임용 마우스 선택의 어려움", situation:"게임을 위한 마우스를 선택하려고 하는데, 어떤 제품이 좋은지 판단이 어렵다." },
-  ];
-  // 대표 프롬프트 폴백(선택 CEP에 hardcoded prompts 없을 때 프로토타입용 생성)
-  function fallbackPrompts(c){
-    return [
-      `${c.name} 관련해서 어떤 제품이 좋은지 추천해줘.`,
-      `${c.name} 상황을 해결할 수 있는 방법을 알려줘.`,
-      `로지텍 제품 중에서 ${c.name}에 도움이 되는 게 있어?`,
-    ];
-  }
-
-  const btnDiscover = $("#btnDiscover"), discIcon = $("#discIcon"), discLabel = $("#discLabel");
-  const cepResult = $("#cepResult"), cepList = $("#cepList"), cepCountBadge = $("#cepCountBadge");
-  const promptPanel = $("#promptPanel"), ppList = $("#ppList"), ppCepName = $("#ppCepName"), ppCount = $("#ppCount");
-  let discovered = false;
-
-  function renderCepCards(){
-    cepList.innerHTML = "";
-    CEP_CANDIDATES.forEach((c, i)=>{
-      const card = document.createElement("div");
-      card.className = "cep-card";
-      card.dataset.idx = i;
-      card.innerHTML =
-        `<div class="cc-name"><span class="rdo"></span>${c.name}</div>`+
-        `<div class="cc-sit">${c.situation}</div>`;
-      card.addEventListener("click", ()=>selectCep(i));
-      cepList.appendChild(card);
-    });
-    cepCountBadge.textContent = CEP_CANDIDATES.length + "개";
-  }
-
-  function selectCep(i){
-    cepList.querySelectorAll(".cep-card").forEach(el=>el.classList.toggle("sel", +el.dataset.idx===i));
-    const c = CEP_CANDIDATES[i];
-    const prompts = (c.prompts && c.prompts.length) ? c.prompts : fallbackPrompts(c);
-    ppCepName.textContent = c.name;
-    ppList.innerHTML = prompts.map(p=>`<li><i class="mdi mdi-message-outline"></i><span>${p}</span></li>`).join("");
-    ppCount.textContent = prompts.length;
-    promptPanel.classList.remove("hidden");
-    promptPanel.scrollIntoView({ behavior:"smooth", block:"nearest" });
-  }
-
-  btnDiscover.addEventListener("click", ()=>{
-    if(btnDiscover.disabled) return;
-    // 로딩 연출 (실제 CEP Finder progress 폴링 대체)
-    btnDiscover.disabled = true;
-    discIcon.className = "mdi mdi-loading mdi-spin";
-    discLabel.textContent = "CEP 발굴 중…";
-    promptPanel.classList.add("hidden");
-    setTimeout(()=>{
-      discIcon.className = "mdi mdi-creation";
-      discLabel.textContent = "카테고리에서 CEP 발굴";
-      btnDiscover.disabled = false;
-      renderCepCards();
-      cepResult.classList.remove("hidden");
-      discovered = true;
-      cepResult.scrollIntoView({ behavior:"smooth", block:"nearest" });
-    }, 1500);
-  });
-
-  // 선택 CEP·프롬프트 확정 → select-prompt 화면으로
-  $("#btnAnalyze").addEventListener("click", ()=>{ window.location.href = "select-prompt-0703.html"; });
-
-  /* ═══════════ Feature 3 — URL 입력 → 소비자 프롬프트 도출 ═══════════ */
-  // 파이프라인: URL 크롤링 → 대표 키워드 → 연관 검색어(related_searches + PASF)·검색량·의도 수집
-  //             → 의도(정보/비교/구매)별 군집화 → 군집당 소비자 질문 1개 (basis·demand 동반).
-  // 실제 스키마 반영: 검색량 = keyword_detail.volume_monthly, 의도 = intents{i,n,c,t} (I/N/C/T).
-  //                  매핑: 정보=Informational, 비교=Commercial, 구매=Transactional.
-  // hallucination 배제: 모든 프롬프트는 basis(실제 근거 검색어) 를 반드시 가진다.
-  const EXTRACTED_KW = "버티컬 마우스";
-  const URL_DERIVED = [
-    { prompt:"버티컬 마우스가 손목 통증에 실제로 도움이 되는지, 단점은 없는지 알려줘",
-      intent:"정보", intentClass:"info",
-      cep:"손목 통증 때문에 버티컬 마우스를 고민하지만, 효과와 단점이 궁금해 검색으로 정보를 찾는 상황",
-      basis:["버티컬 마우스의 치명적인 단점","버티컬 마우스 손목 통증","버티컬 마우스 적응"],
-      demand:5480 },
-    { prompt:"손목 편한 버티컬 마우스를 추천해줘. 로지텍 제품이 특히 좋은지 비교해줘",
-      intent:"비교", intentClass:"compare",
-      cep:"여러 버티컬 마우스 중 무엇을 살지 후보를 좁히며 브랜드·모델을 비교하는 상황",
-      basis:["버티컬 마우스 추천","로지텍 버티컬 마우스","버티컬 마우스 추천 여자","버티컬 마우스 끝판 왕"],
-      demand:9120 },
-    { prompt:"로지텍 버티컬 마우스를 가장 저렴하게 살 수 있는 곳을 알려줘",
-      intent:"구매", intentClass:"buy",
-      cep:"구매를 결정하고 최저가·구매처를 찾아 실제 구입으로 넘어가려는 상황",
-      basis:["버티컬 마우스 최저가","로지텍 리프트 가격","버티컬 마우스 디시"],
-      demand:2310 },
+    { id:"A", tag:"CF", title:"[클러스터파인더] GEO 프롬프트 빌더", meta:"버티컬 마우스 · 클러스터 A · 26/07/06",
+      prompts:[
+        "손목 통증 때문에 버티컬 마우스를 고민 중인데, 로지텍 리프트나 MX 버티컬 같은 유명 제품과 가성비 제품 중 어떤 것을 선택해야 손목 건강을 확실히 챙길 수 있을까? 실제 사용자들의 적응기나 단점을 포함해서 비교해줘.",
+        "게임할 때 버티컬 마우스를 써도 괜찮을까? 손목 보호는 하고 싶은데 게임 반응 속도나 정밀도가 떨어질까 봐 걱정돼. 게이밍 환경에서 버티컬 마우스를 사용해 본 사람들의 의견이나 추천 모델이 있는지 알려줘.",
+        "다이소 버티컬 마우스 같은 저가형 제품과 로지텍 같은 브랜드 제품의 성능 차이가 실제 손목 보호 효과에서 얼마나 클까? 가성비와 기능성 사이에서 고민인데, 합리적인 선택을 위해 고려해야 할 핵심 기준을 정리해줘.",
+        "버티컬 마우스를 처음 써보려는데, 로지텍 리프트와 MX 버티컬의 차이점이 뭐야? 내 손 크기에 맞는 제품을 고르는 방법과 처음 사용 시 겪을 수 있는 단점이나 적응 기간에 대해 조언해줘.",
+        "유선 버티컬 마우스와 무선 제품 중 사무용으로 더 적합한 것은 무엇일까? 책상 위 깔끔함을 원하는데, 연결 안정성이나 성능 면에서 어떤 것을 선택하는 게 좋을지 기준을 알려줘.",
+      ] },
+    { id:"C", tag:"CF", title:"[클러스터파인더] GEO 프롬프트 빌더", meta:"버티컬 마우스 · 클러스터 C · 26/07/06",
+      prompts:[
+        "버티컬 플랫폼이라는 용어가 비즈니스 분야에서 자주 보이는데, 구체적으로 어떤 특징을 가진 서비스를 의미하는지 그리고 일반적인 플랫폼과 비교했을 때 어떤 장단점이 있는지 정리해줘.",
+        "거실 창문에 설치할 블라인드를 고민 중인데, 버티컬 블라인드와 일반 롤스크린의 차이점은 뭐야? 각각 어떤 인테리어 스타일과 환경에 더 적합한지 추천해줘.",
+        "로지텍 버티컬 마우스를 구매하려고 하는데, 일반 마우스랑 비교했을 때 손목 통증 완화에 정말 효과가 있는지, 적응하는 데 얼마나 걸리는지 사용자들의 경험담을 바탕으로 알려줘.",
+      ] },
   ];
 
-  const btnDeriveUrl = $("#btnDeriveUrl"), deriveIcon = $("#deriveIcon"), deriveLabel = $("#deriveLabel");
-  const deriveSteps = $("#deriveSteps"), kwExtract = $("#kwExtract"), kwText = $("#kwText");
-  const deriveResult = $("#deriveResult"), deriveList = $("#deriveList");
-  const deriveCountBadge = $("#deriveCountBadge"), deriveTotal = $("#deriveTotal");
+  /* ═══════════ 탭 C — GEO 프롬프트 빌더 결과 선택 (복수 → 바구니) ═══════════ */
+  // GEO 탭은 응답을 '선택'만 한다. 선택한 각 결과(클러스터)가 공유 바구니에 칩으로 누적된다.
+  // 가져온 프롬프트 수정은 select-prompt 의 Selected Prompt 영역에서 처리.
+  const geoSelect = $("#geoSelect"), geoSelectText = $("#geoSelectText"), geoMenu = $("#geoMenu");
+  const geoSelected = new Set();   // 선택된 GEO_HISTORY 인덱스 (복수 선택) — 바구니와 동기화
+  // meta "버티컬 마우스 · 클러스터 H · 26/07/07" → "클러스터 H"
+  const geoLabel = i => (GEO_HISTORY[i].meta.split(" · ").slice(-2, -1)[0]) || GEO_HISTORY[i].meta;
 
-  function renderDeriveCards(){
-    deriveList.innerHTML = "";
-    URL_DERIVED.forEach(d=>{
-      const basisChips = d.basis.map(b=>`<span class="basis-chip"><i class="mdi mdi-magnify"></i>${b}</span>`).join("");
-      const card = document.createElement("div");
-      card.className = "dcard";
-      card.innerHTML =
-        `<div class="dc-top">`+
-          `<i class="mdi mdi-comment-question-outline dc-q"></i>`+
-          `<div class="dc-prompt">${d.prompt}</div>`+
-          `<span class="intent-badge ${d.intentClass}">${d.intent}</span>`+
-        `</div>`+
-        `<div class="dc-cep">${d.cep}</div>`+
-        `<div class="dc-meta">`+
-          `<div class="dc-basis"><div class="dc-label">근거 검색어 (basis)</div><div class="basis-chips">${basisChips}</div></div>`+
-          `<div class="dc-demand"><div class="dc-label">검색 수요</div><div class="dv">${fmt(d.demand)}</div><div class="du">월 검색량</div></div>`+
-        `</div>`;
-      deriveList.appendChild(card);
+  function renderGeoMenu(){
+    geoMenu.innerHTML = "";
+    GEO_HISTORY.forEach((h, i)=>{
+      const item = document.createElement("div");
+      item.className = "dd-item" + (geoSelected.has(i) ? " sel" : "");
+      item.innerHTML =
+        `<span class="di-check">${geoSelected.has(i) ? '<i class="mdi mdi-check"></i>' : ''}</span>`+
+        `<div class="di-l"><span class="di-t">${h.title}</span><span class="di-m">${h.meta} · 프롬프트 ${h.prompts.length}개</span></div>`+
+        `<span class="di-tag">${h.tag}</span>`;
+      item.addEventListener("click", ()=>{ toggleGeo(i); });
+      geoMenu.appendChild(item);
     });
-    deriveCountBadge.textContent = URL_DERIVED.length + "개";
-    deriveTotal.textContent = URL_DERIVED.length;
+    const foot = document.createElement("div");
+    foot.className = "dd-foot";
+    foot.innerHTML =
+      `<span class="dd-cnt">결과 <b>${geoSelected.size}</b>개 · 프롬프트 <b>${geoPromptCount()}</b>개</span>`+
+      `<button class="dd-done" id="geoDone">완료</button>`;
+    foot.addEventListener("click", e=>e.stopPropagation());
+    foot.querySelector("#geoDone").addEventListener("click", ()=>geoMenu.classList.add("hidden"));
+    geoMenu.appendChild(foot);
+    updateGeoText();
   }
+  function geoPromptCount(){
+    return [...geoSelected].reduce((sum, i)=> sum + GEO_HISTORY[i].prompts.length, 0);
+  }
+  function toggleGeo(i){
+    if(geoSelected.has(i)){
+      geoSelected.delete(i);
+      const it = basket.find(b=>b.source==="geo" && b.geoIndex===i);
+      if(it){ basket.splice(basket.indexOf(it), 1); }
+    } else {
+      geoSelected.add(i);
+      basket.push({ uid:++basketSeq, source:"geo", geoIndex:i, label:geoLabel(i), prompts:GEO_HISTORY[i].prompts.slice() });
+    }
+    renderGeoMenu();
+    renderBasket();
+  }
+  function updateGeoText(){
+    const n = geoSelected.size;
+    geoSelectText.textContent = n===0
+      ? "GEO 프롬프트 빌더 응답 가져오기"
+      : `결과 ${n}개 선택 · 프롬프트 ${geoPromptCount()}개`;
+    geoSelect.classList.toggle("placeholder", n===0);
+  }
+  geoSelect.addEventListener("click", (e)=>{ e.stopPropagation(); geoMenu.classList.toggle("hidden"); });
+  geoMenu.addEventListener("click", e=>e.stopPropagation());
+  // 바깥 클릭 시 열린 드롭다운 닫기 (CEP·GEO 공통)
+  document.addEventListener("click", ()=>{ geoMenu.classList.add("hidden"); cepMenu.classList.add("hidden"); });
+  renderGeoMenu();
 
-  const fmt = n => n.toLocaleString("en-US");
-
-  btnDeriveUrl.addEventListener("click", ()=>{
-    if(btnDeriveUrl.disabled) return;
-    btnDeriveUrl.disabled = true;
-    deriveResult.classList.add("hidden");
-    kwExtract.classList.add("hidden");
-    deriveIcon.className = "mdi mdi-loading mdi-spin";
-    deriveLabel.textContent = "도출 중…";
-
-    // 4단계 진행 연출
-    const steps = [...deriveSteps.querySelectorAll(".ds")];
-    steps.forEach(s=>s.className = "ds");
-    deriveSteps.classList.remove("hidden");
-    kwText.textContent = EXTRACTED_KW;
-
-    let i = 0;
-    const advance = ()=>{
-      if(i > 0) steps[i-1].className = "ds done";
-      if(i < steps.length){
-        steps[i].className = "ds active";
-        steps[i].querySelector(".mdi").classList.add("mdi-spin");
-        // 대표 키워드는 2단계(추출) 완료 시 노출
-        if(i === 1) kwExtract.classList.remove("hidden");
-        i++;
-        setTimeout(()=>{
-          // 현재 단계 스피너 제거 후 다음으로
-          if(steps[i-1]) steps[i-1].querySelector(".mdi").classList.remove("mdi-spin");
-          advance();
-        }, 650);
-      } else {
-        // 완료
-        deriveIcon.className = "mdi mdi-link-variant";
-        deriveLabel.textContent = "URL에서 프롬프트 도출";
-        btnDeriveUrl.disabled = false;
-        renderDeriveCards();
-        deriveResult.classList.remove("hidden");
-        deriveResult.scrollIntoView({ behavior:"smooth", block:"nearest" });
-      }
-    };
-    advance();
+  /* ═══════════ 시작 키워드 자동 입력 (키워드 탐색 시연) ═══════════ */
+  // 로드 시 시작 키워드를 공유 바구니에 미리 담아 둔다. 각 키워드의 1hop PAA(관련 질문)는
+  // 다음 화면(select-prompt)에서 프롬프트로 fetch·제안된다. 원천: PAA(관련 질문 모음).md.
+  ["버티컬 마우스", "로지텍 리프트", "로지텍", "mx master"].forEach(kw=>{
+    addToBasket({ source:"keyword", label:kw, prompts:[] });
   });
 
-  // 도출 프롬프트 확정 → select-prompt 화면으로
-  $("#btnAnalyzeUrl").addEventListener("click", ()=>{ window.location.href = "select-prompt-0703.html"; });
+  /* ═══════════ 실행 → 공유 바구니 전체를 다음 화면(select-prompt)으로 넘김 ═══════════ */
+  // 통일 스키마 [{source,label,prompts[]}] 를 aio_selection 에 저장. 어느 탭에서 실행하든 동일.
+  const SELECTION_KEY = "aio_selection", GEO_IMPORT_KEY = "aio_geo_import";
+  $$(".btn-go").forEach(btn=>btn.addEventListener("click", ()=>{
+    const payload = basket.map(b=>({ source:b.source, label:b.label, prompts:(b.prompts||[]).slice() }));
+    try{
+      if(payload.length) sessionStorage.setItem(SELECTION_KEY, JSON.stringify(payload));
+      else sessionStorage.removeItem(SELECTION_KEY);
+      sessionStorage.removeItem(GEO_IMPORT_KEY);   // 레거시 키 정리
+    }catch(e){}
+    goSelect();
+  }));
 </script>
 </body>
 </html>
