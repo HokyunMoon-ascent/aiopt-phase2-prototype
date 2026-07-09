@@ -8,18 +8,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7/css/materialdesignicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/lm-theme.css">
+<script defer src="assets/lm-chrome.js"></script>
 <style>
-  /* ── prototype.html 토큰 재사용 ── */
+  /* ── 실서비스(hubble-intent) 토큰에 맞춤 ── */
   :root{
-    --gray50:#fbfafc; --gray100:#f6f5f8; --gray200:#eae8ee; --gray300:#dad7e0;
+    --gray50:#fbfafb; --gray100:#fbfafb; --gray200:#eae8ee; --gray300:#dad7e0;
     --gray400:#c6c2ce; --gray500:#9691a2; --gray600:#7f7a8d; --gray700:#5d596a;
-    --gray800:#3d3a46; --gray900:#26232e;
-    --brand:#e5231b;
-    --green:#1f9d68; --green-bg:#e6f6ee; --green-line:#b7e5cf;
-    --red:#e5484d;
-    --purple:#7c6df0; --purple-dark:#6a5ae0; --purple-bg:#f4f2ff; --purple-line:#d8d2fb;
-    --radius:10px; --radius-sm:7px;
-    --border:#e8e6ee;
+    --gray800:#3d3a46; --gray900:#232128;
+    --brand:#ff0209;
+    --green:#22c55e; --green-bg:#e6f6ee; --green-line:#b7e5cf;
+    --red:#e05265;
+    --purple:#786ebe; --purple-dark:#5e2cc9; --purple-bg:#efeef8; --purple-line:#d8d5ee;
+    --radius:10px; --radius-sm:6px;
+    --border:#dad7e0;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -33,6 +35,7 @@
   button{font-family:inherit; cursor:pointer;}
   .hidden{display:none !important;}
   a{color:inherit;}
+  input::placeholder, textarea::placeholder{color:var(--gray500); opacity:1;}
 
   /* ═══════════ 셋업 화면 ═══════════ */
   .wrap{max-width:1040px; margin:0 auto; padding:44px 28px 60px;}
@@ -67,8 +70,8 @@
   .taginput{display:flex; align-items:center; gap:9px; flex-wrap:wrap; min-height:26px; flex:1;}
   .flag-sel{display:inline-flex; align-items:center; gap:5px; background:#fff; border:1px solid var(--gray200);
     border-radius:10px; padding:5px 10px; font-size:13px; font-weight:600; color:var(--gray700); cursor:pointer; white-space:nowrap;}
-  .chip{display:inline-flex; align-items:center; gap:8px; background:var(--gray100); border:1px solid var(--gray200);
-    border-radius:9px; padding:6px 11px; font-size:14px; color:var(--gray800); font-weight:500;}
+  .chip{display:inline-flex; align-items:center; gap:8px; background:var(--gray100); border:1px solid var(--gray300);
+    border-radius:10px; padding:6px 11px; font-size:14px; color:var(--gray800); font-weight:500;}
   .chip .x{color:var(--gray500); cursor:pointer; font-size:13px; display:inline-flex;}
   .chip .x:hover{color:var(--gray800);}
   .taginput .ti-input{border:none; outline:none; background:transparent; font-size:15px; color:var(--gray900);
@@ -90,9 +93,9 @@
   .setup-foot .meter b{color:var(--gray800); font-family:"Noto Sans"; font-weight:700;}
 
   .btn-run{display:inline-flex; align-items:center; gap:8px; background:var(--purple); color:#fff; border:none;
-    border-radius:14px; padding:15px 34px; font-size:17px; font-weight:700; box-shadow:0 3px 10px rgba(124,109,240,.28);
+    border-radius:14px; padding:15px 34px; font-size:17px; font-weight:700; box-shadow:0 3px 10px rgba(120,110,190,.28);
     transition:.14s;}
-  .btn-run:hover{background:var(--purple-dark); box-shadow:0 5px 16px rgba(124,109,240,.36); transform:translateY(-1px);}
+  .btn-run:hover{background:var(--purple-dark); box-shadow:0 5px 16px rgba(120,110,190,.36); transform:translateY(-1px);}
   .btn-run:active{transform:translateY(0);}
 
   /* ═══════════ 진입 방식 탭 스위처 (figma 1608-40548) ═══════════ */
@@ -202,7 +205,7 @@
   .pp-foot .cnt b{color:var(--purple-dark); font-family:"Noto Sans"; font-weight:700;}
 </style>
 </head>
-<body>
+<body data-lm-active="aioptimizer">
 
   <!-- ═══════════ 셋업 화면 ═══════════ -->
   <div class="wrap">

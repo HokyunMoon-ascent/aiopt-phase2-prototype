@@ -7,19 +7,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/lm-theme.css">
 <style>
   :root{
-    --gray50:#fbfafc; --gray100:#f6f5f8; --gray200:#eae8ee; --gray300:#dad7e0;
+    --gray50:#fbfafb; --gray100:#fbfafb; --gray200:#eae8ee; --gray300:#dad7e0;
     --gray400:#c6c2ce; --gray500:#9691a2; --gray600:#7f7a8d; --gray700:#5d596a;
-    --gray800:#3d3a46; --gray900:#26232e;
-    --brand:#e5231b; --brand-dark:#c81414;
-    --blue:#3b6fd4; --blue-bg:#e8f0fd; --blue-line:#bcd3f7;
-    --green:#1f9d68; --green-bg:#e6f6ee; --green-line:#b7e5cf;
-    --red:#e5484d; --red-bg:#fdeaea;
+    --gray800:#3d3a46; --gray900:#232128;
+    --brand:#ff0209; --brand-dark:#c81414;
+    --blue:#4f64e1; --blue-bg:#e8f0fd; --blue-line:#bcd3f7;
+    --green:#22c55e; --green-bg:#e6f6ee; --green-line:#b7e5cf;
+    --red:#e05265; --red-bg:#fdeaea;
     --amber:#b8860b;
-    --purple:#7c6df0;
-    --radius:10px; --radius-sm:7px;
-    --border:#e8e6ee;
+    --purple:#7c5eec;
+    --radius:10px; --radius-sm:6px;
+    --border:#dad7e0;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -42,7 +43,7 @@
   .hdr-l{display:flex; align-items:center; gap:34px;}
   .logo{display:flex; align-items:center; gap:8px; font-weight:900; font-size:16px; color:var(--gray900);}
   .logo .mark{width:22px; height:22px; border-radius:6px;
-    background:conic-gradient(from 210deg,#ff5b5b,#e5231b,#b81111,#ff7a5b);
+    background:conic-gradient(from 210deg,#ff5b5b,#ff0209,#b81111,#ff7a5b);
     -webkit-mask:radial-gradient(circle at 50% 50%, transparent 3px, #000 4px);
             mask:radial-gradient(circle at 50% 50%, transparent 3px, #000 4px);}
   .hdr-nav{display:flex; gap:26px; font-size:13px; color:var(--gray700); font-weight:500;}
@@ -168,24 +169,26 @@
   .list-row .cnt{font-family:"Noto Sans"; color:var(--gray700); font-weight:600;}
 
   .tags{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 14px;}
-  .tag-chip{background:var(--gray100); border:1px solid var(--gray200); border-radius:6px; padding:4px 10px; font-size:12px; color:var(--gray700); font-weight:500;}
+  .tag-chip{background:var(--gray100); border:1px solid var(--gray300); border-radius:10px; padding:4px 10px; font-size:12px; color:var(--gray800); font-weight:500;}
   .url-box{background:var(--gray50); border:1px solid var(--gray200); border-radius:7px; padding:9px 12px; font-size:12px; color:var(--gray700); font-family:"Noto Sans"; margin-bottom:7px;}
   .sect-label{font-size:12px; color:var(--gray600); font-weight:600; margin:2px 0 8px;}
 
   /* ─── Prompt list table ─── */
   .tbl{width:100%; border-collapse:collapse; font-size:12.5px;}
-  .tbl thead th{background:var(--gray100); color:var(--gray600); font-weight:600; font-size:12px;
-    text-align:left; padding:11px 12px; border-bottom:1px solid var(--gray200); white-space:nowrap;}
+  .tbl thead th{background:var(--gray200); color:var(--gray800); font-weight:700; font-size:12px;
+    text-align:left; padding:12px; border-bottom:none; white-space:nowrap;}
+  .tbl thead th:first-child{border-radius:10px 0 0 10px;}
+  .tbl thead th:last-child{border-radius:0 10px 10px 0;}
   .tbl thead th.c{text-align:center;}
-  .tbl tbody td{padding:12px; border-bottom:1px solid var(--gray100); vertical-align:middle; color:var(--gray700);}
-  .tbl tbody tr:hover{background:var(--gray50);}
+  .tbl tbody td{padding:12px; border-bottom:1px solid var(--gray200); vertical-align:middle; color:var(--gray700);}
+  .tbl tbody tr:hover{background:var(--gray100);}
   .tbl td.c{text-align:center;}
   .tbl .seg{font-size:15px; text-align:center; width:34px;}
   .tbl .prompt{max-width:340px; color:var(--gray800); line-height:1.5;}
   .tbl .aiscore{font-family:"Noto Sans"; font-weight:600; color:var(--gray800);}
   .tbl .cep-int{font-family:"Noto Sans"; font-weight:600; color:var(--gray800);}
 
-  .badge{display:inline-flex; align-items:center; gap:4px; border-radius:14px; padding:3px 10px; font-size:11px; font-weight:700; white-space:nowrap;}
+  .badge{display:inline-flex; align-items:center; gap:4px; border-radius:10px; padding:3px 10px; font-size:11px; font-weight:700; white-space:nowrap;}
   .b-rec{background:var(--blue-bg); color:var(--blue);}
   .b-cmp{background:var(--green-bg); color:var(--green);}
   .b-dom{background:#fff; border:1px solid var(--green-line); color:var(--green);}
@@ -193,7 +196,7 @@
   .badge .mk{font-family:"Noto Sans"; font-weight:800;}
 
   .cep-pill{display:inline-flex; align-items:center; justify-content:center; min-width:52px; padding:4px 10px;
-    border-radius:14px; font-size:11px; font-weight:700; font-family:"Noto Sans"; cursor:pointer;
+    border-radius:10px; font-size:11px; font-weight:700; font-family:"Noto Sans"; cursor:pointer;
     border:1px solid var(--gray300); color:var(--gray600); background:#fff; transition:.12s;}
   .cep-pill:hover{border-color:var(--purple); color:var(--purple); background:#f6f4ff;}
 
@@ -229,7 +232,7 @@
   .tab{flex:1; text-align:center; padding:13px 0; font-size:13.5px; font-weight:600; color:var(--gray500);
     border-bottom:2px solid transparent; cursor:pointer; transition:.12s;}
   .tab:hover{color:var(--gray700);}
-  .tab.active{color:var(--gray900); border-bottom-color:var(--gray900); font-weight:700;}
+  .tab.active{color:var(--brand); border-bottom-color:var(--brand); font-weight:700;}
 
   .panel-h{font-size:15px; font-weight:700; color:var(--gray900); display:flex; align-items:center; gap:7px; margin-bottom:8px;}
   .panel-desc{font-size:12.5px; color:var(--gray600); line-height:1.6; margin-bottom:16px;}
@@ -237,22 +240,22 @@
   /* matrix */
   .mtx{width:100%; border-collapse:collapse; font-size:12.5px; border:1px solid var(--gray200); border-radius:8px; overflow:hidden;}
   .mtx th,.mtx td{padding:0; text-align:center;}
-  .mtx thead .grp th{background:var(--gray50); color:var(--gray700); font-weight:700; padding:10px 8px; border-bottom:1px solid var(--gray200); font-size:12px;}
+  .mtx thead .grp th{background:var(--gray200); color:var(--gray800); font-weight:700; padding:10px 8px; border-bottom:1px solid var(--gray200); font-size:12px;}
   .mtx thead .grp th.g-chat{background:#f4f1fe;}
   .mtx thead .grp th.g-goog{background:#f6f5f8;}
   .mtx thead .sub th{background:#fff; color:var(--gray500); font-weight:500; padding:8px; font-size:11.5px; border-bottom:1px solid var(--gray200);}
   .mtx tbody td.name{text-align:left; padding:11px 14px; color:var(--gray800); font-weight:500; border-bottom:1px solid var(--gray100); white-space:nowrap;}
-  .mtx tbody td.name .jasa{font-size:9px; background:#eef0ff; color:#5a5fd0; border-radius:4px; padding:1px 5px; font-weight:700; margin-left:6px;}
+  .mtx tbody td.name .jasa{font-size:9px; background:#fdeaea; color:#e05265; border-radius:6px; padding:1px 5px; font-weight:700; margin-left:6px;}
   .mtx tbody td.cell{font-family:"Noto Sans"; color:var(--gray700); border-bottom:1px solid #fff; border-left:1px solid #fff; width:70px; height:44px; font-weight:600;}
   .mtx tbody td.sep{border-left:1px solid var(--gray200);}
 
   /* summary table */
   .sum{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:22px; border:1px solid var(--gray200); border-radius:8px; overflow:hidden;}
-  .sum th{background:var(--gray50); color:var(--gray600); font-weight:600; padding:11px 14px; text-align:left; border-bottom:1px solid var(--gray200); font-size:12px;}
+  .sum th{background:var(--gray200); color:var(--gray800); font-weight:700; padding:11px 14px; text-align:left; border-bottom:1px solid var(--gray200); font-size:12px;}
   .sum th.c,.sum td.c{text-align:center; font-family:"Noto Sans";}
   .sum td{padding:11px 14px; border-bottom:1px solid var(--gray100); color:var(--gray700);}
   .sum tr:last-child td{border-bottom:none;}
-  .sum td .jasa{font-size:9px; background:#eef0ff; color:#5a5fd0; border-radius:4px; padding:1px 5px; font-weight:700; margin-left:6px;}
+  .sum td .jasa{font-size:9px; background:#fdeaea; color:#e05265; border-radius:6px; padding:1px 5px; font-weight:700; margin-left:6px;}
 
   .placeholder{padding:70px 20px; text-align:center; color:var(--gray400); font-size:13px;
     border:1px dashed var(--gray300); border-radius:10px; background:var(--gray50);}
@@ -275,7 +278,7 @@
   <!-- Header -->
   <header class="hdr">
     <div class="hdr-l">
-      <div class="logo"><span class="mark"></span>ListeningMind</div>
+      <div class="logo"><span class="mark"></span>ListeningMind <span class="lm-release">RELEASE</span></div>
       <nav class="hdr-nav">
         <a href="#">플랜정보</a><a href="#">블로그</a><a href="#">사용 가이드</a>
       </nav>

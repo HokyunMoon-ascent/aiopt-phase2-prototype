@@ -1,0 +1,237 @@
+/* ============================================================
+   ListeningMind (hubble-intent) 디자인 토큰 · 앱 크롬 공용 스타일
+   출처: ascentkorea-hubble-intent/src/theme/* , src/layouts/common/*
+   프로토타입 HTML을 실서비스 룩과 일치시키기 위한 공용 스타일시트.
+   ============================================================ */
+
+:root {
+  /* Grey scale (palette.ts) */
+  --lm-grey-100: #fbfafb;
+  --lm-grey-200: #eae8ee;
+  --lm-grey-300: #dad7e0;
+  --lm-grey-400: #c6c2ce;
+  --lm-grey-500: #9691a2;
+  --lm-grey-600: #7f7a8d;
+  --lm-grey-700: #5d596a;
+  --lm-grey-800: #3d3a46;
+  --lm-grey-900: #232128;
+
+  /* Brand primary (red) */
+  --lm-primary-light: #ff5b60;
+  --lm-primary: #ff0209;
+  --lm-primary-dark: #c81414;
+  --lm-primary-darker: #961e1e;
+
+  /* Secondary (기본 버튼 색) */
+  --lm-secondary-lighter: #e2e0f8;
+  --lm-secondary-light: #b6b1ee;
+  --lm-secondary: #786ebe;
+  --lm-secondary-dark: #5e2cc9;
+
+  /* Accents */
+  --lm-purple: #7c5eec;
+  --lm-purple-light: #9d82f7;
+  --lm-blue: #4f64e1;
+  --lm-success: #22c55e;
+  --lm-success-dark: #118d57;
+  --lm-warning: #ffab00;
+
+  /* Text */
+  --lm-text: #3d3a46;
+  --lm-text-secondary: #9691a2;
+  --lm-text-subtitle: #5d596a;
+
+  /* Surface / border */
+  --lm-bg: #ffffff;
+  --lm-border: #dad7e0;
+  --lm-divider: #dad7e0;
+
+  /* Radius */
+  --lm-radius-sm: 6px;
+  --lm-radius-md: 10px;
+  --lm-radius-lg: 30px;
+
+  /* Shadow (custom-shadows.ts) */
+  --lm-shadow-sm: 1px 2px 15px 1px rgba(0, 0, 0, 0.2);
+  --lm-shadow-md: 0 4px 14px 0 rgba(150, 145, 175, 0.26);
+  --lm-shadow-lg: 0 5px 20px rgba(47, 44, 65, 0.3);
+
+  /* Font */
+  --lm-font: "Noto Sans KR", "Noto Sans", system-ui, -apple-system, sans-serif;
+}
+
+/* ── App shell ── */
+.lm-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--lm-bg);
+  font-family: var(--lm-font);
+  color: var(--lm-text);
+}
+
+/* ── Header (56px) ── */
+.lm-header {
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: var(--lm-bg);
+  border-bottom: 1px solid var(--lm-grey-300);
+}
+.lm-header-l {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  min-width: 0;
+}
+.lm-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lm-logo .mark {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: conic-gradient(from 210deg, #ff5b5b, #ff0209, #b81111, #ff7a5b);
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 3.5px, #000 4.5px);
+  mask: radial-gradient(circle at 50% 50%, transparent 3.5px, #000 4.5px);
+}
+.lm-logo .wordmark {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--lm-grey-900);
+}
+.lm-logo .wordmark b {
+  font-weight: 700;
+}
+.lm-release {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--lm-secondary);
+  background: var(--lm-secondary-lighter);
+  letter-spacing: 0.02em;
+}
+.lm-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.lm-nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lm-grey-700);
+  text-decoration: none;
+}
+.lm-nav a:hover {
+  color: var(--lm-grey-800);
+}
+.lm-header-r {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.lm-globe {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--lm-grey-400);
+  position: relative;
+}
+.lm-globe::before,
+.lm-globe::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--lm-grey-400);
+}
+.lm-globe::before { transform: scaleX(0.5); }
+.lm-globe::after { transform: scaleY(0.5); border-left: none; border-right: none; }
+.lm-acct {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lm-acct .who {
+  text-align: right;
+  line-height: 1.25;
+}
+.lm-acct .who b {
+  font-size: 12px;
+  color: var(--lm-grey-800);
+  display: block;
+}
+.lm-acct .who span {
+  font-size: 11px;
+  color: var(--lm-primary);
+  font-weight: 700;
+}
+.lm-acct .avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--lm-grey-200);
+}
+
+/* ── Body: rail + content ── */
+.lm-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.lm-rail {
+  width: 48px;
+  flex: 0 0 48px;
+  border-right: 1px solid var(--lm-grey-300);
+  background: var(--lm-bg);
+  padding: 20px 9px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.lm-rail .group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.lm-rail .item {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--lm-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lm-grey-500);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+.lm-rail .item svg {
+  width: 22px;
+  height: 22px;
+}
+.lm-rail .item:hover {
+  background: var(--lm-grey-200);
+}
+.lm-rail .item.active {
+  background: var(--lm-primary-dark);
+  color: #fff;
+}
+.lm-rail .spacer {
+  flex: 1;
+}
+
+.lm-content {
+  flex: 1;
+  min-width: 0;
+}

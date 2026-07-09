@@ -7,12 +7,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/lm-theme.css">
+<script defer src="assets/lm-chrome.js"></script>
 <style>
   :root{
     --gray100:#fbfafb; --gray200:#eae8ee; --gray300:#dad7e0; --gray400:#c6c2ce;
     --gray500:#9691a2; --gray600:#7f7a8d; --gray700:#5d596a; --gray800:#3d3a46;
+    --gray900:#232128;
     --primary:#c81414; --brand:rgba(255,2,9,1); --advance:#bfa055;
-    --purple:#7c6df0;
+    --purple:#786ebe;
     --radius:10px;
   }
   *{box-sizing:border-box;}
@@ -86,7 +89,7 @@
   .work.wait .whead .name{color:var(--gray400);}
   .work.wait .whead .chev{color:var(--gray300);}
   .check{color:var(--primary);}
-  .work.done .check{color:#1aa251;}
+  .work.done .check{color:#118d57;}
 
   @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.55;}}
 
@@ -117,7 +120,7 @@
   .modal .sub{margin-top:10px; font-size:12px; color:var(--gray500);}
 </style>
 </head>
-<body>
+<body data-lm-active="aioptimizer">
   <!-- 단순화한 상단 GNB -->
   <div class="gnb">
     <div class="crumb"><span class="back">←</span> 버티컬 마우스</div>
@@ -149,7 +152,7 @@
       <div class="overlay" id="overlay">
         <div class="modal">
           <div class="badge">
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1aa251" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#118d57" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
           </div>
           <h3>완료! <span id="doneTime">4분 12초</span> 만에 끝났어요</h3>
           <p id="doneDesc">옵티마이저 분석이 모두 끝났습니다. 타겟 프롬프트를 선택해 주세요.</p>
@@ -182,7 +185,7 @@
   const ICONS = {
     checkDone:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4L15.5 9.5"/></svg>',
     chev:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
-    grpDone:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1aa251" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4L15.5 9.5"/></svg>',
+    grpDone:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#118d57" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.4 2.4L15.5 9.5"/></svg>',
     grpWait:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c6c2ce" stroke-width="1.8"><circle cx="12" cy="12" r="8"/></svg>',
   };
 
