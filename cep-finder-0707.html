@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CEP 파인더 — 리스트형 (나노 인텐트 제외)</title>
+<title>CEP 파인더 — 0710 개선 (출처·연관키워드 팝업)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     --gray400:#c6c2ce; --gray500:#9691a2; --gray600:#7f7a8d; --gray700:#5d596a;
     --gray800:#3d3a46; --gray900:#232128;
     --purple:#786ebe; --purple-dark:#5e2cc9; --purple-bg:#efeef8; --purple-line:#d8d5ee;
-    --border:#dad7e0;
+    --border:#dad7e0; --green:#1f9d68;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -27,7 +27,7 @@
   button{font-family:inherit; cursor:pointer;}
   .hidden{display:none !important;}
 
-  /* ═══════════ 상단 헤더 (AS-IS 크롬 재현) ═══════════ */
+  /* ═══════════ 상단 프로젝트 GNB ═══════════ */
   .topbar{background:#fff; border-bottom:1px solid var(--border); padding:14px 28px;
     display:flex; align-items:center; justify-content:space-between; gap:16px;}
   .topbar .l{display:flex; align-items:center; gap:14px; min-width:0;}
@@ -35,31 +35,43 @@
     display:flex; align-items:center; justify-content:center; color:var(--gray600); font-size:18px;}
   .topbar .back:hover{background:var(--gray100);}
   .topbar .kw{font-size:18px; font-weight:900; color:var(--gray900); white-space:nowrap;}
-  .topbar .crumb{font-size:12.5px; color:var(--gray500);}
   .topbar .r{display:flex; align-items:center; gap:18px; font-size:12.5px; color:var(--gray600); white-space:nowrap;}
   .topbar .r b{color:var(--gray800); font-family:"Noto Sans"; font-weight:700;}
+  .topbar .r .mdi{color:var(--gray400); font-size:15px; vertical-align:-2px;}
 
-  .wrap{max-width:1320px; margin:0 auto; padding:22px 28px 48px;}
+  .wrap{max-width:1360px; margin:0 auto; padding:22px 28px 48px;}
 
-  /* 타이틀 라인 */
-  .titleline{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:18px;}
-  .titleline .tl-l .h{font-size:24px; font-weight:900; color:var(--gray900); letter-spacing:-.3px;}
-  .titleline .tl-l .s{font-size:12.5px; color:var(--gray500); margin-top:6px; display:flex; align-items:center; gap:6px;}
-  .titleline .tl-r{display:flex; align-items:center; gap:12px;}
-  .titleline .basis-date{font-size:12px; color:var(--gray500);}
   .btn-ghost{display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--gray300);
-    border-radius:9px; padding:8px 14px; font-size:12.5px; font-weight:700; color:var(--gray700);}
+    border-radius:9px; padding:8px 14px; font-size:12.5px; font-weight:700; color:var(--gray700); white-space:nowrap;}
   .btn-ghost:hover{border-color:var(--gray400);}
   .btn-dl{display:inline-flex; align-items:center; gap:6px; background:var(--purple); border:none; color:#fff;
-    border-radius:9px; padding:9px 16px; font-size:12.5px; font-weight:700; box-shadow:0 2px 8px rgba(120,110,190,.28);}
+    border-radius:9px; padding:9px 16px; font-size:12.5px; font-weight:700; box-shadow:0 2px 8px rgba(120,110,190,.28); white-space:nowrap;}
   .btn-dl:hover{background:var(--purple-dark);}
 
-  /* ═══════════ 리스트 + 상세 패널 2단 ═══════════ */
-  .main{display:grid; grid-template-columns:360px 1fr; gap:20px; align-items:start;}
+  /* ═══════════ 통합 컨테이너 (2단: 헤더 + 본문) ═══════════ */
+  .shell{background:#fff; border:1px solid var(--border); border-radius:16px; overflow:hidden;
+    box-shadow:0 6px 24px rgba(60,50,90,.05);}
+
+  /* 헤더 라인 (2단 정렬 + 세로 구분선) */
+  .shell-head{display:grid; grid-template-columns:452px 1fr; border-bottom:1px solid var(--gray200);}
+  .sh-cell{padding:20px 24px;}
+  .sh-cell.left{border-right:1px solid var(--gray200);}
+  .sh-cell .h{font-size:18px; font-weight:900; color:var(--gray900); letter-spacing:-.3px;}
+  .sh-cell .s{font-size:12px; color:var(--gray500); margin-top:7px; display:flex; align-items:center; gap:6px;}
+  .sh-cell .s .mdi{color:var(--gray400); font-size:14px;}
+  .sh-cell.right{display:flex; align-items:flex-start; justify-content:space-between; gap:16px;}
+  .sh-cell.right .rtitle .h{font-size:18px;}
+  .sh-cell.right .actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
+  .sh-cell.right .basis-date{font-size:12px; color:var(--gray500); align-self:center; margin-right:2px;}
+
+  /* 본문 2단 */
+  .shell-body{display:grid; grid-template-columns:452px 1fr; align-items:stretch;}
+  .col-left{border-right:1px solid var(--gray200); background:#fbfafc;}
+  .col-right{min-width:0;}
 
   /* 좌측 CEP List */
-  .cep-col .col-h{font-size:14px; font-weight:800; color:var(--gray900); margin:2px 4px 12px;}
-  .cep-list{display:flex; flex-direction:column; gap:12px; max-height:calc(100vh - 210px); overflow-y:auto; padding:2px 6px 2px 2px;}
+  .cep-list{display:flex; flex-direction:column; gap:12px; max-height:calc(100vh - 250px); overflow-y:auto;
+    padding:18px 18px 20px;}
   .cep-card{background:#fff; border:1px solid var(--border); border-radius:13px; padding:15px 16px; cursor:pointer;
     transition:.14s; position:relative;}
   .cep-card:hover{border-color:var(--purple-line); box-shadow:0 5px 16px rgba(120,110,190,.10);}
@@ -75,12 +87,13 @@
   .cc-kbf{list-style:none; margin:0 0 12px; padding:0;}
   .cc-kbf li{font-size:11.5px; color:var(--gray600); line-height:1.5; padding-left:9px; position:relative;}
   .cc-kbf li::before{content:""; position:absolute; left:0; top:8px; width:3px; height:3px; border-radius:50%; background:var(--gray400);}
-  .cc-foot{display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--gray100); padding-top:9px;}
+  .cc-foot{display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--gray200); padding-top:9px;}
   .cc-foot .lbl{font-size:11px; color:var(--gray500);}
   .cc-foot .val{font-size:12px; font-weight:700; color:var(--gray800); font-family:"Noto Sans";}
 
-  /* 우측 상세 패널 */
-  .detail-col{display:flex; flex-direction:column; gap:16px;}
+  /* 우측 상세 패널 스택 */
+  .detail-stack{display:flex; flex-direction:column; gap:16px; padding:18px 22px 24px;
+    max-height:calc(100vh - 250px); overflow-y:auto;}
   .panel{background:#fff; border:1px solid var(--border); border-radius:14px; padding:20px 22px;}
   .panel-h{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:5px;}
   .panel-h .ph-t{font-size:16px; font-weight:800; color:var(--gray900);}
@@ -89,14 +102,14 @@
   .panel .p-desc{font-size:12px; color:var(--gray500); line-height:1.55; margin-bottom:15px; display:flex; align-items:flex-start; gap:6px;}
   .panel .p-desc .mdi{color:var(--gray400); font-size:14px; margin-top:1px;}
 
-  /* AI 검색 질문 예시 */
+  /* 생성 프롬프트 리스트 */
   .q-list{display:flex; flex-direction:column;}
   .q-row{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:13px 2px;
-    border-top:1px solid var(--gray100); font-size:13.5px; color:var(--gray800); line-height:1.55;}
+    border-top:1px solid var(--gray200); font-size:13.5px; color:var(--gray800); line-height:1.55;}
   .q-row:first-child{border-top:none;}
   .q-row .q-copy{flex:0 0 auto; color:var(--gray400); font-size:16px; cursor:pointer; margin-top:1px;}
   .q-row .q-copy:hover{color:var(--purple);}
-  .q-row .q-copy.done{color:var(--green,#1f9d68);}
+  .q-row .q-copy.done{color:var(--green);}
 
   /* 연관키워드 */
   .kw-chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;}
@@ -109,83 +122,187 @@
   .kw-sum b{color:var(--gray900); font-family:"Noto Sans"; font-weight:700;}
 
   /* 차트 */
-  .chart-card{border:1px solid var(--gray200); border-radius:12px; padding:16px 16px 10px;}
-  .chart-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+  .chart-card{border:1px solid var(--gray200); border-radius:12px; padding:16px 16px 10px; position:relative;}
+  .chart-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:10px;}
   .chart-top .ct-l{font-size:12px; color:var(--gray600);}
   .chart-top .ct-l b{font-size:15px; color:var(--gray900); font-family:"Noto Sans"; font-weight:700; margin-left:6px;}
-  .chart-top .ct-r{display:flex; gap:8px;}
+  .chart-top .ct-r{display:flex; gap:8px; position:relative;}
+  .chart-top .btn-ghost{padding:6px 12px; font-size:12px;}
   .chart-svg{width:100%; height:130px; display:block;}
   .chart-x{display:flex; justify-content:space-between; font-size:10px; color:var(--gray400); font-family:"Noto Sans"; margin-top:4px;}
+
+  /* 탐색도구 드롭다운 */
+  .tool-menu{position:absolute; top:calc(100% + 6px); right:70px; background:#fff; border:1px solid var(--border);
+    border-radius:11px; box-shadow:0 10px 28px rgba(60,50,90,.16); padding:6px; min-width:158px; z-index:20;}
+  .tool-menu button{display:flex; align-items:center; gap:9px; width:100%; text-align:left; background:none; border:none;
+    padding:9px 11px; border-radius:8px; font-size:12.5px; color:var(--gray700); font-weight:600;}
+  .tool-menu button .mdi{font-size:16px; color:var(--gray500);}
+  .tool-menu button:hover{background:var(--purple-bg); color:var(--purple-dark);}
+  .tool-menu button:hover .mdi{color:var(--purple-dark);}
+
+  /* 출처 패널 */
+  .src-list{display:flex; flex-direction:column;}
+  .src-item{padding:15px 2px; border-top:1px solid var(--gray200);}
+  .src-item:first-child{border-top:none; padding-top:2px;}
+  .src-url{font-size:11.5px; color:var(--gray500); font-family:"Noto Sans"; display:flex; align-items:center; gap:5px; margin-bottom:5px;}
+  .src-url .fav{width:14px; height:14px; border-radius:4px; background:var(--purple-bg); border:1px solid var(--purple-line);
+    display:inline-flex; align-items:center; justify-content:center; font-size:9px; color:var(--purple-dark);}
+  .src-title{font-size:14px; font-weight:700; color:var(--purple-dark); line-height:1.5; margin-bottom:7px; cursor:pointer;}
+  .src-title:hover{text-decoration:underline;}
+  .src-desc{font-size:12.5px; color:var(--gray700); line-height:1.65;}
+
+  /* ═══════════ 연관키워드 클릭 팝업 다이얼로그 ═══════════ */
+  .kd-backdrop{position:fixed; inset:0; background:rgba(35,33,40,.28); opacity:0; pointer-events:none;
+    transition:opacity .2s; z-index:80;}
+  .kd-backdrop.open{opacity:1; pointer-events:auto;}
+  .kw-dialog{position:fixed; top:0; right:0; height:100vh; width:404px; max-width:92vw; background:#fff;
+    box-shadow:-8px 0 30px rgba(35,33,40,.20); transform:translateX(100%); transition:transform .24s ease; z-index:90;
+    display:flex; flex-direction:column;}
+  .kw-dialog.open{transform:translateX(0);}
+  .kd-head{background:var(--gray900); color:#fff; padding:16px 20px; display:flex; align-items:center; justify-content:space-between;}
+  .kd-head span{font-size:14px; font-weight:700;}
+  .kd-close{background:none; border:none; color:#cfcbd8; font-size:22px; line-height:1; display:inline-flex;}
+  .kd-close:hover{color:#fff;}
+  .kd-body{padding:20px 22px 28px; overflow-y:auto; flex:1;}
+  .kd-kw{font-size:18px; font-weight:900; color:var(--gray900); line-height:1.4;}
+  .kd-date{font-size:11.5px; color:var(--gray500); font-family:"Noto Sans"; margin-top:6px; margin-bottom:16px;}
+  .kd-acc{border:1px solid var(--purple-line); border-radius:12px; overflow:hidden; margin-bottom:20px;}
+  .kd-acc-h{width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--purple-bg);
+    border:none; padding:12px 15px; font-size:13.5px; font-weight:800; color:var(--purple-dark);}
+  .kd-acc-h .l{display:flex; align-items:center; gap:7px;}
+  .kd-acc-h .mdi-chevron-up{transition:.2s; font-size:18px;}
+  .kd-acc.collapsed .kd-acc-h .mdi-chevron-up{transform:rotate(180deg);}
+  .kd-acc-body{padding:15px 16px; font-size:12.5px; color:var(--gray700); line-height:1.7;}
+  .kd-acc.collapsed .kd-acc-body{display:none;}
+  .kd-acc-body p{margin:0 0 11px;}
+  .kd-acc-body h5{font-size:13px; font-weight:800; color:var(--gray900); margin:14px 0 7px;}
+  .kd-acc-body ul{margin:0 0 11px; padding-left:16px;}
+  .kd-acc-body li{margin-bottom:5px;}
+  .kd-acc-body .tip{background:#fdf6e3; border:1px solid #f0e3b8; border-radius:9px; padding:11px 13px; color:var(--gray800);}
+  .kd-src-h{font-size:14px; font-weight:800; color:var(--gray900); margin-bottom:4px;}
+  .kd-src-desc{font-size:11.5px; color:var(--gray500); margin-bottom:13px;}
+  .kd-serp{display:flex; flex-direction:column; gap:14px;}
+  .kd-serp-item{border:1px solid var(--gray200); border-radius:11px; padding:13px 14px;}
+  .kd-serp-item .su{font-size:11px; color:var(--gray500); font-family:"Noto Sans"; margin-bottom:5px; display:flex; align-items:center; gap:5px;}
+  .kd-serp-item .st{font-size:13px; font-weight:700; color:var(--purple-dark); line-height:1.5; margin-bottom:6px; cursor:pointer;}
+  .kd-serp-item .st:hover{text-decoration:underline;}
+  .kd-serp-item .sd{font-size:12px; color:var(--gray700); line-height:1.6; margin-bottom:8px;}
+  .kd-serp-item .sdate{font-size:10.5px; color:var(--gray400); font-family:"Noto Sans";}
 </style>
 </head>
 <body data-lm-active="cepfinder">
 
-  <!-- 상단 헤더 -->
+  <!-- 상단 프로젝트 GNB -->
   <div class="topbar">
     <div class="l">
       <a class="back" href="index.html" title="뒤로">←</a>
       <span class="kw">버티컬 마우스</span>
-      <span class="crumb">컴퓨터 주변기기 · 입력 장치 · 마우스 · 인체공학 마우스</span>
     </div>
     <div class="r">
-      <span>프로젝트 기준 일자 : <b>2026-04-17</b></span>
+      <span><i class="mdi mdi-information-outline"></i> 프로젝트 기준 일자 : <b>2026-04-17</b></span>
       <span>프로젝트 생성 <b>20 out of 20</b></span>
     </div>
   </div>
 
   <div class="wrap">
-    <div class="titleline">
-      <div class="tl-l">
-        <div class="h">CEP (카테고리 진입점)</div>
-        <div class="s"><i class="mdi mdi-information-outline"></i>왼쪽 목록에서 CEP를 선택하면 오른쪽에서 상세 정보를 확인할 수 있습니다.</div>
-      </div>
-      <div class="tl-r">
-        <span class="basis-date">2026년 4월 8일 기준 데이터</span>
-        <button class="btn-ghost"><i class="mdi mdi-help-circle-outline"></i>CEP 알아보기</button>
-        <button class="btn-dl"><i class="mdi mdi-download"></i>.md 다운로드</button>
-      </div>
-    </div>
-
-    <div class="main">
-      <!-- 좌측: CEP 리스트 -->
-      <div class="cep-col">
-        <div class="col-h">CEP List</div>
-        <div class="cep-list" id="cepList"></div>
-      </div>
-
-      <!-- 우측: 상세 패널 -->
-      <div class="detail-col">
-        <!-- AI 검색 질문 예시 -->
-        <div class="panel">
-          <div class="panel-h">
-            <span class="ph-t">AI 검색 질문 예시</span>
-            <button class="ph-copy" id="copyAll"><i class="mdi mdi-content-copy"></i>전체 복사</button>
+    <div class="shell">
+      <!-- 헤더 (2단 정렬) -->
+      <div class="shell-head">
+        <div class="sh-cell left">
+          <div class="h">CEP (카테고리 진입점)</div>
+          <div class="s"><i class="mdi mdi-information-outline"></i>각 CEP 카드를 클릭하여 상세한 정보를 확인할 수 있습니다.</div>
+        </div>
+        <div class="sh-cell right">
+          <div class="rtitle">
+            <div class="h">상황별 검색 인사이트</div>
+            <div class="s">프롬프트를 클릭하여 상세 정보를 확인하세요</div>
           </div>
-          <div class="p-desc"><i class="mdi mdi-information-outline"></i><span>해당 CEP·핵심 구매 요소를 조합해, 소비자가 AI 검색에 물어봤을 법한 질문을 생성했습니다.</span></div>
-          <div class="q-list" id="qList"></div>
+          <div class="actions">
+            <span class="basis-date">2026년 4월 8일 기준 데이터</span>
+            <button class="btn-ghost"><i class="mdi mdi-help-circle-outline"></i>CEP 알아보기</button>
+            <button class="btn-dl"><i class="mdi mdi-download"></i>.md 다운로드</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 본문 (2단) -->
+      <div class="shell-body">
+        <!-- 좌측: CEP 리스트 -->
+        <div class="col-left">
+          <div class="cep-list" id="cepList"></div>
         </div>
 
-        <!-- 연관키워드 -->
-        <div class="panel">
-          <div class="panel-h"><span class="ph-t">연관키워드</span></div>
-          <div class="p-desc"><i class="mdi mdi-information-outline"></i><span>해당 CEP와 매칭된 연관키워드 리스트입니다. 클릭하여 AIO를 포함한 Google 검색 결과를 확인할 수 있습니다.</span></div>
-          <div class="kw-chips" id="kwChips"></div>
-          <div class="kw-sum">연관키워드 검색량 합계 <b id="kwSum">0</b></div>
-          <div class="chart-card">
-            <div class="chart-top">
-              <div class="ct-l">월 평균 검색량<b id="kwAvg">0</b></div>
-              <div class="ct-r">
-                <button class="btn-ghost"><i class="mdi mdi-compass-outline"></i>탐색도구 이동</button>
-                <button class="btn-ghost">상세 정보</button>
+        <!-- 우측: 상세 패널 스택 -->
+        <div class="col-right">
+          <div class="detail-stack">
+            <!-- 생성 프롬프트 리스트 -->
+            <div class="panel">
+              <div class="panel-h">
+                <span class="ph-t">생성 프롬프트 리스트</span>
+                <button class="ph-copy" id="copyAll"><i class="mdi mdi-content-copy"></i>전체 복사</button>
+              </div>
+              <div class="p-desc"><i class="mdi mdi-information-outline"></i><span>해당 CEP·핵심구매요소를 조합해, 소비자가 AI 검색에서 물어볼 법한 질문을 생성했습니다.</span></div>
+              <div class="q-list" id="qList"></div>
+            </div>
+
+            <!-- 연관키워드 -->
+            <div class="panel">
+              <div class="panel-h"><span class="ph-t">연관키워드</span></div>
+              <div class="p-desc"><i class="mdi mdi-information-outline"></i><span>해당 CEP와 유사한 맥락의 AIO 답변을 제공하고 있는 연관키워드 리스트입니다. 클릭하여 AIO를 포함한 Google 검색 결과를 확인할 수 있습니다.</span></div>
+              <div class="kw-chips" id="kwChips"></div>
+              <div class="kw-sum">연관키워드 검색량 합계 <b id="kwSum">0</b></div>
+              <div class="chart-card">
+                <div class="chart-top">
+                  <div class="ct-l">월 평균 검색량<b id="kwAvg">0</b></div>
+                  <div class="ct-r">
+                    <button class="btn-ghost" id="toolBtn"><i class="mdi mdi-compass-outline"></i>탐색도구 이동</button>
+                    <button class="btn-ghost">상세 정보</button>
+                    <div class="tool-menu hidden" id="toolMenu">
+                      <button><i class="mdi mdi-magnify"></i>쿼리파인더</button>
+                      <button><i class="mdi mdi-map-marker-path"></i>패스파인더</button>
+                      <button><i class="mdi mdi-chart-bubble"></i>클러스터파인더</button>
+                    </div>
+                  </div>
+                </div>
+                <svg class="chart-svg" id="chartSvg" viewBox="0 0 620 130" preserveAspectRatio="none"></svg>
+                <div class="chart-x"><span>22.03</span><span>22.11</span><span>23.07</span><span>24.03</span><span>24.11</span><span>25.07</span><span>26.02</span></div>
               </div>
             </div>
-            <svg class="chart-svg" id="chartSvg" viewBox="0 0 620 130" preserveAspectRatio="none"></svg>
-            <div class="chart-x"><span>22.03</span><span>22.11</span><span>23.07</span><span>24.03</span><span>24.11</span><span>25.07</span><span>26.02</span></div>
+
+            <!-- 출처 -->
+            <div class="panel">
+              <div class="panel-h"><span class="ph-t">출처</span></div>
+              <div class="p-desc"><i class="mdi mdi-information-outline"></i><span>해당 CEP·핵심구매요소를 구성한 출처 도메인입니다.</span></div>
+              <div class="src-list" id="srcList"></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- 연관키워드 클릭 팝업 -->
+  <div class="kd-backdrop" id="kdBackdrop"></div>
+  <aside class="kw-dialog" id="kwDialog" aria-hidden="true">
+    <div class="kd-head">
+      <span>상황별 검색 인사이트</span>
+      <button class="kd-close" id="kdClose" title="닫기">×</button>
+    </div>
+    <div class="kd-body">
+      <div class="kd-kw" id="kdKw">—</div>
+      <div class="kd-date" id="kdDate">2026-06-25 08:13:54 수집</div>
+      <div class="kd-acc" id="kdAcc">
+        <button class="kd-acc-h" id="kdAccToggle">
+          <span class="l"><i class="mdi mdi-star-four-points-outline"></i>AI 개요</span>
+          <i class="mdi mdi-chevron-up"></i>
+        </button>
+        <div class="kd-acc-body" id="kdAI"></div>
+      </div>
+      <div class="kd-src-h">출처</div>
+      <div class="kd-src-desc">해당 키워드의 Google 검색 결과에서 수집한 SERP 히스토리입니다.</div>
+      <div class="kd-serp" id="kdSerp"></div>
+    </div>
+  </aside>
 
 <script>
   const $ = s => document.querySelector(s);
@@ -194,8 +311,7 @@
   /* ═══════════════════════════════════════════════════════════════
      데이터 — prompt-detail/src/버티컬 마우스_cepfinder_20260707044626.md
      · CEP + 핵심 구매 요소(KBF) + 연관키워드(볼륨)
-     · 나노 인텐트(세부 맥락)는 데이터에 있어도 사용하지 않음 (2차 개선: 나노 인텐트 제외)
-     · KBF 개수 비강제 — 근거로 확인되는 만큼만 (여기선 원문 그대로)
+     · 나노 인텐트 제외 (0710 개선: 프롬프트 조합 = CEP × KBF)
      ═══════════════════════════════════════════════════════════════ */
   const CEPS = [
     { t:"독서실, 조용한 사무실, 회의실처럼 클릭 소리가 민감한 환경에서 작업하다가, ‘조용한 스위치가 있는 제품이 필요하다’고 결심한다.",
@@ -285,7 +401,73 @@
       kw:[["무선 마우스 본체위치",0],["무선 마우스 움직임",8],["들고 쓰는 마우스",0],["마우스 리시버 위치",0],["마우스 수신기 위치",0],["마우스 동글 위치 디시",0],["마우스 동글 위치",26],["키보드 마우스 보관",4]] },
   ];
 
-  /* 파생: 질문 자동 생성 (q 미지정 CEP) — KBF 1개당 단일 의도 질문 1개 (KBF 개수만큼) */
+  /* 출처(근거 도메인) — 프로토타입 대표 리스트 (실데이터 연동 시 CEP별로 대체) */
+  const SOURCES = [
+    { url:"http://dpg.danawa.com › news › view", title:"오래 사용해도 손목 아플 걱정 없는 인체공학 버티컬 무선 마우스, COX CEM20",
+      desc:"CEM20 버티컬 마우스는 장시간 동안 마우스를 쥐고 사용하는 경우가 많은 오피스 환경에 더욱 특화되어 있다고 볼 수 있다. 핵심 센서는 PixArt사의 PAW-3212 센서가 탑재되어 최대 2400 DPI까지 지원하고, DPI는 최소 800 DPI 부터 1200, 1600, 2400까지 4단계로 선택이 가능하다. 변경은 DPI 버튼을 통해 손쉽게 가능하다." },
+    { url:"http://it.donga.com › review › mouse", title:"‘딸깍’ 대신 ‘서걱’ — 저소음 스위치 버티컬 마우스 실사용 후기",
+      desc:"저소음 클릭 스위치를 채택해 조용한 사무실·독서실 환경에서도 클릭 소음이 거의 들리지 않는다. 휠 스크롤 역시 저소음 스마트휠 방식으로 설계되어 회의실처럼 소리가 민감한 공간에서도 부담이 적다는 평가가 많다." },
+    { url:"https://blog.naver.com › ergonomic-mouse", title:"버티컬 마우스 그립감·사이즈 선택 가이드 (손 크기별 정리)",
+      desc:"손 크기에 따라 대/소 사이즈 선택지가 나뉘며, 전면 경사와 하우징 기울기가 손목 각도에 직접적인 영향을 준다. 손가락 4~5번 간섭을 줄이는 버튼 배치와 쿠션형 그립 형태가 장시간 사용 편의성을 좌우한다." },
+  ];
+
+  /* AI 개요 샘플 (저소음/스위치 계열 키워드용) */
+  const SAMPLE_AI = `
+    <p>가장 추천하는 마우스 저소음 스위치는 <b>카일(Kailh) 저소음 적축</b>과 <b>후아노(Huano) 저소음 스위치</b>입니다. 클릭 소음을 대폭 줄이면서도 구분감을 유지해 사무용과 게이밍 모두 만족도가 높습니다.</p>
+    <h5>1. 카일(Kailh) 저소음 적축 / 흑축 (Micro Silent)</h5>
+    <ul>
+      <li><b>특징</b>: 저소음 스위치 중 가장 대중적인 제품입니다. ‘딸깍’거리는 소리 대신 ‘서걱’거리는 부드러운 타건감을 제공합니다.</li>
+      <li><b>클릭압</b>: 적축(가벼움) / 흑축(무거움)으로 나뉘며, 구분감이 약간 남아있어 확실한 클릭을 원할 때 좋습니다.</li>
+      <li><b>추천 대상</b>: 범용적으로 사용하기 좋은 저소음 스위치를 찾는 분.</li>
+    </ul>
+    <h5>2. 후아노(Huano) 저소음 스위치 (핑크/브라운 등)</h5>
+    <ul>
+      <li><b>특징</b>: 최근 게이머들 사이에서 평가가 급상승한 스위치입니다. 카일보다 반발력이 좀 더 쫀득하고 깊은 소리를 내어 소음을 더 확실하게 먹어주는 느낌이 있습니다.</li>
+      <li><b>클릭압</b>: 부드럽고 가벼운 편(스위치 색상별로 미세한 압력 차이 존재).</li>
+      <li><b>추천 대상</b>: 가볍고 뭉툭한 무소음에 가까운 클릭감을 선호하는 분.</li>
+    </ul>
+    <h5>3. TTC 저소음 스위치</h5>
+    <ul>
+      <li><b>특징</b>: 내구성이 뛰어나고 클릭음이 매우 정숙합니다. 다른 스위치에 비해 클릭 시 구분감이 확실하게 살아있는 편입니다.</li>
+      <li><b>추천 대상</b>: 조용하면서도 일반 마우스와 유사한 클릭 느낌을 원하는 분.</li>
+    </ul>
+    <div class="tip">💡 <b>구매 전 체크포인트</b>: 대부분의 스위치는 ‘솔더링(납땜)’ 작업이 필요하므로 직접 교체가 어렵다면 사설 수리 업체를 이용해야 합니다. 핫스왑을 지원하는 마우스라면 납땜 없이 쉽게 교체할 수 있습니다.</div>`;
+
+  function aiOverview(kw){
+    if(/저소음|무소음|스위치|소리|소음|클릭/.test(kw)) return SAMPLE_AI;
+    return `
+      <p>‘<b>${kw}</b>’에 대한 AI 검색 결과를 종합하면, 사용자들이 실제로 가장 중요하게 확인하는 요소는 <b>실사용 환경에서의 체감</b>과 <b>스펙 근거의 신뢰성</b>입니다.</p>
+      <ul>
+        <li>동일 조건(예산·사용 시간·작업 유형)에서 후기 편차가 크므로, 본인 사용 맥락과 가까운 리뷰를 우선 참고하는 것이 좋습니다.</li>
+        <li>제조사 표기 스펙(센서·DPI·연결 방식)과 실제 커뮤니티 체감이 다를 수 있어 교차 확인이 권장됩니다.</li>
+        <li>구매 전 반품·교환 조건과 초기 적응 기간을 함께 고려하면 실패 확률을 줄일 수 있습니다.</li>
+      </ul>
+      <div class="tip">💡 이 개요는 해당 키워드의 Google 검색 결과(AIO 포함)를 기반으로 요약되었습니다. 아래 출처에서 원문 근거를 확인하세요.</div>`;
+  }
+
+  /* SERP 히스토리 (다이얼로그 출처) */
+  function serpHistory(kw){
+    const items = [
+      { url:"http://it.donga.com › review", date:"2026.03.11",
+        title:`${kw} — 실사용 리뷰와 비교 정리`,
+        desc:"실제 사용 환경별 체감과 스펙 근거를 함께 정리한 리뷰. 조용한 사무실·회의실 등 소음 민감 환경에서의 만족도를 중심으로 다룬다." },
+      { url:"https://blog.naver.com › post", date:"2026.02.27",
+        title:`${kw} 관련 커뮤니티 후기 모음`,
+        desc:"커뮤니티에 올라온 후기를 정리한 글. 구분감·클릭압·내구성 등 실제 사용자들이 체감한 장단점이 상세하게 기록되어 있다." },
+      { url:"http://dpg.danawa.com › news", date:"2026.01.19",
+        title:`${kw} 구매 가이드 및 스펙 비교`,
+        desc:"센서·DPI·연결 방식 등 핵심 스펙을 기준으로 대표 모델을 비교한 가이드. 구매 전 체크포인트를 표 형태로 제공한다." },
+    ];
+    return items.map(it=>
+      `<div class="kd-serp-item">
+        <div class="su"><i class="mdi mdi-web"></i>${it.url}</div>
+        <div class="st">${it.title}</div>
+        <div class="sd">${it.desc}</div>
+        <div class="sdate">수집일자 : ${it.date}</div>
+      </div>`).join("");
+  }
+
+  /* 파생: 질문 자동 생성 (q 미지정 CEP) — KBF 1개당 단일 의도 질문 1개 */
   function autoQuestions(c){
     const clean = k => k.replace(/\([^)]*\)/g,"").replace(/\s*(여부|확인)\s*$/,"").trim();
     const tpl = [
@@ -320,12 +502,13 @@
   }
 
   /* ── 우측 상세 렌더 ── */
-  const qListEl = $("#qList"), kwChipsEl = $("#kwChips"), kwSumEl = $("#kwSum"), kwAvgEl = $("#kwAvg"), chartSvg = $("#chartSvg");
+  const qListEl = $("#qList"), kwChipsEl = $("#kwChips"), kwSumEl = $("#kwSum"),
+        kwAvgEl = $("#kwAvg"), chartSvg = $("#chartSvg"), srcListEl = $("#srcList");
   let current = 0;
 
   function renderDetail(i){
     const c = CEPS[i];
-    // AI 검색 질문 예시
+    // 생성 프롬프트 리스트
     const qs = questionsOf(c);
     qListEl.innerHTML = qs.map(q=>
       `<div class="q-row"><span>${q}</span><i class="mdi mdi-content-copy q-copy" title="복사"></i></div>`).join("");
@@ -334,11 +517,26 @@
     });
     // 연관키워드
     kwChipsEl.innerHTML = c.kw.map(([k,v])=>
-      `<button class="kw-chip">${k}<span class="v">${fmt(v)}</span></button>`).join("");
+      `<button class="kw-chip" data-kw="${k}">${k}<span class="v">${fmt(v)}</span></button>`).join("");
+    kwChipsEl.querySelectorAll(".kw-chip").forEach(btn=>{
+      btn.addEventListener("click", ()=>openKwDialog(btn.dataset.kw));
+    });
     const sum = sumVol(c);
     kwSumEl.textContent = fmt(sum);
-    kwAvgEl.textContent = fmt(Math.round(sum/12));
+    // 월 평균 검색량: 대표 추이 base × 뒤틀림 반영 대표값
+    kwAvgEl.textContent = fmt(Math.max(40, Math.round(sum/12)) + 2600);
     drawChart(i, sum);
+    // 출처
+    renderSources();
+  }
+
+  function renderSources(){
+    srcListEl.innerHTML = SOURCES.map(s=>
+      `<div class="src-item">
+        <div class="src-url"><span class="fav"><i class="mdi mdi-web" style="font-size:9px"></i></span>${s.url}</div>
+        <div class="src-title">${s.title}</div>
+        <div class="src-desc">${s.desc}</div>
+      </div>`).join("");
   }
 
   /* 차트: CEP 인덱스로 시드된 대표 추이 (프로토타입 · 실데이터 연동 시 대체) */
@@ -381,6 +579,34 @@
     const b = $("#copyAll"); const old = b.innerHTML;
     b.innerHTML = '<i class="mdi mdi-check"></i>복사됨'; setTimeout(()=>b.innerHTML=old, 1200);
   });
+
+  /* 탐색도구 드롭다운 */
+  const toolBtn = $("#toolBtn"), toolMenu = $("#toolMenu");
+  toolBtn.addEventListener("click", e=>{ e.stopPropagation(); toolMenu.classList.toggle("hidden"); });
+  document.addEventListener("click", ()=> toolMenu.classList.add("hidden"));
+  toolMenu.addEventListener("click", e=>e.stopPropagation());
+
+  /* 연관키워드 클릭 팝업 */
+  const kwDialog = $("#kwDialog"), kdBackdrop = $("#kdBackdrop"),
+        kdKw = $("#kdKw"), kdDate = $("#kdDate"), kdAI = $("#kdAI"),
+        kdSerp = $("#kdSerp"), kdAcc = $("#kdAcc");
+  function openKwDialog(kw){
+    kdKw.textContent = kw;
+    kdDate.textContent = "2026-06-25 08:13:54 수집";
+    kdAI.innerHTML = aiOverview(kw);
+    kdSerp.innerHTML = serpHistory(kw);
+    kdAcc.classList.remove("collapsed");
+    kwDialog.classList.add("open"); kwDialog.setAttribute("aria-hidden","false");
+    kdBackdrop.classList.add("open");
+  }
+  function closeKwDialog(){
+    kwDialog.classList.remove("open"); kwDialog.setAttribute("aria-hidden","true");
+    kdBackdrop.classList.remove("open");
+  }
+  $("#kdClose").addEventListener("click", closeKwDialog);
+  kdBackdrop.addEventListener("click", closeKwDialog);
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeKwDialog(); });
+  $("#kdAccToggle").addEventListener("click", ()=> kdAcc.classList.toggle("collapsed"));
 
   // 초기 렌더
   renderList();

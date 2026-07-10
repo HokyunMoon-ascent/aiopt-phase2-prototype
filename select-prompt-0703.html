@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Select Prompt — 프롬프트 선택 화면 프로토타입</title>
+    <title>Select Prompt — 분석 타겟 프롬프트 선택</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -23,7 +23,9 @@
         --bg: #ffffff;
         --hover: #fbfafb;
         --grp: #f6f5f8;
+        --lav: #e2e0f8; /* secondary-lighter (테이블 헤더) */
         --accent: #786ebe;
+        --accent-light: #b6b1ee;
         --accent-dark: #5e2cc9;
       }
       * {
@@ -35,7 +37,7 @@
         padding: 0;
       }
       body {
-        background: #ececec;
+        background: var(--bg);
         color: var(--ink);
         font-family:
           "Noto Sans KR",
@@ -59,279 +61,324 @@
         display: none !important;
       }
 
-      .frame {
-        max-width: 1360px;
-        height: calc(100vh - 48px);
-        margin: 24px auto;
-        background: var(--bg);
-        border: 1px solid var(--line);
-        padding: 26px 30px 34px;
+      /* ── 페이지 셸 ── */
+      .page {
         display: flex;
         flex-direction: column;
+        height: calc(100vh - 56px); /* 앱 헤더 56px 제외 */
+        min-height: 0;
       }
 
-      /* ── Top bar ── */
-      .topbar {
+      /* ── 프로젝트 서브헤더 바 ── */
+      .subbar {
+        flex: none;
+        height: 56px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 20px;
+        padding: 0 30px;
+        border-bottom: 1px solid var(--line);
       }
-      .topbar .title {
-        font-size: 26px;
+      .subbar-l {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .subbar .back {
+        border: none;
+        background: none;
+        color: var(--ink);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        border-radius: 6px;
+      }
+      .subbar .back:hover {
+        background: var(--line-soft);
+      }
+      .subbar .proj {
+        font-size: 18px;
         font-weight: 700;
         letter-spacing: -0.3px;
       }
-      .topbar .right {
+      .subbar-r {
         display: flex;
         align-items: center;
-        gap: 18px;
-      }
-      .counter {
+        gap: 8px;
         font-size: 13px;
         color: var(--muted);
       }
-      .counter b {
+      .subbar-r b {
         color: var(--ink);
+        font-weight: 500;
+      }
+      .subbar-r .sep {
+        color: var(--line);
+      }
+      .subbar-r .info {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: var(--muted2);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-style: italic;
+      }
+      .subbar-r .quota b {
         font-family: "Noto Sans";
         font-weight: 700;
-        font-size: 15px;
+        color: var(--ink);
+      }
+
+      /* ── 본문 패딩 영역 ── */
+      .body-pad {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 22px 30px 26px;
+      }
+
+      /* ── 타이틀 + 액션 ── */
+      .titlebar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 16px;
+      }
+      .titlebar .title {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+        margin: 0 0 6px;
+      }
+      .titlebar .subtitle {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 0;
+      }
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex: none;
+      }
+      .act {
+        border: none;
+        background: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink);
+        padding: 8px 4px;
+        white-space: nowrap;
+      }
+      .act:hover {
+        color: var(--accent-dark);
+      }
+      .act svg {
+        width: 16px;
+        height: 16px;
+      }
+      .act.strong {
+        font-weight: 700;
+      }
+      .edit-actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      /* Start 버튼 + 툴팁 */
+      .start-wrap {
+        position: relative;
       }
       .btn-start {
         border: none;
         background: var(--accent);
         border-radius: 10px;
-        padding: 0 26px;
+        padding: 0 22px;
         height: 44px;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 700;
         color: #fff;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
         white-space: nowrap;
       }
-      .btn-start:hover {
+      .btn-start svg {
+        width: 17px;
+        height: 17px;
+      }
+      .btn-start:hover:not(:disabled) {
         background: var(--accent-dark);
       }
       .btn-start:disabled {
-        border: none;
-        color: var(--muted2);
+        background: var(--accent-light);
         cursor: not-allowed;
-        background: var(--line-soft);
       }
-
-      /* ── View tabs ── */
-      .vtabs {
-        display: flex;
-        gap: 0;
-        border: 1px solid var(--line);
-        border-radius: 0;
-        overflow: hidden;
-        margin-bottom: 22px;
-        width: fit-content;
-      }
-      .vtab {
-        padding: 10px 20px;
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--muted);
-        background: #fff;
-        border-right: 1px solid var(--line);
-        white-space: nowrap;
-      }
-      .vtab:last-child {
-        border-right: none;
-      }
-      .vtab .no {
-        font-family: "Noto Sans";
-        font-weight: 700;
-        margin-right: 6px;
-      }
-      .vtab.active {
-        background: var(--ink);
+      .start-wrap .tip {
+        position: absolute;
+        top: calc(100% + 9px);
+        right: 0;
+        background: #2f2c41;
         color: #fff;
-      }
-      .vtab:not(.active):hover {
-        background: var(--hover);
-      }
-
-      .hint {
         font-size: 12px;
-        color: var(--muted2);
-        margin: -10px 0 16px;
-      }
-
-      /* ── Generic wireframe table ── */
-      .wtbl {
-        width: 100%;
-        border-collapse: collapse;
-        border: 1px solid var(--line);
-        font-size: 13px;
-        background: #fff;
-      }
-      .wtbl th {
-        background: #eae8ee;
-        text-align: left;
-        font-weight: 700;
-        color: var(--ink);
-        padding: 12px 16px;
-        border-bottom: none;
-        font-size: 13px;
-      }
-      .wtbl thead th:first-child {
-        border-radius: 10px 0 0 10px;
-      }
-      .wtbl thead th:last-child {
-        border-radius: 0 10px 10px 0;
-      }
-      .wtbl tbody tr:not(.grp-row):hover {
-        background: var(--hover);
-      }
-      .wtbl th.c,
-      .wtbl td.c {
-        text-align: center;
-        width: 76px;
-      }
-      .wtbl th.vol,
-      .wtbl td.vol {
-        text-align: right;
-        width: 110px;
-        font-family: "Noto Sans";
-        padding-right: 20px;
-      }
-      .wtbl td {
-        padding: 11px 16px;
-        border-bottom: 1px solid var(--line-hair);
-        vertical-align: middle;
-        color: var(--ink);
-      }
-      .wtbl tr:last-child td {
-        border-bottom: none;
-      }
-
-      /* group (accordion) row */
-      .grp-row > td {
-        background: var(--grp);
-        border-bottom: 1px solid var(--line-soft);
-        font-weight: 700;
-        cursor: pointer;
-      }
-      .grp-row .caret {
-        display: inline-block;
-        width: 14px;
-        font-size: 11px;
-        color: var(--ink);
-        transition: transform 0.12s;
-      }
-      .grp-row .gname {
-        font-weight: 700;
-      }
-      .grp-row .gsub {
-        font-weight: 400;
-        color: var(--muted);
-        font-size: 12px;
-        margin-left: 8px;
-      }
-      .child-row td {
-        padding-left: 44px;
-        color: var(--muted);
-      }
-      .child-row td:first-child {
-        color: var(--muted);
-      }
-      .child-row .ptxt {
-        color: var(--ink);
-        font-weight: 400;
-        max-width: none;
-      }
-      .cep-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 44px;
-        padding: 2px 8px;
-        border: 1px solid var(--line);
-        background: var(--hover);
-        border-radius: 10px;
-        font-size: 11px;
-        font-family: "Noto Sans";
-        font-weight: 700;
-        color: var(--muted);
-      }
-      .oos {
-        font-size: 11px;
-        color: var(--muted2);
-        border: 1px dashed var(--line-soft);
-        border-radius: 4px;
-        padding: 1px 6px;
-        margin-left: 8px;
-      }
-      /* 출처(source) 컬럼 · 뱃지 */
-      .wtbl th.src,
-      .wtbl td.src {
-        width: 190px;
-        text-align: center;
-      }
-      .src-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2px 9px;
-        border: 1px solid var(--line);
-        background: var(--hover);
-        border-radius: 10px;
-        font-size: 11px;
-        font-family: "Noto Sans", "Noto Sans KR";
-        font-weight: 700;
+        font-weight: 500;
+        line-height: 1.45;
+        padding: 9px 13px;
+        border-radius: 8px;
         white-space: nowrap;
-        color: var(--muted);
+        box-shadow: 0 4px 14px rgba(47, 44, 65, 0.28);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.12s;
+        z-index: 50;
       }
-      /* 관련질문(PAA): 추출 키워드 뱃지들 — 복수 키워드면 줄바꿈 */
-      .src-kwlist {
-        display: inline-flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        justify-content: center;
+      .start-wrap .tip::before {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        right: 22px;
+        border: 6px solid transparent;
+        border-bottom-color: #2f2c41;
       }
-      .src-badge.src-kw {
-        color: var(--ink);
-        background: var(--grp);
-        border-color: var(--line-soft);
-      }
-
-      /* checkbox */
-      input[type="checkbox"] {
-        width: 17px;
-        height: 17px;
-        accent-color: var(--accent-dark);
-        cursor: pointer;
-        margin: 0;
-        vertical-align: middle;
-      }
-      .wtbl th.chk,
-      .wtbl td.chk {
-        width: 44px;
-        text-align: center;
-      }
-      textarea::placeholder,
-      input::placeholder {
-        color: var(--muted2);
+      /* 비활성일 때만 호버 툴팁 노출 */
+      .btn-start:disabled:hover + .tip {
         opacity: 1;
+        visibility: visible;
       }
 
+      /* ── 프롬프트 테이블 ── */
       .scroll-area {
         flex: 1;
         min-height: 0;
         overflow-y: auto;
         border: 1px solid var(--line);
+        border-radius: 10px;
       }
-      .scroll-area .wtbl {
-        border: none;
+      .ptbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        background: #fff;
       }
-      .scroll-area .wtbl thead th {
+      .ptbl thead th {
         position: sticky;
         top: 0;
         z-index: 2;
-        box-shadow: inset 0 -1px 0 var(--line);
+        background: var(--lav);
+        text-align: left;
+        font-weight: 700;
+        color: var(--ink);
+        padding: 13px 20px;
+        font-size: 14px;
+        white-space: nowrap;
       }
+      .ptbl th.chk,
+      .ptbl td.chk {
+        width: 52px;
+        text-align: center;
+        padding-left: 20px;
+        padding-right: 0;
+      }
+      .ptbl th.src,
+      .ptbl td.src {
+        width: 210px;
+        text-align: right;
+        padding-right: 24px;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+      .ptbl th.src {
+        cursor: pointer;
+        user-select: none;
+      }
+      .ptbl th.src .caret {
+        color: var(--accent);
+        font-size: 11px;
+        margin-left: 2px;
+      }
+      .ptbl th .cnt {
+        font-family: "Noto Sans";
+        font-weight: 700;
+        color: var(--accent-dark);
+        margin-left: 8px;
+      }
+      .ptbl tbody td {
+        padding: 13px 20px;
+        border-bottom: 1px solid var(--line-hair);
+        vertical-align: middle;
+        color: var(--ink);
+      }
+      .ptbl tbody tr:last-child td {
+        border-bottom: none;
+      }
+      .ptbl tbody tr:hover {
+        background: var(--hover);
+      }
+      .ptbl td.pcell {
+        line-height: 1.55;
+      }
+      .ptbl td.pcell .ptxt {
+        vertical-align: middle;
+      }
+      .row-copy {
+        border: none;
+        background: none;
+        color: var(--muted2);
+        margin-left: 8px;
+        padding: 2px;
+        vertical-align: middle;
+        opacity: 0;
+        transition: opacity 0.1s;
+        position: relative;
+      }
+      .ptbl tbody tr:hover .row-copy {
+        opacity: 1;
+      }
+      .row-copy:hover {
+        color: var(--accent-dark);
+      }
+      .row-copy svg {
+        width: 15px;
+        height: 15px;
+      }
+      /* 편집 모드 인풋 */
+      .p-edit {
+        width: 100%;
+        font-family: inherit;
+        font-size: 14px;
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 9px 12px;
+        background: #fff;
+      }
+      .p-edit:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+
+      /* checkbox */
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent-dark);
+        cursor: pointer;
+        margin: 0;
+        vertical-align: middle;
+      }
+
       ::-webkit-scrollbar {
         width: 10px;
         height: 10px;
@@ -344,319 +391,7 @@
         background: transparent;
       }
 
-      /* ── 2-column shell: view content + shared basket ── */
-      .main {
-        display: grid;
-        grid-template-columns: 1fr 370px;
-        grid-template-rows: minmax(0, 1fr);
-        gap: 20px;
-        align-items: stretch;
-        flex: 1;
-        min-height: 0;
-      }
-      .main-left {
-        min-width: 0;
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-      }
-      .main-left > .view:not(.hidden) {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        min-height: 0;
-      }
-
-      /* ── View 4: topic cards ── */
-      .cards-scroll {
-        max-height: 620px;
-        overflow-y: auto;
-        padding-right: 4px;
-      }
-      .cards-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-      }
-      .tcard {
-        border: 1px solid var(--line);
-        background: #fff;
-        display: flex;
-        flex-direction: column;
-        max-height: 320px;
-      }
-      .tcard-h {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 14px;
-        border-bottom: 1px solid var(--line);
-        background: #fff;
-        cursor: pointer;
-      }
-      .tcard-h .caret {
-        width: 12px;
-        font-size: 10px;
-      }
-      .tcard-h .tname {
-        font-weight: 700;
-        flex: 1;
-        font-size: 13px;
-      }
-      .tcard-h .tcnt {
-        font-size: 11px;
-        color: var(--muted);
-        font-family: "Noto Sans";
-      }
-      .tcard-body {
-        overflow-y: auto;
-      }
-      .tcard-body table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12.5px;
-      }
-      .tcard-body td {
-        padding: 8px 12px;
-        border-bottom: 1px solid var(--line-hair);
-        vertical-align: middle;
-      }
-      .tcard-body tr:last-child td {
-        border-bottom: none;
-      }
-      .tcard-body td.pc {
-        color: var(--ink);
-      }
-      .tcard-body td.cc {
-        width: 52px;
-        text-align: center;
-      }
-      .tcard-body td.kc {
-        width: 40px;
-        text-align: center;
-      }
-
-      .basket {
-        border: 1px solid var(--line);
-        background: #fff;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-      }
-      .basket-h {
-        padding: 12px 14px;
-        border-bottom: 1px solid var(--line);
-        font-weight: 700;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .basket-h .bc {
-        font-family: "Noto Sans";
-        color: var(--muted);
-        font-weight: 700;
-      }
-      .btn-clear {
-        border: 1px solid var(--line-soft);
-        background: #fff;
-        border-radius: 12px;
-        padding: 4px 11px;
-        font-size: 11.5px;
-        font-weight: 500;
-        color: var(--muted);
-      }
-      .btn-clear:hover:not(:disabled) {
-        border-color: var(--line);
-        color: var(--ink);
-      }
-      .btn-clear:disabled {
-        color: var(--muted2);
-        border-color: var(--line-hair);
-        cursor: not-allowed;
-      }
-      .basket-scroll {
-        flex: 1;
-        overflow-y: auto;
-      }
-      .basket table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12.5px;
-      }
-      .basket thead th {
-        position: sticky;
-        top: 0;
-        background: #eae8ee;
-        text-align: left;
-        font-weight: 700;
-        color: var(--ink);
-        padding: 9px 12px;
-        border-bottom: none;
-        font-size: 12px;
-      }
-      .basket thead th.c {
-        text-align: center;
-        width: 44px;
-      }
-      .basket thead th.c.cp-h {
-        width: 52px;
-      }
-      .basket tbody td {
-        padding: 9px 12px;
-        border-bottom: 1px solid var(--line-hair);
-        vertical-align: middle;
-      }
-      .basket tbody td.cp {
-        text-align: center;
-        white-space: nowrap;
-        width: 52px;
-        font-family: "Noto Sans";
-        font-size: 11.5px;
-        color: var(--muted);
-      }
-      .basket tbody td.dn {
-        text-align: center;
-        width: 44px;
-      }
-      .basket .trash {
-        border: none;
-        background: none;
-        font-size: 15px;
-        color: var(--muted);
-        padding: 2px 6px;
-      }
-      .basket .trash:hover {
-        color: var(--ink);
-      }
-      .basket .edit {
-        border: none;
-        background: none;
-        font-size: 14px;
-        color: var(--muted);
-        padding: 2px 6px;
-      }
-      .basket .edit:hover {
-        color: var(--ink);
-      }
-      .basket tbody td.pcell {
-        color: var(--ink);
-        line-height: 1.5;
-      }
-      .basket .edit-ta {
-        width: 100%;
-        min-height: 56px;
-        font-family: inherit;
-        font-size: 12px;
-        line-height: 1.5;
-        border: 1px solid var(--line);
-        padding: 6px;
-        resize: vertical;
-        box-sizing: border-box;
-      }
-      .basket-empty {
-        padding: 40px 16px;
-        text-align: center;
-        color: var(--muted2);
-        font-size: 12.5px;
-      }
-
-      .prompt-cell {
-        max-width: 640px;
-        line-height: 1.55;
-      }
-
-      /* ── 직접 추가하기 (② 전체 목록 하단 고정) ── */
-      .add-foot {
-        flex: none;
-        border: 1px solid var(--line);
-        border-top: none;
-        background: #fff;
-      }
-      .btn-add {
-        display: block;
-        width: 100%;
-        text-align: left;
-        border: none;
-        background: #fff;
-        padding: 13px 16px;
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--muted);
-      }
-      .btn-add:hover {
-        background: var(--hover);
-        color: var(--ink);
-      }
-      .add-box {
-        padding: 14px 16px;
-        background: var(--hover);
-      }
-      .add-box textarea {
-        width: 100%;
-        min-height: 66px;
-        font-family: inherit;
-        font-size: 13px;
-        line-height: 1.55;
-        border: 1px solid var(--line);
-        padding: 9px;
-        resize: vertical;
-        box-sizing: border-box;
-        background: #fff;
-      }
-      .add-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 8px;
-        margin-top: 9px;
-      }
-      .add-actions button {
-        border: 1px solid var(--line-soft);
-        background: #fff;
-        border-radius: 10px;
-        padding: 6px 18px;
-        font-size: 12.5px;
-        font-weight: 500;
-        color: var(--muted);
-      }
-      .add-actions .btn-add-save {
-        border-color: var(--line);
-        color: var(--ink);
-        font-weight: 700;
-      }
-      .add-actions .btn-add-save:hover {
-        background: var(--ink);
-        color: #fff;
-      }
-      .add-actions .btn-add-cancel:hover {
-        border-color: var(--line);
-        color: var(--ink);
-      }
-      .mine {
-        display: inline-block;
-        font-size: 10.5px;
-        font-weight: 700;
-        color: var(--muted);
-        border: 1px solid var(--line-soft);
-        border-radius: 9px;
-        padding: 1px 7px;
-        margin-right: 7px;
-        vertical-align: middle;
-      }
-      .cust-del {
-        border: none;
-        background: none;
-        color: var(--muted2);
-        font-size: 16px;
-        line-height: 1;
-        padding: 0 4px;
-        margin-left: 8px;
-        vertical-align: middle;
-      }
-      .cust-del:hover {
-        color: var(--ink);
-      }
-
-      /* ── 알럿 모달 (showAlert) ── */
+      /* ── 모달 (알럿 + 분석 확인) ── */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -671,153 +406,178 @@
       }
       .modal {
         background: #fff;
-        border: 1px solid var(--line);
-        min-width: 300px;
-        max-width: 400px;
+        border-radius: 10px;
+        min-width: 320px;
+        max-width: 420px;
         box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
+        overflow: hidden;
+      }
+      .modal-confirm {
+        width: 540px;
+        max-width: 90vw;
+      }
+      .modal-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--ink);
+        padding: 18px 22px 0;
       }
       .modal-msg {
         margin: 0;
-        padding: 26px 26px 22px;
+        padding: 20px 22px 22px;
         font-size: 14px;
         color: var(--ink);
         line-height: 1.6;
         text-align: center;
       }
-      .modal-foot {
-        border-top: 1px solid var(--line-hair);
-        display: flex;
-        justify-content: center;
-        padding: 12px;
-      }
-      .modal-ok {
-        border: 1.5px solid var(--line);
-        background: #fff;
-        border-radius: 10px;
-        padding: 9px 30px;
-        font-size: 13px;
-        font-weight: 500;
+      .modal-lead {
+        margin: 0;
+        padding: 10px 22px 14px;
+        font-size: 14px;
         color: var(--ink);
       }
-      .modal-ok:hover {
-        background: var(--ink);
+      .modal-lead b {
+        font-family: "Noto Sans";
+        font-weight: 700;
+      }
+      .confirm-list {
+        margin: 0 22px 4px;
+        padding: 14px 18px 14px 34px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        max-height: 320px;
+        overflow-y: auto;
+        font-size: 13.5px;
+        line-height: 1.55;
+        color: var(--ink);
+      }
+      .confirm-list li {
+        margin-bottom: 12px;
+        padding-left: 4px;
+      }
+      .confirm-list li:last-child {
+        margin-bottom: 0;
+      }
+      .modal-foot {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        padding: 18px 12px 20px;
+      }
+      .btn-ghost,
+      .btn-primary {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 26px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .btn-ghost {
+        background: var(--line-soft);
+        color: var(--muted);
+      }
+      .btn-ghost:hover {
+        background: var(--line);
+        color: var(--ink);
+      }
+      .btn-primary {
+        background: var(--accent);
         color: #fff;
+      }
+      .btn-primary:hover {
+        background: var(--accent-dark);
       }
     </style>
   </head>
   <body data-lm-active="aioptimizer">
-    <div class="frame">
-      <!-- Top bar -->
-      <div class="topbar">
-        <div class="title">Select Prompt</div>
-        <div class="right">
-          <div class="counter">
-            선택 10~20개 · 현재 <b id="selCount">0</b>개
-          </div>
-          <button class="btn-start" id="btnStart">Start Analyze</button>
+    <div class="page">
+      <!-- 프로젝트 서브헤더 바 -->
+      <div class="subbar">
+        <div class="subbar-l">
+          <button class="back" title="뒤로">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M15 5l-7 7 7 7" /></svg>
+          </button>
+          <span class="proj">버티컬 마우스</span>
+        </div>
+        <div class="subbar-r">
+          <span>프로젝트 기준 일자 : <b>2026-04-17</b></span>
+          <span class="info">i</span>
+          <span class="quota">프로젝트 생성 <b>20</b> out of 20</span>
         </div>
       </div>
 
-      <!-- View switcher (②전체 단일 채택 — 탭 숨김) -->
-      <div class="vtabs hidden" id="vtabs">
-        <div class="vtab active" data-v="cep">
-          <span class="no">①</span>CEP별
-        </div>
-        <div class="vtab" data-v="all"><span class="no">②</span>전체</div>
-        <div class="vtab" data-v="topic"><span class="no">③</span>토픽별</div>
-        <div class="vtab" data-v="card"><span class="no">④</span>토픽 카드</div>
-      </div>
-      <div class="hint" id="viewHint"></div>
-
-      <div class="main">
-        <div class="main-left">
-          <!-- ① CEP accordion -->
-          <div id="view-cep" class="view">
-            <table class="wtbl">
-              <thead>
-                <tr>
-                  <th>CEP</th>
-                  <th class="vol">Volume</th>
-                  <th class="c">Accept</th>
-                </tr>
-              </thead>
-              <tbody id="cepBody"></tbody>
-            </table>
+      <!-- 본문 -->
+      <div class="body-pad">
+        <div class="titlebar">
+          <div class="titlebar-l">
+            <h1 class="title">분석 타겟 프롬프트 선택</h1>
+            <p class="subtitle">
+              선택한 조건을 기반으로 생성된 프롬프트입니다. 최소 10개 - 최대
+              20개의 프롬프트를 선택해주세요.
+            </p>
           </div>
-
-          <!-- ② Flat list -->
-          <div id="view-all" class="view hidden">
-            <div class="scroll-area">
-              <table class="wtbl">
-                <thead>
-                  <tr>
-                    <th class="c chk"><input type="checkbox" id="allBox" /></th>
-                    <th>
-                      제안 프롬프트 <span class="gsub" id="allCount"></span>
-                    </th>
-                    <th class="c src">출처</th>
-                  </tr>
-                </thead>
-                <tbody id="allBody"></tbody>
-              </table>
+          <div class="actions">
+            <button class="act" id="btnCopyAll">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" /></svg>
+              전체 복사
+            </button>
+            <button class="act" id="btnEdit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
+              프롬프트 편집
+            </button>
+            <div class="edit-actions hidden" id="editActions">
+              <button class="act" id="btnEditCancel">취소</button>
+              <button class="act strong" id="btnEditSave">저장</button>
             </div>
-            <!-- 하단 고정: 직접 추가하기 -->
-            <div class="add-foot" id="addFoot">
-              <button class="btn-add" id="btnAddToggle">
-                ＋ 직접 추가하기
+            <div class="start-wrap">
+              <button class="btn-start" id="btnStart" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
+                AI 응답 분석 시작하기
               </button>
-              <div class="add-box hidden" id="addBox">
-                <textarea
-                  id="addTa"
-                  placeholder="분석하고 싶은 질문(프롬프트)을 직접 입력하세요."
-                ></textarea>
-                <div class="add-actions">
-                  <button class="btn-add-cancel" id="btnAddCancel">취소</button>
-                  <button class="btn-add-save" id="btnAddSave">추가</button>
-                </div>
+              <div class="tip">
+                프롬프트를 10개 이상 선택하면<br />AI 응답 분석을 시작할 수
+                있습니다.
               </div>
             </div>
           </div>
-
-          <!-- ③ Topic accordion -->
-          <div id="view-topic" class="view hidden">
-            <table class="wtbl">
-              <thead>
-                <tr>
-                  <th>TOPIC</th>
-                  <th class="c">CEP</th>
-                  <th class="c">Accept</th>
-                </tr>
-              </thead>
-              <tbody id="topicBody"></tbody>
-            </table>
-          </div>
-
-          <!-- ④ Topic cards -->
-          <div id="view-card" class="view hidden">
-            <div class="cards-scroll">
-              <div class="cards-grid" id="cardGrid"></div>
-            </div>
-          </div>
         </div>
 
-        <!-- 공용 선택 바구니 (①~④ 상시 노출) -->
-        <aside class="basket">
-          <div class="basket-h">
-            <span>Selected Prompt <span class="bc" id="basketCnt">0</span></span
-            ><button class="btn-clear" id="btnClear" disabled>전체 해제</button>
-          </div>
-          <div class="basket-scroll" id="basketScroll"></div>
-        </aside>
+        <div class="scroll-area">
+          <table class="ptbl">
+            <thead>
+              <tr>
+                <th class="chk"><input type="checkbox" id="allBox" /></th>
+                <th class="pcol">프롬프트 <span class="cnt" id="selBadge"></span></th>
+                <th class="src" id="srcSort">출처 <span class="caret">▼</span></th>
+              </tr>
+            </thead>
+            <tbody id="allBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
     <!-- 알럿 모달 (프로젝트 showAlert 대응) -->
     <div class="modal-overlay" id="modalOverlay">
       <div class="modal" role="alertdialog" aria-modal="true">
+        <div class="modal-title">알림</div>
         <p class="modal-msg" id="modalMsg"></p>
         <div class="modal-foot">
-          <button class="modal-ok" id="modalOk">확인</button>
+          <button class="btn-ghost" id="modalCancel">취소</button>
+          <button class="btn-primary" id="modalOk">확인</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI 응답 분석 전 최종 확인 모달 -->
+    <div class="modal-overlay" id="confirmOverlay">
+      <div class="modal modal-confirm" role="dialog" aria-modal="true">
+        <div class="modal-title">AI 응답 분석 시작하기</div>
+        <p class="modal-lead"><b id="confirmCount">0</b> 개의 프롬프트로 AI에 질의합니다.</p>
+        <ol class="confirm-list" id="confirmList"></ol>
+        <div class="modal-foot">
+          <button class="btn-ghost" id="confirmCancel">취소</button>
+          <button class="btn-primary" id="confirmGo">분석</button>
         </div>
       </div>
     </div>
@@ -1267,21 +1027,6 @@
           CEPS.push({ no, volume: 0, prompts, source: "keyword", keywords });
         }
       })();
-
-      /* topic.md §1 롤업 테마 (단일 축 = KBF/제품 속성) */
-      const TOPICS = [
-        { name: "1. 휴대성·이동성", ceps: [11, 20], oos: false },
-        { name: "2. 인체공학·신체 편안함", ceps: [2, 3, 5, 7, 8], oos: false },
-        { name: "3. 정숙성·소음", ceps: [1], oos: false },
-        { name: "4. 설치·호환·보안", ceps: [13, 14, 15, 18], oos: false },
-        { name: "5. 무선 연결·멀티디바이스", ceps: [4, 17], oos: false },
-        { name: "6. 성능·정밀도", ceps: [10, 12], oos: false },
-        { name: "7. 가격·가성비", ceps: [6], oos: false },
-        { name: "8. 디자인·외관", ceps: [16], oos: false },
-        { name: "9. 배터리·전원", ceps: [9], oos: false },
-        { name: "[범위 외] 모바일 액세서리", ceps: [19], oos: true },
-      ];
-
       /* ═══════════════ STATE ═══════════════ */
       CEPS.forEach((c) => {
         if (!c.source) c.source = "cep";
@@ -1290,34 +1035,48 @@
       CEPS.forEach((c) => (CEP_BY_NO[c.no] = c));
       const TOTAL = CEPS.reduce((s, c) => s + c.prompts.length, 0);
       // GEO import 시엔 가져온 개수가 10개보다 적을 수 있으므로 최소 기준을 개수에 맞춘다.
-      const MIN = GEO_MODE ? Math.max(1, Math.min(10, TOTAL)) : 10; // 선택해야 하는 최소 프롬프트 수
-      const MAX = 20; // 선택 가능한 최대 프롬프트 수
+      const MIN = GEO_MODE ? Math.max(1, Math.min(10, TOTAL)) : 10; // 최소 선택 수
+      const MAX = 20; // 최대 선택 수
       const selected = new Set(); // key = "cep-idx"
       const key = (cep, idx) => cep + "-" + idx;
-      const fmt = (n) => n.toLocaleString("en-US");
-      /* 사용자가 직접 추가한 프롬프트 — pseudo-CEP(CUSTOM_NO)로 기존 렌더/바구니 로직 재사용 */
-      const CUSTOM_NO = 9999;
-      const customPrompts = []; // [{id, text}] — id는 재사용하지 않는 고유값
-      let customSeq = 0;
-      /* 프롬프트 수정 오버라이드 — Selected Prompt 영역에서 편집한 텍스트 저장 (key → text) */
+
+      /* 프롬프트 편집 오버라이드 (key → text) */
       const promptOverrides = {};
       function promptText(no, idx) {
         const k = key(no, idx);
         if (k in promptOverrides) return promptOverrides[k];
-        if (no === CUSTOM_NO) {
-          const c = customPrompts.find((x) => x.id === idx);
-          return c ? c.text : "";
-        }
+        return CEP_BY_NO[no].prompts[idx];
+      }
+      function baseText(no, idx) {
         return CEP_BY_NO[no].prompts[idx];
       }
 
-      /* topic lookup: for each cep → topic name (첫 매칭) */
-      const CEP_TOPIC = {};
-      TOPICS.forEach((t) =>
-        t.ceps.forEach((n) => {
-          if (!(n in CEP_TOPIC)) CEP_TOPIC[n] = t.name;
-        }),
-      );
+      /* ═══════════════ 출처(source) 표기 ═══════════════ */
+      function sourceKey(no) {
+        return (CEP_BY_NO[no] && CEP_BY_NO[no].source) || "cep";
+      }
+      function promptKeywords(no, idx) {
+        const c = CEP_BY_NO[no];
+        return (c && c.keywords && c.keywords[idx]) || [];
+      }
+      // 출처를 텍스트로: CEP → "CEP N", 관련질문 → 키워드명, GEO → 클러스터 라벨
+      function formatSource(no, idx) {
+        const sk = sourceKey(no);
+        if (sk === "keyword") {
+          const kws = promptKeywords(no, idx);
+          if (kws.length) return kws[0]; // 복수면 대표 키워드 1개
+          return GEO_LABEL[no] || "관련질문";
+        }
+        if (sk === "geo") return GEO_LABEL[no] || "GEO";
+        return "CEP " + no;
+      }
+      // 출처 정렬 키: [그룹, 값]
+      function srcSortKey(o) {
+        const sk = sourceKey(o.no);
+        if (sk === "cep") return [0, o.no];
+        if (sk === "keyword") return [1, formatSource(o.no, o.idx)];
+        return [2, formatSource(o.no, o.idx)];
+      }
 
       /* ═══════════════ HELPERS ═══════════════ */
       const $ = (s) => document.querySelector(s);
@@ -1327,60 +1086,25 @@
         if (html != null) e.innerHTML = html;
         return e;
       };
-
-      /* 프롬프트 출처(source) 메타 — CEP·관련질문(PAA)·GEO·직접추가 */
-      const SRC_META = {
-        cep: { label: "CEP", cls: "src-cep" },
-        keyword: { label: "관련질문(PAA)", cls: "src-kw" },
-        geo: { label: "GEO", cls: "src-geo" },
-        custom: { label: "직접추가", cls: "src-custom" },
-      };
-      function sourceKey(no) {
-        return no === CUSTOM_NO
-          ? "custom"
-          : (CEP_BY_NO[no] && CEP_BY_NO[no].source) || "cep";
-      }
-      function promptKeywords(no, idx) {
-        const c = CEP_BY_NO[no];
-        return (c && c.keywords && c.keywords[idx]) || [];
-      }
       function escHtml(s) {
         return String(s)
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;");
       }
-      function sourceBadge(no, idx) {
-        const sk = sourceKey(no);
-        if (sk === "keyword") {
-          // 관련질문(PAA): 추출 키워드를 뱃지로. 여러 키워드에서 나온 공통 프롬프트면 복수 표기.
-          const kws = promptKeywords(no, idx);
-          if (kws.length)
-            return (
-              `<span class="src-kwlist">` +
-              kws
-                .map(
-                  (k) =>
-                    `<span class="src-badge src-kw" title="관련질문 추출 키워드: ${escHtml(k)}">${escHtml(k)}</span>`,
-                )
-                .join("") +
-              `</span>`
-            );
-          return `<span class="src-badge src-kw">${SRC_META.keyword.label}</span>`; // 키워드 미상 fallback
-        }
-        const m = SRC_META[sk] || SRC_META.cep;
-        return `<span class="src-badge ${m.cls}">${m.label}</span>`;
+      function escAttr(s) {
+        return escHtml(s).replace(/"/g, "&quot;");
       }
 
-      /* 알럿 모달 (프로젝트의 showAlert 대응) — 경고/검증 미달 안내 전용 */
-      function showAlert(msg) {
-        $("#modalMsg").textContent = msg;
-        $("#modalOverlay").classList.add("show");
+      function allKeys() {
+        const a = [];
+        CEPS.forEach((c) => c.prompts.forEach((_, i) => a.push(key(c.no, i))));
+        return a;
       }
-      function closeAlert() {
-        $("#modalOverlay").classList.remove("show");
+      function countSel(keys) {
+        return keys.reduce((s, k) => s + (selected.has(k) ? 1 : 0), 0);
       }
-      /* 전체선택용: 앞에서부터 MAX까지만 담고 나머지는 조용히 버림(모달/토스트 없음) */
+      /* 앞에서부터 MAX까지만 담고 나머지는 조용히 버림 */
       function addCapped(keys) {
         for (const k of keys) {
           if (selected.size >= MAX) break;
@@ -1388,371 +1112,156 @@
         }
       }
 
-      function allKeys() {
-        const a = [];
-        CEPS.forEach((c) => c.prompts.forEach((_, i) => a.push(key(c.no, i))));
-        customPrompts.forEach((c) => a.push(key(CUSTOM_NO, c.id)));
-        return a;
+      /* ═══════════════ 알럿 모달 (showAlert) ═══════════════ */
+      function showAlert(msg) {
+        $("#modalMsg").textContent = msg;
+        $("#modalOverlay").classList.add("show");
       }
-      function cepKeys(no) {
-        return CEP_BY_NO[no].prompts.map((_, i) => key(no, i));
-      }
-      function topicKeys(t) {
-        const a = [];
-        t.ceps.forEach((no) => {
-          if (CEP_BY_NO[no]) a.push(...cepKeys(no));
-        });
-        return a;
-      }
-      function countSel(keys) {
-        return keys.reduce((s, k) => s + (selected.has(k) ? 1 : 0), 0);
+      function closeAlert() {
+        $("#modalOverlay").classList.remove("show");
       }
 
-      function setGroupBox(box, keys) {
-        const n = countSel(keys);
-        box.checked = n > 0 && n === keys.length;
-        box.indeterminate = n > 0 && n < keys.length;
+      /* ═══════════════ 렌더 ═══════════════ */
+      let editMode = false;
+      let editSnapshot = null; // 편집 취소용 promptOverrides 스냅샷
+      let sortDir = 0; // 0=기본, 1=오름차순, 2=내림차순
+
+      const COPY_SVG =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+
+      // 렌더 순서 목록 [{no, idx}]
+      function orderedRows() {
+        const flat = [];
+        CEPS.forEach((c) => c.prompts.forEach((_, i) => flat.push({ no: c.no, idx: i })));
+        if (sortDir === 0) return flat;
+        flat.sort((a, b) => {
+          const ka = srcSortKey(a),
+            kb = srcSortKey(b);
+          let c = ka[0] - kb[0];
+          if (!c)
+            c =
+              typeof ka[1] === "number"
+                ? ka[1] - kb[1]
+                : String(ka[1]).localeCompare(String(kb[1]), "ko");
+          return sortDir === 1 ? c : -c;
+        });
+        return flat;
       }
 
-      function updateCounter() {
-        $("#selCount").textContent = selected.size;
-        // Start 버튼은 상시 활성(클릭 시 최소 10개 검증). 전체 해제만 0개일 때 비활성.
-        const bc = $("#btnClear");
-        if (bc) bc.disabled = selected.size === 0;
-      }
-
-      /* ═══════════════ ① CEP ACCORDION ═══════════════ */
-      function renderCEP() {
-        const tb = $("#cepBody");
-        tb.innerHTML = "";
-        CEPS.forEach((c, ci) => {
-          const open = ci === 0;
-          // group row
-          const gr = el("tr", "grp-row");
-          gr.dataset.cep = c.no;
-          gr.innerHTML =
-            `<td><span class="caret">${open ? "▼" : "▶"}</span><span class="gname">CEP ${c.no}</span>` +
-            `<span class="gsub">프롬프트 ${c.prompts.length}개 · ${CEP_TOPIC[c.no] || "-"}</span></td>` +
-            `<td class="vol">${fmt(c.volume)}</td>` +
-            `<td class="c"><input type="checkbox" class="cep-all" data-cep="${c.no}"></td>`;
-          tb.appendChild(gr);
-          // child rows
-          c.prompts.forEach((p, idx) => {
-            const cr = el("tr", "child-row" + (open ? "" : " hidden"));
-            cr.dataset.cep = c.no;
-            const k = key(c.no, idx);
-            cr.innerHTML =
-              `<td class="ptxt prompt-cell">${p}</td>` +
-              `<td class="vol"></td>` +
-              `<td class="c"><input type="checkbox" class="leaf" data-key="${k}" ${selected.has(k) ? "checked" : ""}></td>`;
-            tb.appendChild(cr);
-          });
-        });
-        // caret toggle
-        tb.querySelectorAll(".grp-row").forEach((gr) => {
-          gr.addEventListener("click", (e) => {
-            if (e.target.closest("input")) return;
-            const no = gr.dataset.cep,
-              caret = gr.querySelector(".caret");
-            const openNow = caret.textContent === "▼";
-            caret.textContent = openNow ? "▶" : "▼";
-            tb.querySelectorAll(`.child-row[data-cep="${no}"]`).forEach((r) =>
-              r.classList.toggle("hidden", openNow),
-            );
-          });
-        });
-        syncCEP();
-      }
-      function syncCEP() {
-        CEPS.forEach((c) => {
-          const box = $(`#cepBody .cep-all[data-cep="${c.no}"]`);
-          if (box) setGroupBox(box, cepKeys(c.no));
-        });
-      }
-
-      /* ═══════════════ ② FLAT LIST ═══════════════ */
       function renderAll() {
         const tb = $("#allBody");
         tb.innerHTML = "";
-        CEPS.forEach((c) =>
-          c.prompts.forEach((p, idx) => {
-            const k = key(c.no, idx);
-            const tr = el("tr");
-            tr.innerHTML =
-              `<td class="c chk"><input type="checkbox" class="leaf" data-key="${k}" ${selected.has(k) ? "checked" : ""}></td>` +
-              `<td class="prompt-cell">${promptText(c.no, idx)}</td>` +
-              `<td class="c src">${sourceBadge(c.no, idx)}</td>`;
-            tb.appendChild(tr);
-          }),
-        );
-        // 사용자가 직접 추가한 프롬프트
-        customPrompts.forEach((c) => {
-          const k = key(CUSTOM_NO, c.id);
+        orderedRows().forEach(({ no, idx }) => {
+          const k = key(no, idx);
           const tr = el("tr");
+          tr.dataset.key = k;
+          const txt = promptText(no, idx);
+          const pcell = editMode
+            ? `<td class="pcell"><input class="p-edit" type="text" value="${escAttr(txt)}" data-key="${k}"></td>`
+            : `<td class="pcell"><span class="ptxt">${escHtml(txt)}</span>` +
+              `<button class="row-copy" title="복사" data-key="${k}">${COPY_SVG}</button></td>`;
           tr.innerHTML =
-            `<td class="c chk"><input type="checkbox" class="leaf" data-key="${k}" ${selected.has(k) ? "checked" : ""}></td>` +
-            `<td class="prompt-cell"><span class="mine">직접 추가</span>${promptText(CUSTOM_NO, c.id)}` +
-            `<button class="cust-del" data-id="${c.id}" title="삭제">×</button></td>` +
-            `<td class="c src">${sourceBadge(CUSTOM_NO, c.id)}</td>`;
+            `<td class="chk"><input type="checkbox" class="leaf" data-key="${k}" ${selected.has(k) ? "checked" : ""} ${editMode ? "disabled" : ""}></td>` +
+            pcell +
+            `<td class="src">${escHtml(formatSource(no, idx))}</td>`;
           tb.appendChild(tr);
         });
-        tb.querySelectorAll(".cust-del").forEach((btn) => {
-          btn.addEventListener("click", () => deleteCustom(+btn.dataset.id));
+        tb.querySelectorAll(".row-copy").forEach((b) => {
+          b.addEventListener("click", () => {
+            const [no, idx] = b.dataset.key.split("-").map(Number);
+            copyText(promptText(no, idx));
+          });
         });
-        syncAll();
-      }
-      function syncAll() {
-        const b = $("#allBox");
-        if (b) setGroupBox(b, allKeys());
-        const c = $("#allCount");
-        if (c) c.textContent = allKeys().length + "개";
+        syncHeader();
       }
 
-      /* ── 직접 추가하기 (하단 고정 푸터, 정적 요소 → init에서 1회 배선) ── */
-      function openAddBox() {
-        $("#addBox").classList.remove("hidden");
-        $("#btnAddToggle").classList.add("hidden");
-        $("#addTa").focus();
+      function refreshLeaves() {
+        document
+          .querySelectorAll(".leaf")
+          .forEach((cb) => (cb.checked = selected.has(cb.dataset.key)));
       }
-      function closeAddBox() {
-        $("#addBox").classList.add("hidden");
-        $("#btnAddToggle").classList.remove("hidden");
-        $("#addTa").value = "";
+      function syncHeader() {
+        const n = selected.size,
+          total = allKeys().length;
+        const cap = Math.min(total, MAX); // 선택 가능한 최대치 = 전체선택 스코프
+        $("#selBadge").textContent = n > 0 ? n : "";
+        $("#btnStart").disabled = n < MIN || editMode;
+        // 실서비스(hubble-intent) 정책: 전체선택 박스는 바이너리(대시 상태 없음).
+        // 선택 가능한 만큼 가득 차면 체크(✓), 아니면 해제 → 체크 상태 클릭 시 전체 해제.
+        const box = $("#allBox");
+        box.indeterminate = false;
+        box.checked = n > 0 && n === cap;
       }
-      function wireAddRow() {
-        const toggle = $("#btnAddToggle"),
-          ta = $("#addTa");
-        if (!toggle) return;
-        toggle.addEventListener("click", openAddBox);
-        $("#btnAddCancel").addEventListener("click", closeAddBox);
-        $("#btnAddSave").addEventListener("click", () => saveCustom(ta.value));
-        ta.addEventListener("keydown", (ev) => {
-          if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)) {
-            ev.preventDefault();
-            saveCustom(ta.value);
-          }
-          if (ev.key === "Escape") {
-            ev.preventDefault();
-            closeAddBox();
-          }
-        });
+
+      /* ═══════════════ 편집 모드 ═══════════════ */
+      function enterEdit() {
+        if (editMode) return;
+        editMode = true;
+        editSnapshot = Object.assign({}, promptOverrides);
+        $("#btnEdit").classList.add("hidden");
+        $("#editActions").classList.remove("hidden");
+        renderAll();
       }
-      function saveCustom(text) {
-        const v = (text || "").trim();
-        if (!v) {
-          $("#addTa").focus();
+      function exitEdit(save) {
+        if (save) {
+          document.querySelectorAll(".p-edit").forEach((inp) => {
+            const k = inp.dataset.key;
+            const [no, idx] = k.split("-").map(Number);
+            const v = inp.value.trim();
+            if (v && v !== baseText(no, idx)) promptOverrides[k] = v;
+            else delete promptOverrides[k]; // 원본과 같거나 비면 오버라이드 해제
+          });
+        } else {
+          for (const kk in promptOverrides) delete promptOverrides[kk];
+          Object.assign(promptOverrides, editSnapshot);
+        }
+        editMode = false;
+        editSnapshot = null;
+        $("#btnEdit").classList.remove("hidden");
+        $("#editActions").classList.add("hidden");
+        renderAll();
+      }
+
+      /* ═══════════════ 복사 ═══════════════ */
+      function copyText(str) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(str).catch(() => {});
+        }
+      }
+      function copyAll() {
+        const all = orderedRows()
+          .map(({ no, idx }) => promptText(no, idx))
+          .join("\n");
+        copyText(all);
+        showAlert("전체 프롬프트를 복사했습니다.");
+      }
+
+      /* ═══════════════ 분석 시작 (확인 모달) ═══════════════ */
+      function onStart() {
+        if (selected.size < MIN) {
+          showAlert(`최소 ${MIN}개를 선택해주세요.`);
           return;
         }
-        const id = customSeq++;
-        customPrompts.push({ id, text: v });
-        if (selected.size < MAX) selected.add(key(CUSTOM_NO, id)); // 여유 있으면 자동 선택
-        closeAddBox();
-        renderAll();
-        refreshAll();
-        // 새로 추가된 항목이 보이도록 목록 맨 아래로 스크롤
-        const sa = document.querySelector("#view-all .scroll-area");
-        if (sa) sa.scrollTop = sa.scrollHeight;
-      }
-      function deleteCustom(id) {
-        const i = customPrompts.findIndex((c) => c.id === id);
-        if (i < 0) return;
-        customPrompts.splice(i, 1);
-        const k = key(CUSTOM_NO, id);
-        selected.delete(k);
-        delete promptOverrides[k];
-        renderAll();
-        refreshAll();
-      }
-
-      /* ═══════════════ ③ TOPIC ACCORDION ═══════════════ */
-      function renderTopic() {
-        const tb = $("#topicBody");
-        tb.innerHTML = "";
-        TOPICS.forEach((t, ti) => {
-          const open = ti === 0;
-          const keys = topicKeys(t);
-          const gr = el("tr", "grp-row");
-          gr.dataset.topic = ti;
-          gr.innerHTML =
-            `<td><span class="caret">${open ? "▼" : "▶"}</span><span class="gname">${t.name}</span>` +
-            `<span class="gsub">CEP ${t.ceps.join(", ")} · 프롬프트 ${keys.length}개${t.oos ? '<span class="oos">범위 외</span>' : ""}</span></td>` +
-            `<td class="c"></td>` +
-            `<td class="c"><input type="checkbox" class="topic-all" data-topic="${ti}"></td>`;
-          tb.appendChild(gr);
-          t.ceps.forEach((no) => {
-            if (!CEP_BY_NO[no]) return;
-            CEP_BY_NO[no].prompts.forEach((p, idx) => {
-              const k = key(no, idx);
-              const cr = el("tr", "child-row" + (open ? "" : " hidden"));
-              cr.dataset.topic = ti;
-              cr.innerHTML =
-                `<td class="ptxt prompt-cell">${p}</td>` +
-                `<td class="c"><span class="cep-badge">CEP ${no}</span></td>` +
-                `<td class="c"><input type="checkbox" class="leaf" data-key="${k}" ${selected.has(k) ? "checked" : ""}></td>`;
-              tb.appendChild(cr);
-            });
-          });
-        });
-        tb.querySelectorAll(".grp-row").forEach((gr) => {
-          gr.addEventListener("click", (e) => {
-            if (e.target.closest("input")) return;
-            const ti = gr.dataset.topic,
-              caret = gr.querySelector(".caret");
-            const openNow = caret.textContent === "▼";
-            caret.textContent = openNow ? "▶" : "▼";
-            tb.querySelectorAll(`.child-row[data-topic="${ti}"]`).forEach((r) =>
-              r.classList.toggle("hidden", openNow),
-            );
-          });
-        });
-        syncTopic();
-      }
-      function syncTopic() {
-        TOPICS.forEach((t, ti) => {
-          const box = $(`#topicBody .topic-all[data-topic="${ti}"]`);
-          if (box) setGroupBox(box, topicKeys(t));
-        });
-      }
-
-      /* ═══════════════ ④ TOPIC CARDS + BASKET ═══════════════ */
-      function renderCards() {
-        const grid = $("#cardGrid");
-        grid.innerHTML = "";
-        TOPICS.forEach((t, ti) => {
-          const keys = topicKeys(t);
-          const card = el("div", "tcard");
-          const head = el("div", "tcard-h");
-          head.innerHTML =
-            `<span class="caret">▼</span><span class="tname">${t.name}${t.oos ? ' <span class="oos">범위 외</span>' : ""}</span>` +
-            `<span class="tcnt">${keys.length}개</span>` +
-            `<input type="checkbox" class="topic-all2" data-topic="${ti}">`;
-          const body = el("div", "tcard-body");
-          const tbl = el("table");
-          const tbody = el("tbody");
-          t.ceps.forEach((no) => {
-            if (!CEP_BY_NO[no]) return;
-            CEP_BY_NO[no].prompts.forEach((p, idx) => {
-              const k = key(no, idx);
-              const tr = el("tr");
-              tr.innerHTML =
-                `<td class="pc">${p}</td><td class="cc"><span class="cep-badge">CEP ${no}</span></td>` +
-                `<td class="kc"><input type="checkbox" class="leaf" data-key="${k}" ${selected.has(k) ? "checked" : ""}></td>`;
-              tbody.appendChild(tr);
-            });
-          });
-          tbl.appendChild(tbody);
-          body.appendChild(tbl);
-          // caret collapse
-          head.addEventListener("click", (e) => {
-            if (e.target.closest("input")) return;
-            const c = head.querySelector(".caret");
-            const openNow = c.textContent === "▼";
-            c.textContent = openNow ? "▶" : "▼";
-            body.classList.toggle("hidden", openNow);
-          });
-          card.appendChild(head);
-          card.appendChild(body);
-          grid.appendChild(card);
-        });
-        syncCards();
-        renderBasket();
-      }
-      function syncCards() {
-        TOPICS.forEach((t, ti) => {
-          const box = $(`#cardGrid .topic-all2[data-topic="${ti}"]`);
-          if (box) setGroupBox(box, topicKeys(t));
-        });
-      }
-      function renderBasket() {
-        const wrap = $("#basketScroll");
         const arr = [...selected];
-        $("#basketCnt").textContent = arr.length;
-        if (arr.length === 0) {
-          wrap.innerHTML =
-            '<div class="basket-empty">선택된 프롬프트가 없습니다.<br>왼쪽에서 프롬프트를 선택하세요.</div>';
-          return;
-        }
-        // order by cep, idx
         arr.sort((a, b) => {
           const [ca, ia] = a.split("-").map(Number),
             [cb, ib] = b.split("-").map(Number);
           return ca - cb || ia - ib;
         });
-        let rows = "";
-        arr.forEach((k) => {
-          const [no, idx] = k.split("-").map(Number);
-          const p = promptText(no, idx);
-          const short = p.length > 46 ? p.slice(0, 46) + "…" : p;
-          rows +=
-            `<tr data-key="${k}"><td class="pcell" title="${p.replace(/"/g, "&quot;")}">${short}</td>` +
-            `<td class="dn"><button class="edit" data-key="${k}" title="수정">✎</button></td>` +
-            `<td class="dn"><button class="trash" data-key="${k}" title="제외">🗑</button></td></tr>`;
-        });
-        wrap.innerHTML = `<table><thead><tr><th>Selected Prompt</th><th class="c">Edit</th><th class="c">Deny</th></tr></thead><tbody>${rows}</tbody></table>`;
-        wrap.querySelectorAll(".trash").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            selected.delete(btn.dataset.key);
-            refreshAllViews();
-          });
-        });
-        // 인라인 프롬프트 수정
-        wrap.querySelectorAll(".edit").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const k = btn.dataset.key,
-              tr = btn.closest("tr"),
-              cell = tr.querySelector(".pcell");
-            if (cell.querySelector("textarea")) return;
+        $("#confirmCount").textContent = arr.length;
+        $("#confirmList").innerHTML = arr
+          .map((k) => {
             const [no, idx] = k.split("-").map(Number);
-            cell.innerHTML = `<textarea class="edit-ta"></textarea>`;
-            const ta = cell.querySelector("textarea");
-            ta.value = promptText(no, idx);
-            ta.focus();
-            const save = () => {
-              const v = ta.value.trim();
-              if (v) promptOverrides[k] = v;
-              renderAll();
-              renderBasket();
-            };
-            ta.addEventListener("blur", save);
-            ta.addEventListener("keydown", (ev) => {
-              if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)) {
-                ev.preventDefault();
-                ta.blur();
-              }
-              if (ev.key === "Escape") {
-                ev.preventDefault();
-                renderBasket();
-              }
-            });
-          });
-        });
+            return `<li>${escHtml(promptText(no, idx))}</li>`;
+          })
+          .join("");
+        $("#confirmOverlay").classList.add("show");
+      }
+      function closeConfirm() {
+        $("#confirmOverlay").classList.remove("show");
       }
 
-      /* ═══════════════ EVENT DELEGATION (leaf + group boxes) ═══════════════ */
-      function refreshLeaves(k) {
-        // sync any rendered leaf checkbox with the same key across views
-        document
-          .querySelectorAll(`.leaf[data-key="${k}"]`)
-          .forEach((cb) => (cb.checked = selected.has(k)));
-      }
-      function refreshAll() {
-        document
-          .querySelectorAll(".leaf")
-          .forEach((cb) => (cb.checked = selected.has(cb.dataset.key)));
-        refreshGroups();
-        updateCounter();
-        renderBasket();
-      }
-      function refreshGroups() {
-        syncCEP();
-        syncAll();
-        syncTopic();
-        syncCards();
-      }
-      function refreshAllViews() {
-        refreshAll();
-      }
-
+      /* ═══════════════ 이벤트 배선 ═══════════════ */
       document.addEventListener("change", (e) => {
         const cb = e.target;
         if (cb.classList.contains("leaf")) {
@@ -1765,95 +1274,53 @@
             }
             selected.add(k);
           } else selected.delete(k);
-          refreshAll();
+          syncHeader();
           return;
         }
-        if (cb.classList.contains("cep-all")) {
-          const no = +cb.dataset.cep;
-          if (cb.checked) addCapped(cepKeys(no));
-          else cepKeys(no).forEach((k) => selected.delete(k));
-          refreshAll();
-          return;
-        }
-        if (
-          cb.classList.contains("topic-all") ||
-          cb.classList.contains("topic-all2")
-        ) {
-          const t = TOPICS[+cb.dataset.topic];
-          if (cb.checked) addCapped(topicKeys(t));
-          else topicKeys(t).forEach((k) => selected.delete(k));
-          refreshAll();
+        if (cb.id === "allBox") {
+          if (cb.checked) addCapped(allKeys());
+          else allKeys().forEach((k) => selected.delete(k));
+          refreshLeaves();
+          syncHeader();
           return;
         }
       });
 
-      /* ═══════════════ VIEW SWITCH ═══════════════ */
-      const VIEW_HINT = {
-        cep: "CEP(장면) 기준으로 묶어 확장합니다. CEP 행의 체크박스로 해당 CEP의 프롬프트 9개를 일괄 선택할 수 있습니다.",
-        all: "오른쪽 Selected Prompt에서 프롬프트를 수정·삭제할 수 있습니다.",
-        topic:
-          "topic.md의 9개 KBF 토픽으로 재분류합니다. 하나의 토픽이 여러 CEP를 가로지릅니다.",
-        card: "토픽을 카드로 펼쳐 훑어보고, 선택한 프롬프트를 오른쪽 바구니에서 확인·제외합니다.",
-      };
-      function switchView(v) {
-        document
-          .querySelectorAll("#vtabs .vtab")
-          .forEach((t) => t.classList.toggle("active", t.dataset.v === v));
-        ["cep", "all", "topic", "card"].forEach((n) =>
-          $("#view-" + n).classList.toggle("hidden", n !== v),
-        );
-        $("#viewHint").textContent = VIEW_HINT[v];
-      }
-      $("#vtabs").addEventListener("click", (e) => {
-        const t = e.target.closest(".vtab");
-        if (t) switchView(t.dataset.v);
-      });
-
-      /* ═══════════════ START BUTTONS ═══════════════ */
-      function onStart() {
-        if (selected.size < MIN) {
-          showAlert(`최소 ${MIN}개를 선택해주세요.`);
-          return;
-        }
-        // 검증 통과 → 결과 대시보드로 이동 (선택한 프롬프트 기준 분석)
-        window.location.href = "prototype.html";
-      }
       $("#btnStart").addEventListener("click", onStart);
-      $("#btnClear").addEventListener("click", () => {
-        if (!selected.size) return;
-        selected.clear();
-        refreshAll();
+      $("#btnCopyAll").addEventListener("click", copyAll);
+      $("#btnEdit").addEventListener("click", enterEdit);
+      $("#btnEditCancel").addEventListener("click", () => exitEdit(false));
+      $("#btnEditSave").addEventListener("click", () => exitEdit(true));
+      $("#srcSort").addEventListener("click", () => {
+        if (editMode) return;
+        sortDir = (sortDir + 1) % 3;
+        $("#srcSort .caret").textContent = sortDir === 1 ? "▲" : "▼";
+        renderAll();
       });
-      /* 전체 선택 체크박스 (thead 정적 요소, 1회 배선) */
-      $("#allBox").addEventListener("change", (e) => {
-        if (e.target.checked) addCapped(allKeys());
-        else allKeys().forEach((k) => selected.delete(k));
-        refreshAll();
-      });
-      /* 모달 닫기: 확인 버튼 · 오버레이 클릭 */
+
+      /* 모달: 알럿(취소/확인 모두 닫기) */
       $("#modalOk").addEventListener("click", closeAlert);
+      $("#modalCancel").addEventListener("click", closeAlert);
       $("#modalOverlay").addEventListener("click", (e) => {
         if (e.target === $("#modalOverlay")) closeAlert();
       });
+      /* 모달: 분석 확인 */
+      $("#confirmCancel").addEventListener("click", closeConfirm);
+      $("#confirmGo").addEventListener("click", () => {
+        window.location.href = "prototype.html";
+      });
+      $("#confirmOverlay").addEventListener("click", (e) => {
+        if (e.target === $("#confirmOverlay")) closeConfirm();
+      });
 
       /* ═══════════════ INIT ═══════════════ */
-      renderCEP();
       renderAll();
-      renderTopic();
-      renderCards();
-      wireAddRow(); // 하단 고정 직접 추가하기 (정적 요소, 1회 배선)
       if (GEO_MODE) {
-        // 가져온 프롬프트를 기본으로 전체 선택 (사용자는 여기서 수정·삭제)
+        // 가져온 프롬프트를 기본으로 전체 선택 (앞에서부터 MAX까지)
         addCapped(allKeys());
-        const cnt = $(".counter");
-        if (cnt)
-          cnt.innerHTML = `선택 ${MIN}~${MAX}개 · 현재 <b id="selCount">0</b>개`;
+        refreshLeaves();
       }
-      updateCounter();
-      switchView("all");
-      if (GEO_MODE) {
-        refreshAll(); // 사전 선택 상태를 체크박스·바구니에 반영
-      }
+      syncHeader();
     </script>
   </body>
 </html>
